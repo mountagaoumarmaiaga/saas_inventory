@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withMiddleware(function (Middleware $middleware): void {
+        // Confiance des proxys (pour Koyeb et l'HTTPS)
+        $middleware->trustProxies(at: '*');
+
         // Configuration des cookies
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 

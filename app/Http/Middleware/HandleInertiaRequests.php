@@ -43,6 +43,10 @@ class HandleInertiaRequests extends Middleware
             ],
             'flash' => fn () => $request->session()->get('flash') ?? [],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'env' => [
+                'supabaseUrl' => env('VITE_SUPABASE_URL'),
+                'supabaseAnonKey' => env('VITE_SUPABASE_ANON_KEY'),
+            ],
         ];
     }
 }

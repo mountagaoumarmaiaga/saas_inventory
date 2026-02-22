@@ -1,0 +1,284 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans:
+        'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+
+    --font-heading:
+        'Outfit', ui-sans-serif, system-ui, sans-serif;
+
+    --radius-lg: 0.5rem;
+    --radius-md: calc(0.5rem - 2px);
+    --radius-sm: calc(0.5rem - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+    /* Premium Modern SaaS Palette - Light Mode */
+    --background: hsl(0 0% 100%);
+    --foreground: hsl(240 10% 3.9%);
+
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(240 10% 3.9%);
+
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: hsl(240 10% 3.9%);
+
+    /* Primary: Default SaaS Orange */
+    --primary: hsl(24.6 95% 53.1%);
+    --primary-foreground: hsl(0 0% 100%);
+
+    /* Secondary: Elegant Dark Slate */
+    --secondary: hsl(240 4.8% 95.9%);
+    --secondary-foreground: hsl(240 5.9% 10%);
+
+    /* Muted (Soft cool grays for airy backgrounds & borders) */
+    --muted: hsl(240 4.8% 95.9%);
+    --muted-foreground: hsl(240 3.8% 46.1%);
+
+    /* Accent: Match Primary Orange */
+    --accent: hsl(24.6 95% 53.1%);
+    --accent-foreground: hsl(0 0% 100%);
+
+    --destructive: hsl(0 84.2% 60.2%);
+    --destructive-foreground: hsl(0 0% 98%);
+
+    --success: hsl(160 84% 39%);
+    --success-foreground: hsl(0 0% 100%);
+
+    --warning: hsl(38 92% 50%);
+    --warning-foreground: hsl(0 0% 100%);
+
+    --border: hsl(240 5.9% 90%);
+    --input: hsl(240 5.9% 90%);
+    --ring: hsl(24.6 95% 53.1%);
+
+    /* Extra large, soft rounding globally */
+    --radius: 1rem;
+
+    /* Charts */
+    --chart-1: hsl(24.6 95% 53.1%);
+    --chart-2: hsl(160 84% 39%);
+    --chart-3: hsl(252 82% 62%);
+    --chart-4: hsl(199 89% 48%);
+    --chart-5: hsl(38 92% 50%);
+
+    /* Sidebar - Soft Frosted Look */
+    --sidebar: hsl(0 0% 100%);
+    --sidebar-foreground: hsl(240 10% 3.9%);
+    --sidebar-primary: hsl(24.6 95% 53.1%);
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+    --sidebar-accent: hsl(240 4.8% 95.9%);
+    --sidebar-accent-foreground: hsl(24.6 95% 53.1%);
+    --sidebar-border: hsl(240 5.9% 90%);
+    --sidebar-ring: hsl(24.6 95% 53.1%);
+}
+
+.dark {
+    /* Premium Modern SaaS Palette - Dark Mode */
+    --background: hsl(240 10% 3.9%);
+    --foreground: hsl(0 0% 98%);
+
+    --card: hsl(240 10% 3.9%);
+    --card-foreground: hsl(0 0% 98%);
+
+    --popover: hsl(240 10% 3.9%);
+    --popover-foreground: hsl(0 0% 98%);
+
+    /* Primary: SaaS Orange */
+    --primary: hsl(20.5 90.2% 48.2%);
+    --primary-foreground: hsl(0 0% 100%);
+
+    /* Secondary: Slate */
+    --secondary: hsl(240 3.7% 15.9%);
+    --secondary-foreground: hsl(0 0% 98%);
+
+    --muted: hsl(240 3.7% 15.9%);
+    --muted-foreground: hsl(240 5% 64.9%);
+
+    /* Accent: Sunset Orange */
+    --accent: hsl(20.5 90.2% 48.2%);
+    --accent-foreground: hsl(0 0% 100%);
+
+    --destructive: hsl(0 62.8% 30.6%);
+    --destructive-foreground: hsl(0 0% 98%);
+
+    --success: hsl(160 84% 39%);
+    --success-foreground: hsl(0 0% 100%);
+
+    --warning: hsl(38 92% 50%);
+    --warning-foreground: hsl(240 10% 3.9%);
+
+    --border: hsl(240 3.7% 15.9%);
+    --input: hsl(240 3.7% 15.9%);
+    --ring: hsl(20.5 90.2% 48.2%);
+
+    --chart-1: hsl(20.5 90.2% 48.2%);
+    --chart-2: hsl(160 84% 39%);
+    --chart-3: hsl(252 82% 62%);
+    --chart-4: hsl(199 89% 48%);
+    --chart-5: hsl(38 92% 50%);
+
+    --sidebar: hsl(240 10% 3.9%);
+    --sidebar-foreground: hsl(240 4.8% 95.9%);
+    --sidebar-primary: hsl(20.5 90.2% 48.2%);
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+    --sidebar-accent: hsl(240 3.7% 15.9%);
+    --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+    --sidebar-border: hsl(240 3.7% 15.9%);
+    --sidebar-ring: hsl(20.5 90.2% 48.2%);
+}
+
+/* 
+ * Custom Theme Color Overrides 
+ * The default is Orange. 
+ */
+.theme-blue {
+    --primary: hsl(221.2 83.2% 53.3%);
+    --ring: hsl(221.2 83.2% 53.3%);
+    --sidebar-primary: hsl(221.2 83.2% 53.3%);
+    --sidebar-ring: hsl(221.2 83.2% 53.3%);
+    --accent: hsl(221.2 83.2% 53.3%);
+    --sidebar-accent-foreground: hsl(221.2 83.2% 53.3%);
+    --chart-1: hsl(221.2 83.2% 53.3%);
+}
+
+.dark.theme-blue {
+    --primary: hsl(217.2 91.2% 59.8%);
+    --ring: hsl(217.2 91.2% 59.8%);
+    --sidebar-primary: hsl(217.2 91.2% 59.8%);
+    --sidebar-ring: hsl(217.2 91.2% 59.8%);
+    --accent: hsl(217.2 91.2% 59.8%);
+    --sidebar-accent-foreground: hsl(217.2 91.2% 59.8%);
+    --chart-1: hsl(217.2 91.2% 59.8%);
+}
+
+.theme-green {
+    --primary: hsl(142.1 76.2% 36.3%);
+    --ring: hsl(142.1 76.2% 36.3%);
+    --sidebar-primary: hsl(142.1 76.2% 36.3%);
+    --sidebar-ring: hsl(142.1 76.2% 36.3%);
+    --accent: hsl(142.1 76.2% 36.3%);
+    --sidebar-accent-foreground: hsl(142.1 76.2% 36.3%);
+    --chart-1: hsl(142.1 76.2% 36.3%);
+}
+
+.dark.theme-green {
+    --primary: hsl(142.1 70.6% 45.3%);
+    --ring: hsl(142.1 70.6% 45.3%);
+    --sidebar-primary: hsl(142.1 70.6% 45.3%);
+    --sidebar-ring: hsl(142.1 70.6% 45.3%);
+    --accent: hsl(142.1 70.6% 45.3%);
+    --sidebar-accent-foreground: hsl(142.1 70.6% 45.3%);
+    --chart-1: hsl(142.1 70.6% 45.3%);
+}
+
+.theme-purple {
+    --primary: hsl(262.1 83.3% 57.8%);
+    --ring: hsl(262.1 83.3% 57.8%);
+    --sidebar-primary: hsl(262.1 83.3% 57.8%);
+    --sidebar-ring: hsl(262.1 83.3% 57.8%);
+    --accent: hsl(262.1 83.3% 57.8%);
+    --sidebar-accent-foreground: hsl(262.1 83.3% 57.8%);
+    --chart-1: hsl(262.1 83.3% 57.8%);
+}
+
+.dark.theme-purple {
+    --primary: hsl(263.4 70% 50.4%);
+    --ring: hsl(263.4 70% 50.4%);
+    --sidebar-primary: hsl(263.4 70% 50.4%);
+    --sidebar-ring: hsl(263.4 70% 50.4%);
+    --accent: hsl(263.4 70% 50.4%);
+    --sidebar-accent-foreground: hsl(263.4 70% 50.4%);
+    --chart-1: hsl(263.4 70% 50.4%);
+}
+
+.theme-rose {
+    --primary: hsl(346.8 77.2% 49.8%);
+    --ring: hsl(346.8 77.2% 49.8%);
+    --sidebar-primary: hsl(346.8 77.2% 49.8%);
+    --sidebar-ring: hsl(346.8 77.2% 49.8%);
+    --accent: hsl(346.8 77.2% 49.8%);
+    --sidebar-accent-foreground: hsl(346.8 77.2% 49.8%);
+    --chart-1: hsl(346.8 77.2% 49.8%);
+}
+
+.dark.theme-rose {
+    --primary: hsl(346.8 77.2% 49.8%);
+    --ring: hsl(346.8 77.2% 49.8%);
+    --sidebar-primary: hsl(346.8 77.2% 49.8%);
+    --sidebar-ring: hsl(346.8 77.2% 49.8%);
+    --accent: hsl(346.8 77.2% 49.8%);
+    --sidebar-accent-foreground: hsl(346.8 77.2% 49.8%);
+    --chart-1: hsl(346.8 77.2% 49.8%);
+}
+
+.theme-zinc {
+    --primary: hsl(240 5.9% 10%);
+    --ring: hsl(240 5.9% 10%);
+    --sidebar-primary: hsl(240 5.9% 10%);
+    --sidebar-ring: hsl(240 5.9% 10%);
+    --accent: hsl(240 5.9% 10%);
+    --sidebar-accent-foreground: hsl(240 5.9% 10%);
+    --chart-1: hsl(240 5.9% 10%);
+}
+
+.dark.theme-zinc {
+    --primary: hsl(0 0% 98%);
+    --primary-foreground: hsl(240 5.9% 10%);
+    --ring: hsl(0 0% 98%);
+    --sidebar-primary: hsl(0 0% 98%);
+    --sidebar-primary-foreground: hsl(240 5.9% 10%);
+    --sidebar-ring: hsl(0 0% 98%);
+    --accent: hsl(0 0% 98%);
+    --accent-foreground: hsl(240 5.9% 10%);
+    --sidebar-accent-foreground: hsl(0 0% 98%);
+    --chart-1: hsl(0 0% 98%);
+}

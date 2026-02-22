@@ -1,0 +1,15 @@
+resources/js/layouts/auth/auth-card-layout.tsx(9,10): error TS2305: Module '"@/routes"' has no exported member 'home'.
+resources/js/layouts/auth/auth-simple-layout.tsx(2,10): error TS2305: Module '"@/routes"' has no exported member 'home'.
+resources/js/layouts/auth/auth-split-layout.tsx(2,10): error TS2305: Module '"@/routes"' has no exported member 'home'.
+resources/js/pages/admin/products/Edit.tsx(61,12): error TS2304: Cannot find name 'DialogDescription'.
+resources/js/pages/admin/products/Edit.tsx(63,13): error TS2304: Cannot find name 'DialogDescription'.
+resources/js/pages/admin/products/api.ts(10,34): error TS2739: Type '{}' is missing the following properties from type 'PaginationMeta': current_page, last_page, total, per_page
+resources/js/pages/admin/products/api.ts(13,7): error TS2739: Type '{}' is missing the following properties from type 'PaginationMeta': current_page, last_page, total, per_page
+resources/js/pages/admin/products/api.ts(33,3): error TS2322: Type '{ category: Category | null; sub_category: SubCategory | null; id: number; name: string; sku?: string | undefined; unit?: string | undefined; purchase_price?: number | undefined; ... 6 more ...; updated_at: string; }[]' is not assignable to type 'Product[]'.
+  Type '{ category: Category | null; sub_category: SubCategory | null; id: number; name: string; sku?: string; unit?: string; purchase_price?: number; sale_price?: number; ... 5 more ...; updated_at: string; }' is not assignable to type 'Product'.
+    Types of property 'category' are incompatible.
+      Type 'Category | null' is not assignable to type 'Category | undefined'.
+        Type 'null' is not assignable to type 'Category | undefined'.
+resources/js/pages/admin/sub-categories/index.tsx(207,11): error TS2322: Type '{ open: boolean; onOpenChange: (v: any) => void; subCategory: SubCategory | null; onUpdated: () => Promise<void>; }' is not assignable to type 'IntrinsicAttributes & { onCreated: () => void | Promise<void>; }'.
+  Property 'open' does not exist on type 'IntrinsicAttributes & { onCreated: () => void | Promise<void>; }'.
+resources/js/pages/admin/sub-categories/index.tsx(208,26): error TS7006: Parameter 'v' implicitly has an 'any' type.

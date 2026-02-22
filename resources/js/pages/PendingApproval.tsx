@@ -5,7 +5,6 @@ import { OrbitControls, ContactShadows, Environment, Float } from '@react-three/
 import * as THREE from 'three';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Phone, LogOut, CheckCircle, Send, Building2, UserCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -181,9 +180,9 @@ export default function PendingApproval() {
                                             {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
                                         </div>
 
-                                        <Button
+                                        <button
                                             type="submit"
-                                            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 py-6 text-lg rounded-xl transition-all"
+                                            className="w-full inline-flex items-center justify-center gap-2 whitespace-nowrap bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 py-6 text-lg rounded-xl transition-all disabled:opacity-50 disabled:pointer-events-none"
                                             disabled={processing}
                                         >
                                             {processing ? 'Envoi en cours...' : (
@@ -191,7 +190,7 @@ export default function PendingApproval() {
                                                     Envoyer ma demande <Send className="w-5 h-5 ml-2" />
                                                 </>
                                             )}
-                                        </Button>
+                                        </button>
                                     </form>
                                 ) : (
                                     <motion.div

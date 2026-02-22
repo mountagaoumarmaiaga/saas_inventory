@@ -47,14 +47,21 @@ Route::middleware('guest')->group(function () {
 Route::get('/pending-approval', fn() => Inertia::render('PendingApproval'))->name('pending.approval');
 
 Route::post('/request-access', function (\Illuminate\Http\Request $request) {
-    $request->validate([
+    $data = $request->validate([
         'company_name' => 'required|string|max:255',
         'phone' => 'required|string|max:255',
         'message' => 'nullable|string'
     ]);
 
-    // Here we just return back with a success message.
-    // In a real scenario, an email would be sent to the CEO or stored in the DB.
+    // Send email to CEO
+    try {
+        \Illuminate\Support\Facades\Mail::to('mountagaoumarmaiga@gmail.com')
+            ->send(new \App\Mail\AccessRequestMail($data, $request->user()));
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error('Erreur lors de l\'envoi de l\'email de demande d\'accès: ' . $e->getMessage());
+        // We still return success to the user so they aren't blocked, but log the error
+    }
+
     return back()->with('success', 'Votre demande a bien été envoyée.');
 })->middleware('auth')->name('access.request');
 

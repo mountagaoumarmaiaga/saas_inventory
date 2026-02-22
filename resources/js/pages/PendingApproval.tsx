@@ -130,13 +130,9 @@ export default function PendingApproval() {
                                 Pour utiliser l'application, l'administrateur doit valider votre accès.
                             </p>
 
-                            <AnimatePresence mode="wait">
+                            <div>
                                 {!requestSent ? (
-                                    <motion.form
-                                        key="form"
-                                        initial={{ opacity: 0, scale: 0.95 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                                    <form
                                         className="bg-slate-800/50 border border-slate-700/50 p-6 md:p-8 rounded-2xl shadow-sm space-y-5 backdrop-blur-sm"
                                         onSubmit={submitRequest}
                                     >
@@ -196,10 +192,9 @@ export default function PendingApproval() {
                                                 </>
                                             )}
                                         </Button>
-                                    </motion.form>
+                                    </form>
                                 ) : (
                                     <motion.div
-                                        key="success"
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         className="bg-emerald-900/30 border border-emerald-800/50 p-8 rounded-2xl flex flex-col items-center text-center shadow-sm backdrop-blur-sm"
@@ -213,7 +208,7 @@ export default function PendingApproval() {
                                         </p>
                                     </motion.div>
                                 )}
-                            </AnimatePresence>
+                            </div>
 
                             <div className="mt-8 flex flex-col sm:flex-row items-center justify-between border-t border-slate-800 pt-6">
                                 <Link

@@ -111,8 +111,8 @@ export default function PendingApproval() {
         <>
             <Head title="Accès en attente" />
 
-            <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-                <main className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+            <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+                <main className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-800">
 
                     {/* Left Section - Form & Content (Takes 7 columns on large screens) */}
                     <div className="lg:col-span-7 p-8 md:p-12 lg:p-16 flex flex-col justify-center relative z-10">
@@ -121,11 +121,11 @@ export default function PendingApproval() {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight mb-4">
-                                Bienvenue, <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">{auth?.user?.name || 'Nouveau Client'}</span> 👋
+                            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight mb-4">
+                                Bienvenue, <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">{auth?.user?.name || 'Nouveau Client'}</span> 👋
                             </h1>
 
-                            <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                            <p className="text-lg text-slate-300 mb-8 leading-relaxed">
                                 Votre compte a été créé avec succès, mais vous n'êtes pas encore rattaché à un espace de travail.
                                 Pour utiliser l'application, l'administrateur doit valider votre accès.
                             </p>
@@ -137,57 +137,57 @@ export default function PendingApproval() {
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                                        className="bg-slate-50 border border-slate-200 p-6 md:p-8 rounded-2xl shadow-sm space-y-5"
+                                        className="bg-slate-800/50 border border-slate-700/50 p-6 md:p-8 rounded-2xl shadow-sm space-y-5 backdrop-blur-sm"
                                         onSubmit={submitRequest}
                                     >
                                         <div className="flex items-center space-x-3 mb-6">
-                                            <div className="bg-indigo-100 text-indigo-700 p-2 rounded-lg">
+                                            <div className="bg-indigo-500/20 text-indigo-400 p-2 rounded-lg">
                                                 <Building2 className="w-5 h-5" />
                                             </div>
-                                            <h2 className="text-xl font-bold text-slate-800">Demande d'accès</h2>
+                                            <h2 className="text-xl font-bold text-white">Demande d'accès</h2>
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="company_name" className="text-slate-700 font-medium">Nom de l'entreprise (ou projet)</Label>
+                                            <Label htmlFor="company_name" className="text-slate-300 font-medium">Nom de l'entreprise (ou projet)</Label>
                                             <Input
                                                 id="company_name"
                                                 value={data.company_name}
                                                 onChange={e => setData('company_name', e.target.value)}
-                                                className="bg-white"
+                                                className="bg-slate-900 border-slate-700 text-white placeholder-slate-500 focus:border-indigo-500 focus:ring-indigo-500/20 transition-all"
                                                 placeholder="Ex: Tech Solutions Mali"
                                                 required
                                             />
-                                            {errors.company_name && <p className="text-red-500 text-sm mt-1">{errors.company_name}</p>}
+                                            {errors.company_name && <p className="text-red-400 text-sm mt-1">{errors.company_name}</p>}
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="phone" className="text-slate-700 font-medium">Numéro de téléphone / WhatsApp</Label>
+                                            <Label htmlFor="phone" className="text-slate-300 font-medium">Numéro de téléphone / WhatsApp</Label>
                                             <Input
                                                 id="phone"
                                                 value={data.phone}
                                                 onChange={e => setData('phone', e.target.value)}
-                                                className="bg-white"
+                                                className="bg-slate-900 border-slate-700 text-white placeholder-slate-500 focus:border-indigo-500 focus:ring-indigo-500/20 transition-all"
                                                 placeholder="+223 00000000"
                                                 required
                                             />
-                                            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                                            {errors.phone && <p className="text-red-400 text-sm mt-1">{errors.phone}</p>}
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label htmlFor="message" className="text-slate-700 font-medium">Message (Optionnel)</Label>
+                                            <Label htmlFor="message" className="text-slate-300 font-medium">Message (Optionnel)</Label>
                                             <Textarea
                                                 id="message"
                                                 value={data.message}
                                                 onChange={e => setData('message', e.target.value)}
-                                                className="bg-white resize-none h-24"
+                                                className="bg-slate-900 border-slate-700 text-white placeholder-slate-500 resize-none h-24 focus:border-indigo-500 focus:ring-indigo-500/20 transition-all"
                                                 placeholder="Laissez un message à l'administrateur..."
                                             />
-                                            {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+                                            {errors.message && <p className="text-red-400 text-sm mt-1">{errors.message}</p>}
                                         </div>
 
                                         <Button
                                             type="submit"
-                                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md py-6 text-lg rounded-xl"
+                                            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 py-6 text-lg rounded-xl transition-all"
                                             disabled={processing}
                                         >
                                             {processing ? 'Envoi en cours...' : (
@@ -202,35 +202,35 @@ export default function PendingApproval() {
                                         key="success"
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        className="bg-emerald-50 border border-emerald-200 p-8 rounded-2xl flex flex-col items-center text-center shadow-sm"
+                                        className="bg-emerald-900/30 border border-emerald-800/50 p-8 rounded-2xl flex flex-col items-center text-center shadow-sm backdrop-blur-sm"
                                     >
-                                        <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
-                                            <CheckCircle className="w-10 h-10 text-emerald-600" />
+                                        <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6 ring-4 ring-emerald-500/10">
+                                            <CheckCircle className="w-10 h-10 text-emerald-400" />
                                         </div>
-                                        <h3 className="text-2xl font-bold text-emerald-900 mb-3">Demande envoyée !</h3>
-                                        <p className="text-emerald-700 text-lg leading-relaxed">
-                                            Nous avons bien reçu vos informations. Vous serez contacté dans les <strong>24 heures à suivre</strong> par un email de confirmation qui vous donnera accès à votre espace !
+                                        <h3 className="text-2xl font-bold text-white mb-3">Demande envoyée !</h3>
+                                        <p className="text-emerald-200/90 text-lg leading-relaxed">
+                                            Nous avons bien reçu vos informations. Vous serez contacté dans les <strong className="text-emerald-400">24 heures à suivre</strong> par un email de confirmation qui vous donnera accès à votre espace !
                                         </p>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
 
-                            <div className="mt-8 flex flex-col sm:flex-row items-center justify-between border-t border-slate-200 pt-6">
+                            <div className="mt-8 flex flex-col sm:flex-row items-center justify-between border-t border-slate-800 pt-6">
                                 <Link
                                     href={route('logout')}
                                     method="post"
                                     as="button"
-                                    className="inline-flex items-center text-slate-500 hover:text-slate-800 font-medium transition-colors mb-4 sm:mb-0"
+                                    className="inline-flex items-center text-slate-400 hover:text-white font-medium transition-colors mb-4 sm:mb-0"
                                 >
                                     <LogOut className="w-5 h-5 mr-2" />
                                     Se déconnecter
                                 </Link>
 
                                 <div className="flex space-x-4">
-                                    <a href="mailto:mountagaoumarmaiga@gmail.com" className="bg-slate-100 p-3 rounded-full text-slate-600 hover:bg-indigo-100 hover:text-indigo-600 transition-colors" title="Contacter par Email">
+                                    <a href="mailto:mountagaoumarmaiga@gmail.com" className="bg-slate-800 p-3 rounded-full text-slate-400 hover:bg-indigo-500/20 hover:text-indigo-400 transition-colors" title="Contacter par Email">
                                         <Mail className="w-5 h-5" />
                                     </a>
-                                    <a href="tel:+22361139057" className="bg-slate-100 p-3 rounded-full text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-colors" title="Contacter par Téléphone">
+                                    <a href="tel:+22361139057" className="bg-slate-800 p-3 rounded-full text-slate-400 hover:bg-emerald-500/20 hover:text-emerald-400 transition-colors" title="Contacter par Téléphone">
                                         <Phone className="w-5 h-5" />
                                     </a>
                                 </div>
@@ -239,14 +239,14 @@ export default function PendingApproval() {
                     </div>
 
                     {/* Right Section - 3D Mascot (Takes 5 columns on large screens) */}
-                    <div className="lg:col-span-5 relative bg-gradient-to-br from-indigo-600 to-purple-800 min-h-[400px] lg:min-h-full flex flex-col items-center justify-center overflow-hidden">
+                    <div className="lg:col-span-5 relative bg-gradient-to-br from-[#1e1b4b] to-[#0f172a] min-h-[400px] lg:min-h-full flex flex-col items-center justify-center overflow-hidden border-l border-slate-800/50">
 
-                        {/* Motif de fond stylisé */}
+                        {/* Motif de fond stylisé (Dark mode grid) */}
                         <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgMGwyMCAyMEw0MCAwdjQwbC0yMC0yMEwwIDB6IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8L3N2Zz4=')] bg-repeat"></div>
 
                         <div className="absolute top-10 text-center w-full z-10 px-4">
-                            <span className="inline-block px-5 py-2 rounded-full bg-white/10 backdrop-blur-md shadow-lg text-white font-semibold text-sm border border-white/20">
-                                Un peu de patience, on arrive... 🕺
+                            <span className="inline-block px-5 py-2 rounded-full bg-slate-900/60 backdrop-blur-md shadow-lg text-indigo-300 font-semibold text-sm border border-indigo-500/20">
+                                Un peu de patience... 🕺
                             </span>
                         </div>
 

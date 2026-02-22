@@ -1,12 +1,16 @@
-import React, { useRef } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import React, { useState, useRef, FormEvent } from 'react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, ContactShadows, Environment, Float } from '@react-three/drei';
 import * as THREE from 'three';
-import { motion } from 'framer-motion';
-import { Mail, Phone, LogOut, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Phone, LogOut, CheckCircle, Send, Building2, UserCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
-// --- Composant du Bonhomme 3D Dansant ---
+// --- Dancing Mascot ---
 const DancingMascot = () => {
     const groupRef = useRef<THREE.Group>(null);
     const leftArmRef = useRef<THREE.Mesh>(null);
@@ -16,42 +20,30 @@ const DancingMascot = () => {
 
     useFrame((state) => {
         const time = state.clock.getElapsedTime();
-
         if (groupRef.current) {
-            // Rebond global (Bounce)
-            groupRef.current.position.y = Math.abs(Math.sin(time * 5)) * 0.5;
-            // Rotation du corps
-            groupRef.current.rotation.y = Math.sin(time * 2) * 0.3;
+            groupRef.current.position.y = Math.abs(Math.sin(time * 6)) * 0.4;
+            groupRef.current.rotation.y = Math.sin(time * 3) * 0.4;
         }
-
-        // Mouvement des bras (balancement en opposition)
         if (leftArmRef.current && rightArmRef.current) {
-            leftArmRef.current.rotation.z = Math.sin(time * 5) * 0.8 - 0.5;
-            leftArmRef.current.rotation.x = Math.cos(time * 5) * 0.5;
-
-            rightArmRef.current.rotation.z = -Math.sin(time * 5) * 0.8 + 0.5;
-            rightArmRef.current.rotation.x = -Math.cos(time * 5) * 0.5;
+            leftArmRef.current.rotation.z = Math.sin(time * 6) * 0.8 - 0.5;
+            leftArmRef.current.rotation.x = Math.cos(time * 6) * 0.5;
+            rightArmRef.current.rotation.z = -Math.sin(time * 6) * 0.8 + 0.5;
+            rightArmRef.current.rotation.x = -Math.cos(time * 6) * 0.5;
         }
-
-        // Hochement de tête en rythme
         if (headRef.current) {
-            headRef.current.rotation.z = Math.sin(time * 10) * 0.1;
-            headRef.current.rotation.x = Math.sin(time * 5) * 0.2;
+            headRef.current.rotation.z = Math.sin(time * 12) * 0.15;
+            headRef.current.rotation.x = Math.sin(time * 6) * 0.25;
         }
     });
 
-    // Couleurs du branding (Thème Indigo/Bleu du dashboard)
-    const primaryColor = "#4f46e5"; // Indigo 600
-    const secondaryColor = "#818cf8"; // Indigo 400
+    const primaryColor = "#4f46e5";
+    const secondaryColor = "#818cf8";
 
     return (
         <group ref={groupRef} position={[0, -1, 0]}>
-            {/* Tête */}
             <mesh ref={headRef} position={[0, 2.2, 0]}>
                 <boxGeometry args={[1.2, 1.2, 1.2]} />
                 <meshStandardMaterial color={primaryColor} roughness={0.3} metalness={0.8} />
-
-                {/* Yeux (Lunettes Joyeuses) */}
                 <mesh position={[-0.25, 0.1, 0.61]}>
                     <capsuleGeometry args={[0.1, 0.3, 4, 8]} />
                     <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.5} />
@@ -61,42 +53,30 @@ const DancingMascot = () => {
                     <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.5} />
                 </mesh>
             </mesh>
-
-            {/* Cou */}
             <mesh position={[0, 1.5, 0]}>
                 <cylinderGeometry args={[0.2, 0.2, 0.4]} />
                 <meshStandardMaterial color="#333333" />
             </mesh>
-
-            {/* Corps */}
             <mesh ref={bodyRef} position={[0, 0.7, 0]}>
                 <boxGeometry args={[1.5, 1.4, 1]} />
                 <meshStandardMaterial color={secondaryColor} roughness={0.4} metalness={0.3} />
             </mesh>
-
-            {/* Bras Gauche */}
             <group position={[-0.9, 1.2, 0]}>
                 <mesh ref={leftArmRef} position={[-0.4, -0.4, 0]}>
                     <capsuleGeometry args={[0.2, 0.8]} />
                     <meshStandardMaterial color={primaryColor} />
                 </mesh>
             </group>
-
-            {/* Bras Droit */}
             <group position={[0.9, 1.2, 0]}>
                 <mesh ref={rightArmRef} position={[0.4, -0.4, 0]}>
                     <capsuleGeometry args={[0.2, 0.8]} />
                     <meshStandardMaterial color={primaryColor} />
                 </mesh>
             </group>
-
-            {/* Jambe Gauche */}
             <mesh position={[-0.4, -0.4, 0]}>
                 <capsuleGeometry args={[0.25, 0.8]} />
                 <meshStandardMaterial color="#333333" />
             </mesh>
-
-            {/* Jambe Droite */}
             <mesh position={[0.4, -0.4, 0]}>
                 <capsuleGeometry args={[0.25, 0.8]} />
                 <meshStandardMaterial color="#333333" />
@@ -106,99 +86,203 @@ const DancingMascot = () => {
 };
 
 export default function PendingApproval() {
+    // Current user from Inertia props
+    const { auth } = usePage().props as any;
+
+    const [requestSent, setRequestSent] = useState(false);
+
+    // Inertia form helper
+    const { data, setData, post, processing, errors } = useForm({
+        company_name: '',
+        phone: '',
+        message: ''
+    });
+
+    const submitRequest = (e: FormEvent) => {
+        e.preventDefault();
+        // Post data to the access request handler
+        post(route('access.request'), {
+            preserveScroll: true,
+            onSuccess: () => setRequestSent(true),
+        });
+    };
+
     return (
         <>
-            <Head title="En attente de validation" />
+            <Head title="Accès en attente" />
 
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-                <div className="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100 min-h-[600px]">
+            <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+                <main className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
 
-                    /* --- Section de Gauche : Contenu & Contacts --- */
-                    <div className="p-8 md:p-12 flex flex-col justify-center h-full">
+                    {/* Left Section - Form & Content (Takes 7 columns on large screens) */}
+                    <div className="lg:col-span-7 p-8 md:p-12 lg:p-16 flex flex-col justify-center relative z-10">
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            className="space-y-6"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5 }}
                         >
-                            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
-                                <CheckCircle className="w-8 h-8 text-indigo-600" />
-                            </div>
-
-                            <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-                                Compte créé avec <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">succès</span>
+                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight mb-4">
+                                Bienvenue, <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">{auth?.user?.name || 'Nouveau Client'}</span> 👋
                             </h1>
 
-                            <p className="text-lg text-slate-600 leading-relaxed">
-                                Merci de vous être inscrit sur notre plateforme de gestion de stock. Pour des raisons de sécurité et pour vous attribuer le bon espace de travail,
-                                <strong className="text-slate-900 font-semibold block mt-2">votre compte nécessite une validation manuelle par l'administrateur.</strong>
+                            <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                                Votre compte a été créé avec succès, mais vous n'êtes pas encore rattaché à un espace de travail.
+                                Pour utiliser l'application, l'administrateur doit valider votre accès.
                             </p>
 
-                            <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 mt-8 space-y-4">
-                                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Contacter le CEO pour activation immédiate</h3>
+                            <AnimatePresence mode="wait">
+                                {!requestSent ? (
+                                    <motion.form
+                                        key="form"
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                                        className="bg-slate-50 border border-slate-200 p-6 md:p-8 rounded-2xl shadow-sm space-y-5"
+                                        onSubmit={submitRequest}
+                                    >
+                                        <div className="flex items-center space-x-3 mb-6">
+                                            <div className="bg-indigo-100 text-indigo-700 p-2 rounded-lg">
+                                                <Building2 className="w-5 h-5" />
+                                            </div>
+                                            <h2 className="text-xl font-bold text-slate-800">Demande d'accès</h2>
+                                        </div>
 
-                                <a href="mailto:mountagaoumarmaiga@gmail.com" className="flex items-center group transition-colors hover:bg-slate-100 p-2 -mx-2 rounded-lg">
-                                    <div className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mr-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                                        <Mail className="w-5 h-5" />
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-slate-900">Email</p>
-                                        <p className="text-slate-600 font-medium group-hover:text-indigo-600 transition-colors">mountagaoumarmaiga@gmail.com</p>
-                                    </div>
-                                </a>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="company_name" className="text-slate-700 font-medium">Nom de l'entreprise (ou projet)</Label>
+                                            <Input
+                                                id="company_name"
+                                                value={data.company_name}
+                                                onChange={e => setData('company_name', e.target.value)}
+                                                className="bg-white"
+                                                placeholder="Ex: Tech Solutions Mali"
+                                                required
+                                            />
+                                            {errors.company_name && <p className="text-red-500 text-sm mt-1">{errors.company_name}</p>}
+                                        </div>
 
-                                <a href="tel:+22361139057" className="flex items-center group transition-colors hover:bg-slate-100 p-2 -mx-2 rounded-lg">
-                                    <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mr-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                        <Phone className="w-5 h-5" />
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-slate-900">Téléphone / WhatsApp</p>
-                                        <p className="text-slate-600 font-medium group-hover:text-emerald-600 transition-colors">+223 61139057</p>
-                                    </div>
-                                </a>
-                            </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="phone" className="text-slate-700 font-medium">Numéro de téléphone / WhatsApp</Label>
+                                            <Input
+                                                id="phone"
+                                                value={data.phone}
+                                                onChange={e => setData('phone', e.target.value)}
+                                                className="bg-white"
+                                                placeholder="+223 00000000"
+                                                required
+                                            />
+                                            {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                                        </div>
 
-                            <div className="pt-6">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="message" className="text-slate-700 font-medium">Message (Optionnel)</Label>
+                                            <Textarea
+                                                id="message"
+                                                value={data.message}
+                                                onChange={e => setData('message', e.target.value)}
+                                                className="bg-white resize-none h-24"
+                                                placeholder="Laissez un message à l'administrateur..."
+                                            />
+                                            {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+                                        </div>
+
+                                        <Button
+                                            type="submit"
+                                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-md py-6 text-lg rounded-xl"
+                                            disabled={processing}
+                                        >
+                                            {processing ? 'Envoi en cours...' : (
+                                                <>
+                                                    Envoyer ma demande <Send className="w-5 h-5 ml-2" />
+                                                </>
+                                            )}
+                                        </Button>
+                                    </motion.form>
+                                ) : (
+                                    <motion.div
+                                        key="success"
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        className="bg-emerald-50 border border-emerald-200 p-8 rounded-2xl flex flex-col items-center text-center shadow-sm"
+                                    >
+                                        <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-6">
+                                            <CheckCircle className="w-10 h-10 text-emerald-600" />
+                                        </div>
+                                        <h3 className="text-2xl font-bold text-emerald-900 mb-3">Demande envoyée !</h3>
+                                        <p className="text-emerald-700 text-lg leading-relaxed">
+                                            Nous avons bien reçu vos informations. Vous serez contacté dans les <strong>24 heures à suivre</strong> par un email de confirmation qui vous donnera accès à votre espace !
+                                        </p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            <div className="mt-8 flex flex-col sm:flex-row items-center justify-between border-t border-slate-200 pt-6">
                                 <Link
                                     href={route('logout')}
                                     method="post"
                                     as="button"
-                                    className="inline-flex items-center px-6 py-3 border border-slate-300 shadow-sm text-base font-medium rounded-full text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
+                                    className="inline-flex items-center text-slate-500 hover:text-slate-800 font-medium transition-colors mb-4 sm:mb-0"
                                 >
-                                    <LogOut className="w-5 h-5 mr-2 text-slate-400" />
-                                    Se déconnecter en attendant
+                                    <LogOut className="w-5 h-5 mr-2" />
+                                    Se déconnecter
                                 </Link>
+
+                                <div className="flex space-x-4">
+                                    <a href="mailto:mountagaoumarmaiga@gmail.com" className="bg-slate-100 p-3 rounded-full text-slate-600 hover:bg-indigo-100 hover:text-indigo-600 transition-colors" title="Contacter par Email">
+                                        <Mail className="w-5 h-5" />
+                                    </a>
+                                    <a href="tel:+22361139057" className="bg-slate-100 p-3 rounded-full text-slate-600 hover:bg-emerald-100 hover:text-emerald-600 transition-colors" title="Contacter par Téléphone">
+                                        <Phone className="w-5 h-5" />
+                                    </a>
+                                </div>
                             </div>
                         </motion.div>
                     </div>
 
-                    /* --- Section de Droite : Animation 3D --- */
-                    <div className="relative h-64 md:h-full w-full bg-gradient-to-br from-indigo-50 to-purple-50 rounded-r-3xl flex items-center justify-center overflow-hidden">
-                        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#4f46e5_1px,transparent_1px)] [background-size:20px_20px]"></div>
+                    {/* Right Section - 3D Mascot (Takes 5 columns on large screens) */}
+                    <div className="lg:col-span-5 relative bg-gradient-to-br from-indigo-600 to-purple-800 min-h-[400px] lg:min-h-full flex flex-col items-center justify-center overflow-hidden">
 
-                        <div className="absolute top-8 text-center w-full z-10">
-                            <span className="inline-block px-4 py-1 rounded-full bg-white/60 backdrop-blur-sm shadow-sm text-indigo-800 font-medium text-sm border border-indigo-100">
+                        {/* Motif de fond stylisé */}
+                        <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz4KPHBhdGggZD0iTTAgMGwyMCAyMEw0MCAwdjQwbC0yMC0yMEwwIDB6IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8L3N2Zz4=')] bg-repeat"></div>
+
+                        <div className="absolute top-10 text-center w-full z-10 px-4">
+                            <span className="inline-block px-5 py-2 rounded-full bg-white/10 backdrop-blur-md shadow-lg text-white font-semibold text-sm border border-white/20">
                                 Un peu de patience, on arrive... 🕺
                             </span>
                         </div>
 
-                        <Canvas camera={{ position: [0, 2, 8], fov: 45 }}>
-                            <ambientLight intensity={0.5} />
-                            <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
-                            <pointLight position={[-10, -10, -10]} intensity={0.5} />
+                        {/* Conteneur 3D Canvas robuste */}
+                        <div className="w-full h-[500px] lg:h-full lg:absolute lg:inset-0">
+                            <Canvas camera={{ position: [0, 1.5, 7], fov: 50 }} className="w-full h-full cursor-grab active:cursor-grabbing">
+                                <ambientLight intensity={0.6} />
+                                <directionalLight position={[10, 10, 5]} intensity={1.5} color="#fff" />
+                                <pointLight position={[-10, -10, -10]} intensity={0.5} />
 
-                            <Environment preset="city" />
+                                <Environment preset="city" />
 
-                            <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-                                <DancingMascot />
-                            </Float>
+                                <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
+                                    <DancingMascot />
+                                </Float>
 
-                            <ContactShadows position={[0, -1.5, 0]} opacity={0.4} scale={10} blur={2} far={4} />
-                            <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 3} />
-                        </Canvas>
+                                {/* Ombre de contact */}
+                                <ContactShadows position={[0, -1.8, 0]} opacity={0.6} scale={10} blur={2.5} far={4} color="#000" />
+
+                                <OrbitControls
+                                    enableZoom={false}
+                                    enablePan={false}
+                                    autoRotate
+                                    autoRotateSpeed={1}
+                                    maxPolarAngle={Math.PI / 2 + 0.1}
+                                    minPolarAngle={Math.PI / 3}
+                                />
+                            </Canvas>
+                        </div>
+
+                        <div className="absolute bottom-6 w-full text-center z-10">
+                            <p className="text-indigo-100/70 text-sm font-medium">CEO: mountagaoumarmaiga@gmail.com</p>
+                        </div>
                     </div>
 
-                </div>
+                </main>
             </div>
         </>
     );

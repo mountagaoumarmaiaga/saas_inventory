@@ -46,6 +46,18 @@ Route::middleware('guest')->group(function () {
 */
 Route::get('/pending-approval', fn() => Inertia::render('PendingApproval'))->name('pending.approval');
 
+Route::post('/request-access', function (\Illuminate\Http\Request $request) {
+    $request->validate([
+        'company_name' => 'required|string|max:255',
+        'phone' => 'required|string|max:255',
+        'message' => 'nullable|string'
+    ]);
+
+    // Here we just return back with a success message.
+    // In a real scenario, an email would be sent to the CEO or stored in the DB.
+    return back()->with('success', 'Votre demande a bien été envoyée.');
+})->middleware('auth')->name('access.request');
+
 /*
 |--------------------------------------------------------------------------
 | Logout (POST)

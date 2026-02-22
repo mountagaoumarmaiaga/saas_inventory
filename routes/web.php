@@ -41,6 +41,13 @@ Route::middleware('guest')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| Pending Approval Page (For users without an entreprise)
+|--------------------------------------------------------------------------
+*/
+Route::get('/pending-approval', fn() => Inertia::render('PendingApproval'))->name('pending.approval');
+
+/*
+|--------------------------------------------------------------------------
 | Logout (POST)
 |--------------------------------------------------------------------------
 */
@@ -62,6 +69,10 @@ Route::get('/dashboard', function () {
 
     if (! $user) {
         return redirect()->route('login');
+    }
+
+    if (! $user->entreprise_id) {
+        return redirect()->route('pending.approval');
     }
 
     if ($user->isSuperAdmin()) {

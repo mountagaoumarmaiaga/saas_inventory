@@ -12,7 +12,7 @@ class EnsureEntreprise
         $user = $request->user();
 
         if (!$user || !$user->entreprise_id) {
-            abort(403, "Utilisateur sans entreprise.");
+            return redirect()->route('pending.approval');
         }
 
         return $next($request);

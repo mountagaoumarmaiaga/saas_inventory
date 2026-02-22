@@ -42,5 +42,18 @@ class AdminUserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        // 4️⃣ Créer un SUPER ADMIN
+        User::updateOrCreate(
+            ['email' => 'superadmin@example.com'],
+            [
+                'name' => 'Super Admin',
+                'password' => Hash::make('superpassword'), // Le mot de passe du super admin
+                'role' => 'admin',
+                'is_super_admin' => \Illuminate\Support\Facades\DB::raw('true'),
+                'entreprise_id' => $entreprise->id,
+                'email_verified_at' => now(),
+            ]
+        );
     }
 }

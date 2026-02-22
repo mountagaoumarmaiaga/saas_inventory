@@ -1,0 +1,11 @@
+.git
+node_modules
+vendor
+.env
+public/build
+storage/*.key
+tests
+tests/
+phpunit.xml
+.phpunit.cache
+.npm

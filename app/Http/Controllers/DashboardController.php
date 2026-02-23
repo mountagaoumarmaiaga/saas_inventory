@@ -147,27 +147,23 @@ class DashboardController extends Controller
         // unless "User" is strictly limited. User can see all invoices/clients.
         
         $stats = [
-            'my_invoices_count' => Invoice::where('entreprise_id', $eid)->where('created_by', $user->id)->count(),
-            'my_delivery_notes_count' => DeliveryNote::where('entreprise_id', $eid)->where('created_by', $user->id)->count(),
+            'my_invoices_count' => Invoice::where('entreprise_id', $eid)->count(),
+            'my_delivery_notes_count' => DeliveryNote::where('entreprise_id', $eid)->count(),
             'total_clients' => Client::where('entreprise_id', $eid)->count(),
             'my_revenue' => Invoice::where('entreprise_id', $eid)
-                ->where('created_by', $user->id)
                 ->where('status', 'PAID')
                 ->sum('total'),
             
             // Revenue by period
             'revenue_today' => Invoice::where('entreprise_id', $eid)
-                ->where('created_by', $user->id)
                 ->where('status', 'PAID')
                 ->whereDate('paid_at', today())
                 ->sum('total'),
             'revenue_this_week' => Invoice::where('entreprise_id', $eid)
-                ->where('created_by', $user->id)
                 ->where('status', 'PAID')
                 ->whereBetween('paid_at', [now()->startOfWeek(), now()->endOfWeek()])
                 ->sum('total'),
             'revenue_this_month' => Invoice::where('entreprise_id', $eid)
-                ->where('created_by', $user->id)
                 ->where('status', 'PAID')
                 ->whereMonth('paid_at', now()->month)
                 ->whereYear('paid_at', now()->year)
@@ -175,7 +171,6 @@ class DashboardController extends Controller
         ];
 
         $recentInvoices = Invoice::where('entreprise_id', $eid)
-            ->where('created_by', $user->id)
             ->with(['client'])
             ->latest()
             ->take(5)
@@ -183,7 +178,6 @@ class DashboardController extends Controller
 
         // Daily Revenue Breakdown (last 7 days)
         $dailyRevenue = Invoice::where('entreprise_id', $eid)
-            ->where('created_by', $user->id)
             ->where('status', 'PAID')
             ->whereNotNull('paid_at')
             ->where('paid_at', '>=', now()->subDays(7))

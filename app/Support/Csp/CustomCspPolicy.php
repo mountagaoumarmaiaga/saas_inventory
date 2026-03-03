@@ -4,25 +4,29 @@ namespace App\Support\Csp;
 
 use Spatie\Csp\Directive;
 use Spatie\Csp\Keyword;
+use Spatie\Csp\Policy;
+use Spatie\Csp\Preset;
 use Spatie\Csp\Presets\Basic;
 
-class CustomCspPolicy extends Basic
+class CustomCspPolicy implements Preset
 {
-    public function configure()
+    public function configure(Policy $policy): void
     {
-        parent::configure();
+        // Apply the Basic preset first
+        (new Basic())->configure($policy);
 
-        $this
-            ->addDirective(Directive::STYLE, Keyword::UNSAFE_INLINE)
-            ->addDirective(Directive::SCRIPT, Keyword::UNSAFE_EVAL) // Nécessaire pour React/Vite en dev, idéalement retiré en prod pure
-            ->addDirective(Directive::CONNECT, 'https://*.supabase.co') // Autoriser les requêtes vers Supabase API/Storage
-            ->addDirective(Directive::IMG, [Keyword::SELF, 'data:', 'https://*.supabase.co']);
-            
+        $policy
+            ->add(Directive::STYLE, Keyword::UNSAFE_INLINE)
+            ->add(Directive::SCRIPT, Keyword::UNSAFE_EVAL)
+            ->add(Directive::CONNECT, 'https://*.supabase.co')
+            ->add(Directive::IMG, [Keyword::SELF, 'data:', 'https://*.supabase.co']);
+
         if (app()->environment('local')) {
-            $this->addDirective(Directive::CONNECT, 'ws://localhost:*')
-                 ->addDirective(Directive::CONNECT, 'http://localhost:*')
-                 ->addDirective(Directive::SCRIPT, 'http://localhost:*')
-                 ->addDirective(Directive::STYLE, 'http://localhost:*');
+            $policy
+                ->add(Directive::CONNECT, 'ws://localhost:*')
+                ->add(Directive::CONNECT, 'http://localhost:*')
+                ->add(Directive::SCRIPT, 'http://localhost:*')
+                ->add(Directive::STYLE, 'http://localhost:*');
         }
     }
 }

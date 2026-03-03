@@ -23,6 +23,11 @@ export interface StockMovement {
     quantity: number;
     reason?: string;
     invoice_id?: number;
+    purchase_id?: number;
+    purchase?: {
+        id: number;
+        number: string;
+    };
     created_by: number;
     created_at: string;
     updated_at: string;

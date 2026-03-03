@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
+use App\Models\Invoice;
+use App\Models\Payment;
+use App\Observers\InvoiceObserver;
+use App\Observers\PaymentObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,5 +27,8 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') === 'production' || env('FORCE_HTTPS', false)) {
             URL::forceScheme('https');
         }
+
+        Invoice::observe(InvoiceObserver::class);
+        Payment::observe(PaymentObserver::class);
     }
 }

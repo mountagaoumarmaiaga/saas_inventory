@@ -23,7 +23,12 @@ import {
   Layers,
   ArrowRightLeft,
   UserRound,
-  ShieldCheck
+  ShieldCheck,
+  Building2,
+  ShoppingCart,
+  Receipt,
+  CreditCard,
+  TrendingUp
 } from "lucide-react";
 import AppLogo from "./app-logo";
 
@@ -53,6 +58,7 @@ export function AppSidebar() {
           title: "Général",
           items: [
             { title: "Dashboard", href: "/admin/dashboard", icon: LayoutGrid },
+            { title: "Rapports", href: "/admin/reports", icon: TrendingUp },
           ]
         },
         {
@@ -66,6 +72,7 @@ export function AppSidebar() {
         {
           title: "Logistique",
           items: [
+            { title: "Bons de commande", href: "/admin/purchases", icon: ShoppingCart },
             { title: "Mouvements de stock", href: "/admin/stock-movements", icon: ArrowRightLeft },
             { title: "Bons de Livraison", href: "/admin/delivery-notes", icon: Truck },
           ]
@@ -73,7 +80,9 @@ export function AppSidebar() {
         {
           title: "Finance",
           items: [
-            { title: "Factures", href: "/admin/invoices", icon: FileText },
+            { title: "Devis", href: "/admin/quotes", icon: FileText },
+            { title: "Factures", href: "/admin/invoices", icon: Receipt },
+            { title: "Dépenses", href: "/admin/expenses", icon: CreditCard },
             { title: "Paramètres Factures", href: "/admin/settings/invoice-customization", icon: Settings }
           ]
         },
@@ -81,6 +90,7 @@ export function AppSidebar() {
           title: "Tiers",
           items: [
             { title: "Clients", href: "/admin/clients", icon: UserRound },
+            { title: "Fournisseurs", href: "/admin/suppliers", icon: Building2 },
             { title: "Utilisateurs", href: "/admin/users", icon: ShieldCheck },
           ]
         }
@@ -101,13 +111,15 @@ export function AppSidebar() {
         {
           title: "Logistique",
           items: [
+            { title: "Bons de commande", href: "/user/purchases", icon: ShoppingCart },
             { title: "Bons de Livraison", href: "/user/delivery-notes", icon: Truck },
           ]
         },
         {
           title: "Finance",
           items: [
-            { title: "Factures", href: "/user/invoices", icon: FileText },
+            { title: "Devis", href: "/user/quotes", icon: FileText },
+            { title: "Factures", href: "/user/invoices", icon: Receipt },
           ]
         },
         {
@@ -136,7 +148,7 @@ export function AppSidebar() {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-bold text-foreground">NextGenStock</span>
-                  <span className="truncate text-xs text-muted-foreground tracking-wide uppercase">Entreprise Tool</span>
+                  <span className="truncate text-xs text-muted-foreground tracking-wide uppercase">Outil de Gestion</span>
                 </div>
               </Link>
             </SidebarMenuButton>

@@ -9,10 +9,17 @@ interface DashboardStats {
     total_products: number;
     total_invoices: number;
     total_revenue: number;
+    total_expenses: number;
+    net_profit: number;
     pending_invoices: number;
     revenue_today: number;
     revenue_this_week: number;
     revenue_this_month: number;
+    pop_revenue?: { mtd: number; last_mtd: number; delta: number };
+    pop_expenses?: { mtd: number; last_mtd: number; delta: number };
+    pop_net_profit?: { mtd: number; last_mtd: number; delta: number };
+    sparkline_revenue?: { date: string; value: number }[];
+    sparkline_expenses?: { date: string; value: number }[];
 }
 
 export function useDashboardStats(initialStats: DashboardStats) {
@@ -48,10 +55,17 @@ export function useDashboardStats(initialStats: DashboardStats) {
         total_products: safeNumber(initialStats.total_products),
         total_invoices: safeNumber(initialStats.total_invoices),
         total_revenue: safeNumber(initialStats.total_revenue),
+        total_expenses: safeNumber(initialStats.total_expenses),
+        net_profit: safeNumber(initialStats.net_profit),
         pending_invoices: safeNumber(initialStats.pending_invoices),
         revenue_today: safeNumber(initialStats.revenue_today),
         revenue_this_week: safeNumber(initialStats.revenue_this_week),
         revenue_this_month: safeNumber(initialStats.revenue_this_month),
+        pop_revenue: initialStats.pop_revenue,
+        pop_expenses: initialStats.pop_expenses,
+        pop_net_profit: initialStats.pop_net_profit,
+        sparkline_revenue: initialStats.sparkline_revenue,
+        sparkline_expenses: initialStats.sparkline_expenses,
     };
 
     // Derived KPIs

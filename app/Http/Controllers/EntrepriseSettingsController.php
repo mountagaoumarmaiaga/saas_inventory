@@ -32,6 +32,7 @@ class EntrepriseSettingsController extends Controller
             'invoice_footer' => 'nullable|string',
             'invoice_template' => 'sometimes|in:classic,modern,professional,executive,creative,elegant,industrial,minimalist,retail,bold',
             'delivery_note_template' => 'sometimes|in:classic,modern,minimalist',
+            'purchase_template' => 'sometimes|in:classic,modern,minimalist,executive,creative',
             'currency' => 'sometimes|string|max:10',
             'currency_symbol' => 'sometimes|string|max:10',
             'currency_position' => 'sometimes|in:left,right',
@@ -58,7 +59,7 @@ class EntrepriseSettingsController extends Controller
 
         // Upload new logo to Supabase
         $file = $request->file('logo');
-        $path = "logos/{$entreprise->id}/" . time() . '_' . $file->getClientOriginalName();
+        $path = "logos/{$entreprise->id}/" . \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
         $url = $this->imageService->storeLogo($file, $path);
 
         $entreprise->update(['logo_url' => $url]);

@@ -27,6 +27,38 @@ class PdfService
         return $pdf->download($invoice->number . '.pdf');
     }
 
+    public function streamPaymentReceipt(\App\Models\Payment $payment)
+    {
+        $payment->load(['invoice.client', 'invoice.entreprise']);
+        $logoBase64 = $this->prepareLogo($payment->invoice->entreprise);
+        
+        $pdf = Pdf::loadView('pdf.payment-receipt', [
+            'payment' => $payment,
+            'invoice' => $payment->invoice,
+            'logoBase64' => $logoBase64,
+            'currencySymbol' => $payment->invoice->entreprise->currency_symbol ?? 'FCFA',
+            'currencyPosition' => $payment->invoice->entreprise->currency_position ?? 'right',
+        ]);
+        
+        return $pdf->stream('Reçu-' . str_pad($payment->id, 5, '0', STR_PAD_LEFT) . '.pdf');
+    }
+
+    public function downloadPaymentReceipt(\App\Models\Payment $payment)
+    {
+        $payment->load(['invoice.client', 'invoice.entreprise']);
+        $logoBase64 = $this->prepareLogo($payment->invoice->entreprise);
+        
+        $pdf = Pdf::loadView('pdf.payment-receipt', [
+            'payment' => $payment,
+            'invoice' => $payment->invoice,
+            'logoBase64' => $logoBase64,
+            'currencySymbol' => $payment->invoice->entreprise->currency_symbol ?? 'FCFA',
+            'currencyPosition' => $payment->invoice->entreprise->currency_position ?? 'right',
+        ]);
+        
+        return $pdf->download('Reçu-' . str_pad($payment->id, 5, '0', STR_PAD_LEFT) . '.pdf');
+    }
+
     public function streamDeliveryNote(\App\Models\DeliveryNote $dn)
     {
         $dn->load(['client', 'items', 'entreprise', 'invoice']);
@@ -57,6 +89,50 @@ class PdfService
         return $pdf->download($filename);
     }
 
+    public function streamPurchase(\App\Models\Purchase $purchase)
+    {
+        $template = $this->getPurchaseTemplate($purchase->entreprise);
+        $data = $this->preparePurchaseData($purchase);
+        $pdf = Pdf::loadView($template, $data);
+        return $pdf->stream('BC-' . $purchase->number . '.pdf');
+    }
+
+    public function downloadPurchase(\App\Models\Purchase $purchase)
+    {
+        $template = $this->getPurchaseTemplate($purchase->entreprise);
+        $data = $this->preparePurchaseData($purchase);
+        $pdf = Pdf::loadView($template, $data);
+        return $pdf->download('BC-' . $purchase->number . '.pdf');
+    }
+
+    public function streamQuote(\App\Models\Quote $quote)
+    {
+        $template = $this->getQuoteTemplate($quote->entreprise);
+        $data = $this->prepareQuoteData($quote);
+        $pdf = Pdf::loadView($template, $data);
+        return $pdf->stream('Devis-' . $quote->number . '.pdf');
+    }
+
+    public function downloadQuote(\App\Models\Quote $quote)
+    {
+        $template = $this->getQuoteTemplate($quote->entreprise);
+        $data = $this->prepareQuoteData($quote);
+        $pdf = Pdf::loadView($template, $data);
+        return $pdf->download('Devis-' . $quote->number . '.pdf');
+    }
+
+    private function prepareQuoteData(\App\Models\Quote $quote): array
+    {
+        $quote->load(['client', 'items.product', 'entreprise']);
+        
+        return [
+            'quote' => $quote,
+            'logoBase64' => $this->prepareLogo($quote->entreprise),
+            'currencySymbol' => $quote->entreprise->currency_symbol ?? 'FCFA',
+            'currencyPosition' => $quote->entreprise->currency_position ?? 'right',
+        ];
+    }
+
     private function prepareInvoiceData(Invoice $invoice): array
     {
         $invoice->load(['client', 'items', 'entreprise']);
@@ -83,6 +159,18 @@ class PdfService
             'currencySymbol' => $invoice->currency_symbol ?? $invoice->entreprise->currency_symbol ?? 'FCFA',
             'currencyPosition' => $invoice->currency_position ?? $invoice->entreprise->currency_position ?? 'right',
             'exchangeRate' => $invoice->exchange_rate ?? null,
+        ];
+    }
+
+    private function preparePurchaseData(\App\Models\Purchase $purchase): array
+    {
+        $purchase->load(['supplier', 'items.product', 'entreprise']);
+        
+        return [
+            'purchase' => $purchase,
+            'logoBase64' => $this->prepareLogo($purchase->entreprise),
+            'currencySymbol' => $purchase->entreprise->currency_symbol ?? 'FCFA',
+            'currencyPosition' => $purchase->entreprise->currency_position ?? 'right',
         ];
     }
 
@@ -140,5 +228,17 @@ class PdfService
     {
         $templateName = $entreprise->delivery_note_template ?? 'classic';
         return "pdf.delivery-note-{$templateName}";
+    }
+
+    private function getPurchaseTemplate(\App\Models\Entreprise $entreprise): string
+    {
+        $templateName = $entreprise->purchase_template ?? 'classic';
+        return "pdf.purchase-{$templateName}";
+    }
+
+    private function getQuoteTemplate(\App\Models\Entreprise $entreprise): string
+    {
+        $templateName = $entreprise->quote_template ?? $entreprise->invoice_template ?? 'classic';
+        return "pdf.quote-{$templateName}";
     }
 }

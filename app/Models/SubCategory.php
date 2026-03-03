@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Traits\BelongsToTenant;
+
 class SubCategory extends Model
 {
-    protected $guarded = [];
+    use BelongsToTenant;
 
-    public function entreprise() { return $this->belongsTo(Entreprise::class); }
+    protected $fillable = ['name', 'description', 'is_active', 'category_id'];
     public function category() { return $this->belongsTo(Category::class); }
     public function products() { return $this->hasMany(Product::class); }
 }

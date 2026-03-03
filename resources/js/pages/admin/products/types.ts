@@ -42,4 +42,5 @@ export interface PaginationMeta {
     total: number;
     from?: number;
     to?: number;
+    links?: any[];
 }

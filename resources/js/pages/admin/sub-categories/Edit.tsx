@@ -125,7 +125,7 @@ export default function EditSubCategory({
         if (!v) reset();
       }}
     >
-      <DialogContent className="sm:max-w-[500px] border-border/40 bg-background/80 backdrop-blur-xl shadow-2xl duration-200">
+      <DialogContent aria-describedby={undefined} className="sm:max-w-[500px] border-border/40 bg-background/80 backdrop-blur-xl shadow-2xl duration-200">
         <DialogHeader className="pb-4 border-b border-border/40">
           <DialogTitle className="text-xl font-bold tracking-tight text-foreground">
             Modifier sous-catégorie

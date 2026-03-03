@@ -1,0 +1,54 @@
+import axios from "axios";
+import { Purchase, PurchaseFormData, ReceiveItemData } from "./types";
+import { PaginatedResponse } from "@/types";
+
+export const fetchPurchases = async (page = 1, search = ""): Promise<PaginatedResponse<Purchase>> => {
+    const { data } = await axios.get(`/admin/api/purchases`, {
+        params: { page, search },
+    });
+    return data;
+};
+
+export const fetchPurchase = async (id: number): Promise<Purchase> => {
+    const { data } = await axios.get(`/admin/api/purchases/${id}`);
+    return data;
+};
+
+export const createPurchase = async (payload: PurchaseFormData): Promise<Purchase> => {
+    const { data } = await axios.post(`/admin/api/purchases`, payload);
+    return data.purchase;
+};
+
+export const updatePurchase = async (id: number, payload: PurchaseFormData): Promise<Purchase> => {
+    const { data } = await axios.put(`/admin/api/purchases/${id}`, payload);
+    return data.purchase;
+};
+
+export const deletePurchase = async (id: number): Promise<void> => {
+    await axios.delete(`/admin/api/purchases/${id}`);
+};
+
+export const markAsOrdered = async (id: number): Promise<Purchase> => {
+    const { data } = await axios.post(`/admin/api/purchases/${id}/mark-ordered`);
+    return data.purchase;
+};
+
+export const receiveItems = async (id: number, items: ReceiveItemData[]): Promise<Purchase> => {
+    const { data } = await axios.post(`/admin/api/purchases/${id}/receive`, { items });
+    return data.purchase;
+};
+
+export const cancelPurchase = async (id: number): Promise<Purchase> => {
+    const { data } = await axios.post(`/admin/api/purchases/${id}/cancel`);
+    return data.purchase;
+};
+
+export const recordPayment = async (id: number, payload: FormData): Promise<Purchase> => {
+    // we use FormData to support file upload
+    const { data } = await axios.post(`/admin/api/purchases/${id}/record-payment`, payload, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+    return data.purchase;
+};

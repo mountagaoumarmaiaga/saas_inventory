@@ -32,7 +32,7 @@ class CategoryPolicy
     public function create(User $user): bool
     {
         // Autoriser si l'utilisateur est admin ou manager
-        return in_array($user->role, ['admin', 'manager']);
+        return $user->hasAnyRole(['admin', 'manager']);
     }
 
     /**
@@ -41,7 +41,7 @@ class CategoryPolicy
     public function update(User $user, Category $category): bool
     {
         // Autoriser si admin/manager ET même entreprise
-        return in_array($user->role, ['admin', 'manager'])
+        return $user->hasAnyRole(['admin', 'manager'])
             && $user->entreprise_id === $category->entreprise_id;
     }
 
@@ -51,7 +51,7 @@ class CategoryPolicy
     public function delete(User $user, Category $category): bool
     {
         // Autoriser seulement admin ET même entreprise
-        return $user->role === 'admin'
+        return $user->hasRole('admin')
             && $user->entreprise_id === $category->entreprise_id;
     }
 
@@ -61,7 +61,7 @@ class CategoryPolicy
     public function restore(User $user, Category $category): bool
     {
         // Autoriser seulement admin
-        return $user->role === 'admin';
+        return $user->hasRole('admin');
     }
 
     /**
@@ -70,6 +70,6 @@ class CategoryPolicy
     public function forceDelete(User $user, Category $category): bool
     {
         // Autoriser seulement admin
-        return $user->role === 'admin';
+        return $user->hasRole('admin');
     }
 }

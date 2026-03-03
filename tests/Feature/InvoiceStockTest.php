@@ -15,19 +15,20 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class InvoiceStockTest extends TestCase
 {
-    // use RefreshDatabase; // We might want to use this to not pollute DB, but for now I'll use a test enterprise
-
     public function test_stock_deduction_on_mark_paid()
     {
-        $user = User::first(); // Assuming a user exists
+        // Use RefreshDatabase to reset DB state for tests
+        $this->artisan('migrate:fresh');
+
+        $entreprise = Entreprise::factory()->create();
+        $user = User::factory()->create(['entreprise_id' => $entreprise->id]);
         $entrepriseId = $user->entreprise_id;
         
         $stockService = new StockService();
-        $workflowService = new InvoiceWorkflowService();
+        $workflowService = app(InvoiceWorkflowService::class);
 
         // 1. Create Product with Stock
-        $product = Product::create([
-            'entreprise_id' => $entrepriseId,
+        $product = Product::factory()->make([
             'name' => 'Test Product ' . uniqid(),
             'sku' => 'TEST-' . uniqid(),
             'quantity' => 100,
@@ -35,45 +36,40 @@ class InvoiceStockTest extends TestCase
             'sale_price' => 20,
             'min_quantity' => 5,
         ]);
+        $product->forceFill(['entreprise_id' => $entrepriseId, 'created_by' => $user->id])->save();
 
         echo "Created Product: {$product->name} (Stock: {$product->quantity})\n";
 
         // 2. Create Invoice
-        $client = Client::where('entreprise_id', $entrepriseId)->first();
-        if (!$client) {
-             $client = Client::create([
-                'entreprise_id' => $entrepriseId,
-                'name' => 'Test Client',
-                'email' => 'test@client.com',
-                'type' => 'individual'
-             ]);
-        }
+        $client = Client::factory()->make([
+            'name' => 'Test Client',
+            'email' => 'test@client.com',
+        ]);
+        $client->forceFill(['entreprise_id' => $entrepriseId])->save();
 
-        $invoice = Invoice::create([
-            'entreprise_id' => $entrepriseId,
+        $invoice = Invoice::factory()->make([
             'client_id' => $client->id,
-            'type' => 'invoice',
             'status' => 'PENDING', // Skip DRAFT for test
             'date' => now(),
             'number' => 'TEST-INV-' . uniqid(),
-            'created_by' => $user->id,
         ]);
+        $invoice->forceFill(['entreprise_id' => $entrepriseId, 'created_by' => $user->id, 'type' => 'invoice'])->save();
 
-        InvoiceItem::create([
-            'invoice_id' => $invoice->id,
+        $item = InvoiceItem::factory()->make([
             'product_id' => $product->id,
             'description' => 'Item 1',
             'quantity' => 10,
             'unit_price' => 20,
             'line_total' => 200,
         ]);
+        $item->forceFill(['invoice_id' => $invoice->id])->save();
         
         $workflowService->recalcTotals($invoice);
 
         echo "Created Invoice: {$invoice->number} (Status: {$invoice->status})\n";
 
         // 3. Approve Invoice
-        $workflowService->approveInvoice($invoice, $user->id);
+        $workflowService->approveInvoice($invoice, $user->id, $stockService);
         $invoice->refresh();
         echo "Approved Invoice. Status: {$invoice->status}\n";
 
@@ -90,8 +86,10 @@ class InvoiceStockTest extends TestCase
 
         if ($product->quantity === 90) {
             echo "SUCCESS: Stock deducted correctly.\n";
+            $this->assertTrue(true);
         } else {
             echo "FAILURE: Stock NOT deducted correctly.\n";
+            $this->fail("Stock NOT deducted correctly.");
         }
     }
 }

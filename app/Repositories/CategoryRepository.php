@@ -28,12 +28,16 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function create(int $entrepriseId, array $data): Category
     {
         $data['entreprise_id'] = $entrepriseId;
-        return Category::create($data);
+        
+        $category = new Category();
+        $category->forceFill($data)->save();
+        
+        return $category;
     }
 
     public function update(Category $category, array $data): Category
     {
-        $category->update($data);
+        $category->forceFill($data)->save();
         return $category;
     }
 

@@ -32,14 +32,15 @@ class StockMovementRepository implements StockMovementRepositoryInterface
     {
         $data['entreprise_id'] = $entrepriseId;
 
-        $m = StockMovement::create($data);
+        $m = new StockMovement();
+        $m->forceFill($data)->save();
 
         return $m->load(['product', 'invoice']);
     }
 
     public function update(StockMovement $movement, array $data): StockMovement
     {
-        $movement->update($data);
+        $movement->forceFill($data)->save();
 
         return $movement->fresh()->load(['product', 'invoice']);
     }

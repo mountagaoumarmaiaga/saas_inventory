@@ -9,22 +9,24 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "react-toastify";
 import { Upload, Save, FileText } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-interface EntrepriseSettings {
+interface CustomizationSettings {
     id: number;
     name: string;
     email: string;
     phone?: string;
     address?: string;
     logo_url?: string;
-    invoice_header?: string;
-    invoice_footer?: string;
+    invoice_header: string;
+    invoice_footer: string;
     invoice_template: 'classic' | 'modern' | 'professional' | 'executive' | 'creative' | 'elegant' | 'industrial' | 'minimalist' | 'retail' | 'bold';
     delivery_note_template: 'classic' | 'modern' | 'minimalist';
-    currency?: string;
-    currency_symbol?: string;
-    currency_position?: 'left' | 'right';
-    qr_payment_link?: string;
+    purchase_template: 'classic' | 'modern' | 'minimalist' | 'executive' | 'creative';
+    currency: string;
+    currency_symbol: string;
+    currency_position: 'left' | 'right';
+    qr_payment_link: string;
 }
 
 const TEMPLATES = [
@@ -46,8 +48,16 @@ const DELIVERY_NOTE_TEMPLATES = [
     { id: 'minimalist', name: 'Minimaliste', desc: 'Très simple, axé sur les quantités' },
 ];
 
+const PURCHASE_TEMPLATES = [
+    { id: 'classic', name: 'Classique', desc: 'Mise en page épurée et structurée' },
+    { id: 'modern', name: 'Moderne', desc: 'Design dynamique avec couleurs' },
+    { id: 'minimalist', name: 'Minimaliste', desc: 'Lignes claires et simples' },
+    { id: 'executive', name: 'Corporate', desc: 'Entête fortement marquée' },
+    { id: 'creative', name: 'Créatif', desc: 'Design moderne asymétrique' },
+];
+
 export default function InvoiceCustomization() {
-    const [settings, setSettings] = useState<EntrepriseSettings | null>(null);
+    const [settings, setSettings] = useState<CustomizationSettings | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -136,6 +146,7 @@ export default function InvoiceCustomization() {
                     invoice_footer: settings.invoice_footer,
                     invoice_template: settings.invoice_template,
                     delivery_note_template: settings.delivery_note_template,
+                    purchase_template: settings.purchase_template,
                     currency: settings.currency,
                     currency_symbol: settings.currency_symbol,
                     currency_position: settings.currency_position,
@@ -440,6 +451,35 @@ export default function InvoiceCustomization() {
                                     <div key={tpl.id} className="flex items-start space-x-3 border-2 border-white/20 rounded-xl p-5 cursor-pointer hover:bg-gradient-to-br hover:from-blue-500/10 hover:to-purple-500/10 hover:border-blue-500/30 transition-all duration-300 hover:shadow-lg">
                                         <RadioGroupItem value={tpl.id} id={`dn-${tpl.id}`} className="mt-0.5" />
                                         <Label htmlFor={`dn-${tpl.id}`} className="cursor-pointer flex-1">
+                                            <div className="font-bold text-foreground">{tpl.name}</div>
+                                            <p className="text-sm text-muted-foreground mt-1">{tpl.desc}</p>
+                                        </Label>
+                                    </div>
+                                ))}
+                            </div>
+                        </RadioGroup>
+                    </CardContent>
+                </Card>
+
+                {/* Purchase Template Selection */}
+                <Card className="relative border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden mt-6">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-teal-500/5 pointer-events-none" />
+                    <CardHeader className="relative border-b border-white/10">
+                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                            Modèle de Bon de Commande
+                        </CardTitle>
+                        <CardDescription>Choisissez le design de vos bons de commande PDF</CardDescription>
+                    </CardHeader>
+                    <CardContent className="relative pt-6">
+                        <RadioGroup
+                            value={settings.purchase_template || 'classic'}
+                            onValueChange={(value) => setSettings({ ...settings, purchase_template: value as any })}
+                        >
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {PURCHASE_TEMPLATES.map((tpl) => (
+                                    <div key={tpl.id} className="flex items-start space-x-3 border-2 border-white/20 rounded-xl p-5 cursor-pointer hover:bg-gradient-to-br hover:from-emerald-500/10 hover:to-teal-500/10 hover:border-emerald-500/30 transition-all duration-300 hover:shadow-lg">
+                                        <RadioGroupItem value={tpl.id} id={`po-${tpl.id}`} className="mt-0.5" />
+                                        <Label htmlFor={`po-${tpl.id}`} className="cursor-pointer flex-1">
                                             <div className="font-bold text-foreground">{tpl.name}</div>
                                             <p className="text-sm text-muted-foreground mt-1">{tpl.desc}</p>
                                         </Label>

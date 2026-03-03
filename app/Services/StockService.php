@@ -16,7 +16,8 @@ class StockService
 
             $product->update(['quantity' => $product->quantity + $qty]);
 
-            StockMovement::create([
+            $movement = new StockMovement();
+            $movement->forceFill([
                 'entreprise_id' => $entrepriseId,
                 'product_id' => $product->id,
                 'type' => 'IN',
@@ -24,7 +25,7 @@ class StockService
                 'reason' => $reason,
                 'invoice_id' => null,
                 'created_by' => $userId,
-            ]);
+            ])->save();
         });
     }
 
@@ -87,7 +88,8 @@ class StockService
                 $product = Product::where('entreprise_id', $entrepriseId)->lockForUpdate()->findOrFail($item->product_id);
                 $product->update(['quantity' => $product->quantity - $item->quantity]);
 
-                StockMovement::create([
+                $movement = new StockMovement();
+                $movement->forceFill([
                     'entreprise_id' => $entrepriseId,
                     'product_id' => $product->id,
                     'type' => 'OUT',
@@ -95,7 +97,7 @@ class StockService
                     'reason' => 'invoice_paid',
                     'invoice_id' => $invoice->id,
                     'created_by' => $adminUserId,
-                ]);
+                ])->save();
             }
 
             $invoice->update(['stock_deducted_at' => now()]);

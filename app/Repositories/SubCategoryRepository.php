@@ -29,12 +29,16 @@ class SubCategoryRepository implements SubCategoryRepositoryInterface
     public function create(int $entrepriseId, array $data): SubCategory
     {
         $data['entreprise_id'] = $entrepriseId;
-        return SubCategory::create($data);
+        
+        $subCategory = new SubCategory();
+        $subCategory->forceFill($data)->save();
+        
+        return $subCategory;
     }
 
     public function update(SubCategory $subCategory, array $data): SubCategory
     {
-        $subCategory->update($data);
+        $subCategory->forceFill($data)->save();
         return $subCategory;
     }
 

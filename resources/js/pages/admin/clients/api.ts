@@ -32,14 +32,35 @@ function getCsrfToken() {
     return el?.content ?? "";
 }
 
+function getCookie(name: string) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift();
+    return null;
+}
+
+function getHeaders(extraHeaders: Record<string, string> = {}) {
+    const headers: Record<string, string> = {
+        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        ...extraHeaders,
+    };
+
+    const useCookie = getCookie("XSRF-TOKEN");
+    if (useCookie) {
+        headers["X-XSRF-TOKEN"] = decodeURIComponent(useCookie);
+    } else {
+        headers["X-CSRF-TOKEN"] = getCsrfToken();
+    }
+
+    return headers;
+}
+
 export async function fetchClients(queryString: string) {
     const res = await fetch(`/admin/api/clients?${queryString}`, {
         method: "GET",
         credentials: "same-origin",
-        headers: {
-            Accept: "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-        },
+        headers: getHeaders(),
     });
 
     if (!res.ok) throw new Error(await res.text());
@@ -79,7 +100,7 @@ export async function fetchClients(queryString: string) {
 
 export async function fetchClient(id: number) {
     const res = await fetch(`/admin/api/clients/${id}`, {
-        headers: { Accept: "application/json", "X-Requested-With": "XMLHttpRequest" }
+        headers: getHeaders()
     });
     if (!res.ok) throw new Error("Client introuvable");
     return (await res.json()).data as Client;
@@ -91,12 +112,9 @@ export async function createClientApi(form: ClientForm) {
     const res = await fetch("/admin/api/clients", {
         method: "POST",
         credentials: "same-origin",
-        headers: {
+        headers: getHeaders({
             "Content-Type": "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": getCsrfToken(),
-            "Accept": "application/json"
-        },
+        }),
         body: JSON.stringify(form)
     });
 
@@ -116,12 +134,9 @@ export async function updateClientApi(id: number, form: ClientForm) {
     const res = await fetch(`/admin/api/clients/${id}`, {
         method: "PUT",
         credentials: "same-origin",
-        headers: {
+        headers: getHeaders({
             "Content-Type": "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": getCsrfToken(),
-            "Accept": "application/json"
-        },
+        }),
         body: JSON.stringify(form)
     });
 
@@ -136,11 +151,7 @@ export async function deleteClientApi(id: number) {
     const res = await fetch(`/admin/api/clients/${id}`, {
         method: "DELETE",
         credentials: "same-origin",
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": getCsrfToken(),
-            "Accept": "application/json"
-        }
+        headers: getHeaders(),
     });
     if (!res.ok) throw new Error(await res.text());
     return { ok: true as const };

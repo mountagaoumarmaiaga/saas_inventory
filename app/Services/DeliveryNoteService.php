@@ -21,7 +21,8 @@ class DeliveryNoteService
         );
 
         return DB::transaction(function () use ($invoice, $userId, $numbers) {
-            $dn = DeliveryNote::create([
+            $dn = new DeliveryNote();
+            $dn->forceFill([
                 'entreprise_id' => $invoice->entreprise_id,
                 'number' => $numbers->nextDeliveryNumber($invoice->entreprise_id),
                 'status' => 'DRAFT',
@@ -29,7 +30,7 @@ class DeliveryNoteService
                 'client_id' => $invoice->client_id,
                 'delivery_date' => now()->toDateString(),
                 'created_by' => $userId,
-            ]);
+            ])->save();
 
             foreach ($invoice->items as $item) {
                 DeliveryItem::create([

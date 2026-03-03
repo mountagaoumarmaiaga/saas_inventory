@@ -7,13 +7,34 @@ function getCsrfToken() {
     return el?.content ?? "";
 }
 
+function getCookie(name: string) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift();
+    return null;
+}
+
+function getHeaders(extraHeaders: Record<string, string> = {}) {
+    const headers: Record<string, string> = {
+        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        ...extraHeaders,
+    };
+
+    const useCookie = getCookie("XSRF-TOKEN");
+    if (useCookie) {
+        headers["X-XSRF-TOKEN"] = decodeURIComponent(useCookie);
+    } else {
+        headers["X-CSRF-TOKEN"] = getCsrfToken();
+    }
+
+    return headers;
+}
+
 export async function fetchStockMovements(queryString: string) {
     const res = await fetch(`${BASE_URL}?${queryString}`, {
         method: "GET",
-        headers: {
-            Accept: "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-        },
+        headers: getHeaders(),
     });
 
     if (!res.ok) {
@@ -26,10 +47,7 @@ export async function fetchStockMovements(queryString: string) {
 export async function fetchProducts(queryString: string = "") {
     const res = await fetch(`/admin/api/products?${queryString}`, {
         method: "GET",
-        headers: {
-            Accept: "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-        },
+        headers: getHeaders(),
     });
 
     if (!res.ok) {
@@ -50,12 +68,9 @@ export async function createStockMovementApi(form: StockMovementForm) {
     const res = await fetch(BASE_URL, {
         method: "POST",
         credentials: "same-origin",
-        headers: {
+        headers: getHeaders({
             "Content-Type": "application/json",
-            Accept: "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": getCsrfToken(),
-        },
+        }),
         body: JSON.stringify(form),
     });
 
@@ -75,12 +90,9 @@ export async function updateStockMovementApi(id: number, form: StockMovementForm
     const res = await fetch(`${BASE_URL}/${id}`, {
         method: "PUT",
         credentials: "same-origin",
-        headers: {
+        headers: getHeaders({
             "Content-Type": "application/json",
-            Accept: "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": getCsrfToken(),
-        },
+        }),
         body: JSON.stringify(form),
     });
 
@@ -100,11 +112,7 @@ export async function deleteStockMovementApi(id: number) {
     const res = await fetch(`${BASE_URL}/${id}`, {
         method: "DELETE",
         credentials: "same-origin",
-        headers: {
-            Accept: "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": getCsrfToken(),
-        },
+        headers: getHeaders(),
     });
 
     if (!res.ok) {

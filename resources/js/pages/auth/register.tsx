@@ -4,6 +4,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Honeypot } from '@/components/honeypot';
 
 export default function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -37,6 +38,8 @@ export default function Register() {
         </div>
 
         <form onSubmit={submit} className="space-y-4">
+          <Honeypot setData={setData as any} />
+
           <div className="space-y-2">
             <Label htmlFor="name">Nom complet</Label>
             <Input
@@ -45,7 +48,6 @@ export default function Register() {
               value={data.name}
               className="mt-1 block w-full"
               autoComplete="name"
-              isFocused={true}
               onChange={(e) => setData('name', e.target.value)}
               required
               placeholder="John Doe"

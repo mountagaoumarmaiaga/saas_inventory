@@ -2,13 +2,14 @@ import { useRef } from 'react';
 import { Head, Link, usePage } from "@inertiajs/react";
 import DashboardUI from "../shared/dashboard-ui";
 import { type BreadcrumbItem, type PageProps } from "@/types";
-import { FileText, Users, Package, CreditCard, TrendingUp, Activity, Calendar, ArrowRight, ArrowUpRight, Search, Bell } from "lucide-react";
+import { FileText, Users, Package, CreditCard, TrendingUp, Activity, Calendar, ArrowRight, ArrowUpRight, Search, Bell, AlertTriangle } from "lucide-react";
 
 // Components
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import RevenueChart from "@/components/RevenueChart";
 import DonutChart from "@/components/DonutChart";
+import CashflowChart from "@/components/CashflowChart";
 import StackedAreaChart from "@/components/StackedAreaChart";
 import StatCard from "@/components/StatCard";
 import PeriodCard from "@/components/PeriodCard";
@@ -68,30 +69,38 @@ export default function AdminDashboard(props: any) {
 
           {/* KPI Cards Row */}
           <StatCard
-            title="Revenu Total"
-            value={stats.total_revenue}
+            title="Revenu Total (Mois)"
+            value={stats.pop_revenue?.mtd || stats.total_revenue}
             icon={CreditCard}
             isCurrency
             color="primary"
-            trend={12.5}
-            subValue={kpis.averageBasket ? `Panier moyen: ${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', maximumFractionDigits: 0 }).format(kpis.averageBasket)}` : undefined}
+            trend={stats.pop_revenue?.delta}
+            sparklineData={stats.sparkline_revenue}
+            sparklineColor="#f97316" // Orange
+            subValue={kpis.averageBasket ? `Panier moyen global: ${new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', maximumFractionDigits: 0 }).format(kpis.averageBasket)}` : undefined}
             delay={0}
           />
           <StatCard
-            title="Clients Actifs"
-            value={stats.total_clients}
-            icon={Users}
-            color="info"
-            trend={8.2}
+            title="Dépenses Commises (Mois)"
+            value={stats.pop_expenses?.mtd || stats.total_expenses}
+            icon={TrendingUp}
+            isCurrency
+            color="warning"
+            trend={stats.pop_expenses?.delta}
+            sparklineData={stats.sparkline_expenses}
+            sparklineColor="#ef4444" // Red
             delay={1}
+            className="border-red-500/20 bg-red-500/5 dark:bg-red-500/10"
           />
           <StatCard
-            title="Produits en Stock"
-            value={stats.total_products}
-            icon={Package}
-            color="warning"
-            trend={-2.4}
+            title="Bénéfice Net (Mois)"
+            value={stats.pop_net_profit?.mtd || stats.net_profit}
+            icon={Activity}
+            isCurrency
+            color={(stats.pop_net_profit?.mtd || stats.net_profit) >= 0 ? "primary" : "destructive"}
+            trend={stats.pop_net_profit?.delta}
             delay={2}
+            className={(stats.pop_net_profit?.mtd || stats.net_profit) >= 0 ? "border-emerald-500/20 bg-emerald-500/5 dark:bg-emerald-500/10" : "border-red-500/20 bg-red-500/5 dark:bg-red-500/10"}
           />
           <StatCard
             title="Factures Émises"
@@ -121,7 +130,6 @@ export default function AdminDashboard(props: any) {
             </ChartContainer>
           </div>
 
-          {/* Top Clients / Donut (Span 1 col) */}
           <div className="col-span-1 md:col-span-2 lg:col-span-1">
             <ChartContainer
               title="Top Clients"
@@ -140,8 +148,33 @@ export default function AdminDashboard(props: any) {
             </ChartContainer>
           </div>
 
-          {/* Bottom Row - Recent Invoices (Span Full) */}
-          <div className="col-span-1 md:col-span-2 lg:col-span-4 rounded-2xl border-2 border-white/10 dark:border-zinc-800/50 bg-background/60 backdrop-blur-xl shadow-xl overflow-hidden flex flex-col">
+          {/* Cashflow Forecasting (Span 2 to 4 cols) */}
+          <div className="col-span-1 md:col-span-2 lg:col-span-4 mt-2">
+            <ChartContainer
+              title="Prévisions de Trésorerie (30 Jours)"
+              icon={TrendingUp}
+              loading={loading}
+              height={350}
+              className="h-full rounded-2xl border-2 shadow-xl bg-gradient-to-br from-blue-500/5 to-purple-500/5"
+            >
+              {props.cashflowForecast && props.cashflowForecast.length > 0 ? (
+                <div className="relative h-full w-full pt-4 pb-2">
+                  <div className="absolute top-0 right-4 flex items-center gap-4 text-xs font-medium bg-background/50 backdrop-blur px-3 py-1.5 rounded-full border border-border/50 shadow-sm z-10">
+                    <div className="flex items-center gap-1.5"><div className="size-2.5 rounded-full bg-emerald-400"></div> Entrées</div>
+                    <div className="flex items-center gap-1.5"><div className="size-2.5 rounded-full bg-rose-400"></div> Sorties</div>
+                    <div className="flex items-center gap-1.5"><div className="size-2.5 rounded-full bg-blue-500"></div> Solde Global</div>
+                  </div>
+                  <CashflowChart data={props.cashflowForecast} />
+                </div>
+              ) : (
+                <div className="h-full flex items-center justify-center text-muted-foreground">
+                  Trésorerie indisponible
+                </div>
+              )}
+            </ChartContainer>
+          </div>
+
+          <div className="col-span-1 md:col-span-2 lg:col-span-3 rounded-2xl border-2 border-white/10 dark:border-zinc-800/50 bg-background/60 backdrop-blur-xl shadow-xl overflow-hidden flex flex-col">
             <div className="p-6 border-b border-border/10 flex items-center justify-between bg-gradient-to-r from-orange-500/5 via-amber-500/5 to-transparent">
               <div>
                 <h3 className="text-lg font-bold leading-none tracking-tight">Transactions Récentes</h3>
@@ -176,7 +209,7 @@ export default function AdminDashboard(props: any) {
                         </td>
                         <td className="px-6 py-4 text-muted-foreground">{new Date(invoice.created_at).toLocaleDateString('fr-FR')}</td>
                         <td className="px-6 py-4 font-mono font-bold">
-                          {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', maximumFractionDigits: 0 }).format(Number(invoice.total || invoice.amount) || 0)}
+                          {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', maximumFractionDigits: 0 }).format(Number(invoice.total))}
                         </td>
                         <td className="px-6 py-4">
                           <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border shadow-sm
@@ -204,6 +237,49 @@ export default function AdminDashboard(props: any) {
                   )}
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          <div className="col-span-1 md:col-span-2 lg:col-span-1 rounded-2xl border-2 border-red-500/20 dark:border-red-500/30 bg-red-500/5 dark:bg-red-500/10 backdrop-blur-xl shadow-xl overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-border/10 bg-gradient-to-r from-red-500/10 to-transparent flex items-center justify-between">
+              <h3 className="text-lg font-bold leading-none tracking-tight flex items-center gap-2 text-red-600 dark:text-red-400">
+                <AlertTriangle className="w-5 h-5" /> Ruptures de Stock
+              </h3>
+              <Button variant="outline" size="sm" asChild className="rounded-full border-red-500/20 hover:bg-red-500/10 text-red-600 dark:text-red-400 hover:text-red-700">
+                <Link href="/admin/products">Voir tout</Link>
+              </Button>
+            </div>
+            <div className="p-6 flex-1 overflow-y-auto max-h-[400px]">
+              {props.stockRuptures && props.stockRuptures.length > 0 ? (
+                <div className="space-y-4">
+                  {props.stockRuptures.map((product: any) => (
+                    <div key={product.id} className="flex items-center justify-between p-3 rounded-xl border border-red-500/20 bg-background/50 hover:bg-red-500/5 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400 font-bold border border-red-200 dark:border-red-800">
+                          <Package className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-foreground leading-tight">{product.name}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">SKU: {product.sku}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-400 border border-red-200 dark:border-red-500/30">
+                          {product.quantity} en stock
+                        </span>
+                        <p className="text-[10px] text-muted-foreground mt-1">Alerte à {product.min_quantity}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center text-muted-foreground space-y-3">
+                  <div className="p-4 bg-emerald-500/10 rounded-full">
+                    <Package className="h-8 w-8 text-emerald-500" />
+                  </div>
+                  <p className="text-sm font-medium">Tous les stocks sont à jour.</p>
+                </div>
+              )}
             </div>
           </div>
 

@@ -32,7 +32,7 @@ class SubCategoryPolicy
     public function create(User $user): bool
     {
         // Autoriser admin ou manager
-        return in_array($user->role, ['admin', 'manager']);
+        return $user->hasAnyRole(['admin', 'manager']);
     }
 
     /**
@@ -41,7 +41,7 @@ class SubCategoryPolicy
     public function update(User $user, SubCategory $subCategory): bool
     {
         // Autoriser admin/manager ET même entreprise
-        return in_array($user->role, ['admin', 'manager'])
+        return $user->hasAnyRole(['admin', 'manager'])
             && $user->entreprise_id === $subCategory->entreprise_id;
     }
 
@@ -51,7 +51,7 @@ class SubCategoryPolicy
     public function delete(User $user, SubCategory $subCategory): bool
     {
         // Autoriser seulement admin ET même entreprise
-        return $user->role === 'admin'
+        return $user->hasRole('admin')
             && $user->entreprise_id === $subCategory->entreprise_id;
     }
 
@@ -60,7 +60,7 @@ class SubCategoryPolicy
      */
     public function restore(User $user, SubCategory $subCategory): bool
     {
-        return $user->role === 'admin';
+        return $user->hasRole('admin');
     }
 
     /**
@@ -68,6 +68,6 @@ class SubCategoryPolicy
      */
     public function forceDelete(User $user, SubCategory $subCategory): bool
     {
-        return $user->role === 'admin';
+        return $user->hasRole('admin');
     }
 }

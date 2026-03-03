@@ -7,6 +7,30 @@ function getCsrfToken() {
   return el?.content ?? "";
 }
 
+function getCookie(name: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+  return null;
+}
+
+function getHeaders(extraHeaders: Record<string, string> = {}) {
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+    ...extraHeaders,
+  };
+
+  const useCookie = getCookie("XSRF-TOKEN");
+  if (useCookie) {
+    headers["X-XSRF-TOKEN"] = decodeURIComponent(useCookie);
+  } else {
+    headers["X-CSRF-TOKEN"] = getCsrfToken();
+  }
+
+  return headers;
+}
+
 /**
  * Normalize pagination response:
  * - { data: [...], meta: {...} }
@@ -32,14 +56,11 @@ export function normalizeListResponse<T>(json: any): { items: T[]; meta: Paginat
 }
 
 async function requestJson(url: string, options: RequestInit = {}) {
+  const { headers, ...restOptions } = options;
   const res = await fetch(url, {
     credentials: "same-origin",
-    headers: {
-      Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
-      ...(options.headers ?? {}),
-    },
-    ...options,
+    ...restOptions,
+    headers: getHeaders(headers as Record<string, string> | undefined),
   });
 
   // 422
@@ -77,7 +98,6 @@ export async function createSubCategoryApi(payload: {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRF-TOKEN": getCsrfToken(),
     },
     body: JSON.stringify(payload),
   });
@@ -91,7 +111,6 @@ export async function updateSubCategoryApi(
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRF-TOKEN": getCsrfToken(),
     },
     body: JSON.stringify(payload),
   });
@@ -100,9 +119,6 @@ export async function updateSubCategoryApi(
 export async function deleteSubCategoryApi(id: number) {
   return requestJson(`/admin/api/sub-categories/${id}`, {
     method: "DELETE",
-    headers: {
-      "X-CSRF-TOKEN": getCsrfToken(),
-    },
   });
 }
 

@@ -13,6 +13,32 @@ interface ChartContainerProps {
     onRetry?: () => void;
 }
 
+function ChartWrapper({ children }: { children: ReactNode }) {
+    const [ready, setReady] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!ref.current) return;
+        const obs = new ResizeObserver((entries) => {
+            requestAnimationFrame(() => {
+                for (const e of entries) {
+                    if (e.contentRect.width > 0 && e.contentRect.height > 0) {
+                        setReady(true);
+                    }
+                }
+            });
+        });
+        obs.observe(ref.current);
+        return () => obs.disconnect();
+    }, []);
+
+    return (
+        <div ref={ref} style={{ width: '100%', height: '100%' }}>
+            {ready && children}
+        </div>
+    );
+}
+
 export default function ChartContainer({
     title,
     icon: Icon,
@@ -30,11 +56,13 @@ export default function ChartContainer({
         if (!containerRef.current) return;
 
         const resizeObserver = new ResizeObserver((entries) => {
-            for (const entry of entries) {
-                if (entry.contentRect.width > 0 && entry.contentRect.height > 0) {
-                    setHasDimensions(true);
+            requestAnimationFrame(() => {
+                for (const entry of entries) {
+                    if (entry.contentRect.width > 0 && entry.contentRect.height > 0) {
+                        setHasDimensions(true);
+                    }
                 }
-            }
+            });
         });
 
         resizeObserver.observe(containerRef.current);
@@ -125,10 +153,9 @@ export default function ChartContainer({
                             animate={{ opacity: 1 }}
                             className="w-full h-full"
                         >
-                            {/* Recharts wrapper */}
-                            <div style={{ width: '100%', height: '100%' }}>
+                            <ChartWrapper>
                                 {children}
-                            </div>
+                            </ChartWrapper>
                         </motion.div>
                     )}
                 </AnimatePresence>

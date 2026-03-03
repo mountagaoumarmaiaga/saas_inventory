@@ -43,14 +43,19 @@ class EnterpriseController extends Controller
         $password = Str::password(10); // Generate secure random password
 
         // 3. Create Admin User
-        $user = User::create([
+        $user = new User();
+        $user->fill([
             'name' => 'Admin ' . $request->name,
             'email' => $adminEmail,
+        ]);
+        $user->forceFill([
             'password' => Hash::make($password),
             'role' => 'admin',
             'entreprise_id' => $enterprise->id,
             'email_verified_at' => now(),
-        ]);
+        ])->save();
+
+        $user->assignRole('admin');
 
         return redirect()->back()->with('flash', [
             'success' => 'Entreprise créée avec succès.',
@@ -78,9 +83,9 @@ class EnterpriseController extends Controller
         }
 
         $password = Str::password(10);
-        $user->update([
+        $user->forceFill([
             'password' => Hash::make($password)
-        ]);
+        ])->save();
 
         return back()->with('flash', [
             'success' => 'Mot de passe réinitialisé avec succès.',

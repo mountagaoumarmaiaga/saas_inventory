@@ -14,8 +14,10 @@ class UserController extends Controller
     public function index()
     {
         // Get users belonging to the same enterprise as the logged-in admin
+        // Exclude super admins so regular admins cannot see or manage them
         $users = User::where('entreprise_id', auth()->user()->entreprise_id)
-            ->where('id', '!=', auth()->id()) // Optional: exclude self, or keep it
+            ->whereRaw('is_super_admin = false')
+            ->where('id', '!=', auth()->id()) // Exclude self
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -31,14 +33,24 @@ class UserController extends Controller
             'role' => ['required', 'in:admin,user'],
         ]);
 
-        $user = User::create([
+        $user = new User();
+        // Safe attributes via fillable
+        $user->fill([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'entreprise_id' => auth()->user()->entreprise_id, // Assign to admin's enterprise
-            'email_verified_at' => now(), // Auto-verify since admin created it
         ]);
+        
+        $user->role = $request->role; // Assuming role is also explicitly set or handled by another package
+        
+        // Critical and protected attributes
+        $user->forceFill([
+            'password' => Hash::make($request->password),
+            'entreprise_id' => auth()->user()->entreprise_id, 
+            'email_verified_at' => now(), 
+        ]);
+        
+        $user->save();
+        $user->syncRoles([$request->role]);
 
         return response()->json([
             'message' => 'Utilisateur créé avec succès.',
@@ -49,6 +61,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::where('entreprise_id', auth()->user()->entreprise_id)
+            ->whereRaw('is_super_admin = false')
             ->findOrFail($id);
 
         $request->validate([
@@ -64,21 +77,31 @@ class UserController extends Controller
             'role' => ['required', 'in:admin,user'],
         ]);
 
-        $user->update([
+        $user->fill([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
         ]);
+
+        // Authorization check: Only current admins can assign the 'admin' role
+        if ($request->role === 'admin' && !auth()->user()->hasRole('admin')) {
+            return response()->json(['message' => 'Action non autorisée.'], 403);
+        }
+
+        $user->role = $request->role; // Keep string property
+        $user->syncRoles([$request->role]); // Apply Spatie role
 
         // Accessorly update password if provided
         if ($request->filled('password')) {
             $request->validate([
                 'password' => ['confirmed', Rules\Password::defaults()],
             ]);
-            $user->update([
+            
+            $user->forceFill([
                 'password' => Hash::make($request->password),
             ]);
         }
+        
+        $user->save();
 
         return response()->json([
             'message' => 'Utilisateur mis à jour avec succès.',
@@ -89,6 +112,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::where('entreprise_id', auth()->user()->entreprise_id)
+            ->whereRaw('is_super_admin = false')
             ->findOrFail($id);
 
         if ($user->id === auth()->id()) {

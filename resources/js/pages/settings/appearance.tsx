@@ -11,7 +11,7 @@ import { edit as editAppearance } from '@/routes/appearance';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Appearance settings',
+        title: 'Paramètres d\'apparence',
         href: editAppearance().url,
     },
 ];
@@ -19,24 +19,24 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Appearance() {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Appearance settings" />
+            <Head title="Paramètres d'apparence" />
 
-            <h1 className="sr-only">Appearance Settings</h1>
+            <h1 className="sr-only">Paramètres d'apparence</h1>
 
             <SettingsLayout>
                 <div className="space-y-6">
                     <HeadingSmall
-                        title="Appearance settings"
-                        description="Update your account's appearance settings"
+                        title="Apparence"
+                        description="Personnalisez le thème et les couleurs de l'interface"
                     />
                     <div className="space-y-4">
                         <div>
-                            <span className="text-sm font-medium text-foreground block mb-3">Theme Mode</span>
+                            <span className="text-sm font-medium text-foreground block mb-3">Mode de thème</span>
                             <AppearanceTabs />
                         </div>
 
                         <div className="pt-4 border-t border-border">
-                            <span className="text-sm font-medium text-foreground block mb-3">Accent Color</span>
+                            <span className="text-sm font-medium text-foreground block mb-3">Couleur d'accentuation</span>
                             <ThemeColorPicker />
                         </div>
                     </div>

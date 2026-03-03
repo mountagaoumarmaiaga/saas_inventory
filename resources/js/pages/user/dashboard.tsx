@@ -55,7 +55,7 @@ export default function UserDashboard({ stats, recentInvoices, dailyRevenue }: D
             value={stats.my_revenue}
             isCurrency
             icon={DollarSign}
-            description="Total de vos dépenses"
+            description="Total de vos revenus"
             color="primary"
           />
           <StatCard
@@ -81,7 +81,7 @@ export default function UserDashboard({ stats, recentInvoices, dailyRevenue }: D
             value={stats.revenue_today}
             isCurrency
             icon={DollarSign}
-            description="Dépenses du jour"
+            description="Revenus du jour"
             color="info"
           />
           <StatCard
@@ -89,7 +89,7 @@ export default function UserDashboard({ stats, recentInvoices, dailyRevenue }: D
             value={stats.revenue_this_week}
             isCurrency
             icon={DollarSign}
-            description="Dépenses de la semaine"
+            description="Revenus de la semaine"
             color="purple"
           />
           <StatCard
@@ -97,7 +97,7 @@ export default function UserDashboard({ stats, recentInvoices, dailyRevenue }: D
             value={stats.revenue_this_month}
             isCurrency
             icon={DollarSign}
-            description="Dépenses du mois"
+            description="Revenus du mois"
             color="success"
           />
         </div>

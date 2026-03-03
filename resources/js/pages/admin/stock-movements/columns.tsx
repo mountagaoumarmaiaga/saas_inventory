@@ -28,6 +28,12 @@ export function cellValue(item: StockMovement, key: string) {
         case "quantity":
             return <span className="font-mono">{item.quantity}</span>;
         case "reason":
+            if (item.purchase_id) {
+                return <span className="text-emerald-600 dark:text-emerald-400 font-medium">Réception (Achat #{item.purchase?.number || item.purchase_id})</span>;
+            }
+            if (item.invoice_id) {
+                return <span>Facture #{item.invoice_id}</span>;
+            }
             return item.reason ? <span>{item.reason}</span> : <span className="text-muted-foreground italic">-</span>;
         case "created_at":
             // Use ClientOnly to avoid hydration mismatch with server timezone/locale

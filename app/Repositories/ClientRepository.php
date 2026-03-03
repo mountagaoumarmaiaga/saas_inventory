@@ -30,12 +30,16 @@ class ClientRepository implements ClientRepositoryInterface
     public function create(int $entrepriseId, array $data): Client
     {
         $data['entreprise_id'] = $entrepriseId;
-        return Client::create($data);
+        
+        $client = new Client();
+        $client->forceFill($data)->save();
+        
+        return $client;
     }
 
     public function update(Client $client, array $data): Client
     {
-        $client->update($data);
+        $client->forceFill($data)->save();
         return $client;
     }
 

@@ -6,5 +6,6 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    //
+    protected $seed = true;
+    protected string $seeder = \Database\Seeders\RolesAndPermissionsSeeder::class;
 }

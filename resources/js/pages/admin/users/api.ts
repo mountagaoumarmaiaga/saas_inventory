@@ -2,8 +2,9 @@
 import type { User, UserForm } from "./types";
 
 function getCsrfToken() {
-    const el = document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null;
-    return el?.content ?? "";
+    // Laravel sets the XSRF-TOKEN cookie for CSRF protection on API/Axios/Fetch requests
+    const match = document.cookie.match(new RegExp('(^|;\\s*)XSRF-TOKEN=([^;]*)'));
+    return match ? decodeURIComponent(match[2]) : "";
 }
 
 export async function fetchUsers() {
@@ -49,7 +50,7 @@ export async function createUserApi(form: UserForm) {
         headers: {
             Accept: "application/json",
             "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": getCsrfToken(),
+            "X-XSRF-TOKEN": getCsrfToken(),
         },
         body: formToFD(form),
     });
@@ -72,7 +73,7 @@ export async function updateUserApi(id: number, form: UserForm) {
         headers: {
             Accept: "application/json",
             "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": getCsrfToken(),
+            "X-XSRF-TOKEN": getCsrfToken(),
         },
         body: formToFD(form, "PUT"),
     });
@@ -95,7 +96,7 @@ export async function deleteUserApi(id: number) {
         headers: {
             Accept: "application/json",
             "X-Requested-With": "XMLHttpRequest",
-            "X-CSRF-TOKEN": getCsrfToken(),
+            "X-XSRF-TOKEN": getCsrfToken(),
         },
     });
 

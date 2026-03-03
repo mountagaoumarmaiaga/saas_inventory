@@ -1,18 +1,56 @@
 import { motion } from 'framer-motion';
 import { LucideIcon, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { LineChart, Line, ResponsiveContainer } from 'recharts';
 import { cn } from '@/lib/utils';
+import { useRef, useState, useEffect } from 'react';
 
 interface StatCardProps {
     title: string;
     value: string | number;
     icon: LucideIcon;
     isCurrency?: boolean;
-    trend?: number; // Percentage change
-    color?: 'default' | 'primary' | 'success' | 'warning' | 'info' | 'purple';
+    trend?: number;
+    color?: 'default' | 'primary' | 'success' | 'warning' | 'info' | 'purple' | 'destructive';
     subValue?: string;
     delay?: number;
-    description?: string; // Added for User Dashboard compatibility
-    gradient?: string; // Added for custom gradients
+    description?: string;
+    gradient?: string;
+    sparklineData?: { date: string, value: number }[];
+    sparklineColor?: string;
+    className?: string;
+}
+
+// Guard: only render Recharts once the container has real pixel dimensions
+function SparklineResponsive({ data, color }: { data: { date: string; value: number }[]; color: string }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const [ready, setReady] = useState(false);
+
+    useEffect(() => {
+        if (!ref.current) return;
+        const obs = new ResizeObserver((entries) => {
+            requestAnimationFrame(() => {
+                for (const e of entries) {
+                    if (e.contentRect.width > 0 && e.contentRect.height > 0) {
+                        setReady(true);
+                    }
+                }
+            });
+        });
+        obs.observe(ref.current);
+        return () => obs.disconnect();
+    }, []);
+
+    return (
+        <div ref={ref} className="absolute inset-x-0 bottom-0 h-24 opacity-20 pointer-events-none">
+            {ready && (
+                <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1} debounce={50}>
+                    <LineChart data={data}>
+                        <Line type="monotone" dataKey="value" stroke={color} strokeWidth={2} dot={false} isAnimationActive={false} />
+                    </LineChart>
+                </ResponsiveContainer>
+            )}
+        </div>
+    );
 }
 
 export default function StatCard({
@@ -25,7 +63,10 @@ export default function StatCard({
     subValue,
     delay = 0,
     description,
-    gradient
+    gradient,
+    sparklineData,
+    sparklineColor,
+    className
 }: StatCardProps) {
     const safeValue = Number(value);
     const finalValue = isNaN(safeValue) ? 0 : safeValue;
@@ -42,6 +83,7 @@ export default function StatCard({
         warning: "from-warning/5 to-warning/10 border-warning/20 hover:border-warning/40 shadow-sm",
         info: "from-blue-500/5 to-blue-500/10 border-blue-500/20 hover:border-blue-500/40 shadow-sm",
         purple: "from-purple-500/5 to-purple-500/10 border-purple-500/20 hover:border-purple-500/40 shadow-sm",
+        destructive: "from-destructive/5 to-destructive/10 border-destructive/20 hover:border-destructive/40 shadow-sm",
     };
 
     const iconThemes = {
@@ -51,6 +93,7 @@ export default function StatCard({
         warning: "bg-warning/20 text-warning",
         info: "bg-blue-500/20 text-blue-500",
         purple: "bg-purple-500/20 text-purple-500",
+        destructive: "bg-destructive/10 text-destructive",
     };
 
     const textGradients = {
@@ -60,6 +103,7 @@ export default function StatCard({
         warning: "text-foreground",
         info: "text-foreground",
         purple: "text-foreground",
+        destructive: "text-destructive",
     };
 
     return (
@@ -70,11 +114,17 @@ export default function StatCard({
             className={cn(
                 "group relative overflow-hidden rounded-2xl border bg-gradient-to-br backdrop-blur-xl transition-all duration-300 hover:-translate-y-1",
                 themes[color] || themes.default,
-                gradient && `${gradient}`
+                gradient && `${gradient}`,
+                className
             )}
         >
             {/* Glossy Reflection Effect */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+            {/* Sparkline Background */}
+            {sparklineData && sparklineData.length > 0 && (
+                <SparklineResponsive data={sparklineData} color={sparklineColor || (trend && trend >= 0 ? '#10b981' : '#f43f5e')} />
+            )}
 
             <div className="p-6 relative z-10">
                 <div className="flex items-start justify-between">

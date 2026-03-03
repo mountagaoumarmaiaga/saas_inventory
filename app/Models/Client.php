@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\HasActivityLogs;
+use App\Models\Traits\BelongsToTenant;
 
 class Client extends Model
 {
-    protected $guarded = [];
+    use HasFactory, HasActivityLogs, BelongsToTenant;
 
-    public function entreprise() { return $this->belongsTo(Entreprise::class); }
+    protected $fillable = ['name', 'email', 'phone', 'address'];
     public function invoices() { return $this->hasMany(Invoice::class); }
 }

@@ -30,12 +30,16 @@ class ProductRepository implements ProductRepositoryInterface
     public function create(int $entrepriseId, array $data): Product
     {
         $data['entreprise_id'] = $entrepriseId;
-        return Product::create($data);
+        
+        $product = new Product();
+        $product->forceFill($data)->save();
+        
+        return $product;
     }
 
     public function update(Product $product, array $data): Product
     {
-        $product->update($data);
+        $product->forceFill($data)->save();
         return $product;
     }
 

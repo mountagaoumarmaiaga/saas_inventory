@@ -3,10 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\HasActivityLogs;
+use App\Models\Traits\BelongsToTenant;
 
 class Invoice extends Model
 {
-    protected $guarded = [];
+    use HasFactory, HasActivityLogs, BelongsToTenant;
+
+    protected $fillable = [
+        'entreprise_id', 'client_id', 'number', 'type', 'status',
+        'subtotal', 'tva', 'total', 'date', 'due_date', 'notes',
+        'created_by', 'updated_by', 'approved_by', 'approved_at',
+        'paid_by', 'paid_at', 'stock_deducted_at', 'rejection_reason',
+        'public_uuid'
+    ];
 
     protected $casts = [
         'subtotal' => 'decimal:2',
@@ -17,7 +28,7 @@ class Invoice extends Model
         'date' => 'date',
     ];
 
-    public function entreprise() { return $this->belongsTo(Entreprise::class); }
+
     public function client() { return $this->belongsTo(Client::class); }
     public function items() { return $this->hasMany(InvoiceItem::class); }
 

@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class InvoiceItem extends Model
 {
-    protected $guarded = [];
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+    protected $fillable = ['invoice_id', 'product_id', 'description', 'quantity', 'unit_price', 'line_total'];
 
     protected $casts = [
         'unit_price' => 'decimal:2',

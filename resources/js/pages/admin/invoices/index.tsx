@@ -180,15 +180,26 @@ export default function AdminInvoicesIndex() {
                             Gérer les factures et proformas
                         </p>
                     </div>
-                    <Button
-                        asChild
-                        className="h-10 px-6 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 rounded-lg whitespace-nowrap"
-                    >
-                        <Link href="/admin/invoices/create">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Nouvelle Facture
-                        </Link>
-                    </Button>
+                    <div className="flex items-center gap-3">
+                        <Button
+                            variant="outline"
+                            onClick={() => window.open('/admin/api/exports/accounting', '_blank')}
+                            className="h-10 px-4 border-border/50 hover:bg-muted/50 transition-all rounded-lg whitespace-nowrap"
+                            title="Export CSV Comptable (Xero, Quickbooks, Excel)"
+                        >
+                            <FileDown className="mr-2 h-4 w-4 text-green-600" />
+                            Export CSV
+                        </Button>
+                        <Button
+                            asChild
+                            className="h-10 px-6 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-200 rounded-lg whitespace-nowrap"
+                        >
+                            <Link href="/admin/invoices/create">
+                                <Plus className="mr-2 h-4 w-4" />
+                                Nouvelle Facture
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="flex items-center space-x-2">

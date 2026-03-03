@@ -22,7 +22,12 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withMiddleware(function (Middleware $middleware): void {
         // Confiance des proxys (pour Koyeb et l'HTTPS)
-        $middleware->trustProxies(at: '*');
+        $trustedProxies = env('TRUSTED_PROXIES', null);
+        if ($trustedProxies === '*') {
+            $middleware->trustProxies(at: '*');
+        } elseif ($trustedProxies) {
+            $middleware->trustProxies(at: explode(',', $trustedProxies));
+        }
 
         // Configuration des cookies
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
@@ -37,8 +42,30 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+            \App\Http\Middleware\SecurityHeadersMiddleware::class,
+            \Spatie\Csp\AddCspHeaders::class,
+            \App\Http\Middleware\PayloadSizeLimit::class,
+            \App\Http\Middleware\CircuitBreaker::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->reportable(function (\Throwable $e) {
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
+                $statusCode = $e->getStatusCode();
+                
+                // Tracker les accès interdits (403) ou cachés derrière des scopes (404 / ModelNotFound) -> Intrusion Detection
+                if (in_array($statusCode, [403, 404])) {
+                    $request = request();
+                    if ($request) {
+                        \Illuminate\Support\Facades\Log::channel('single')->warning("Suspicious {$statusCode} Error Triggered", [
+                            'ip' => $request->ip(),
+                            'url' => $request->fullUrl(),
+                            'method' => $request->method(),
+                            'user_id' => auth()->id(),
+                            'user_agent' => $request->userAgent()
+                        ]);
+                    }
+                }
+            }
+        });
     })->create();

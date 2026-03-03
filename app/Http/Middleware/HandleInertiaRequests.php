@@ -40,6 +40,14 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $request->user() ? $request->user()->load('entreprise') : null,
+                'permissions' => $request->user() ? $request->user()->getAllPermissions()->pluck('name') : [],
+                'roles' => $request->user() ? $request->user()->getRoleNames() : [],
+            ],
+            'honeypot' => [
+                'enabled' => config('honeypot.enabled'),
+                'nameFieldName' => config('honeypot.name_field_name'),
+                'validFromFieldName' => config('honeypot.valid_from_field_name'),
+                'encryptedValidFrom' => \Spatie\Honeypot\EncryptedTime::create(\Carbon\Carbon::now()),
             ],
             'flash' => fn () => $request->session()->get('flash') ?? [],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',

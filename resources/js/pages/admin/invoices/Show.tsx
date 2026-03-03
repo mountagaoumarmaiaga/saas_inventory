@@ -5,33 +5,108 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Download, Printer, Edit } from "lucide-react";
+import { ArrowLeft, Download, Printer, Edit, Plus, Trash2, Link as LinkIcon, ExternalLink, MessageCircle, Send, CheckCircle, Ban, ArrowUpCircle } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "react-toastify";
 import type { Invoice } from "./types";
+import {
+    submitInvoiceApi,
+    approveInvoiceApi,
+    markPaidInvoiceApi,
+    markUnpaidInvoiceApi,
+    validateProformaApi,
+    requestModificationApi
+} from "./api";
 
 interface ShowInvoiceProps {
     id: number;
 }
-
 export default function ShowInvoice({ id }: ShowInvoiceProps) {
     const [invoice, setInvoice] = useState<Invoice | null>(null);
     const [loading, setLoading] = useState(true);
     const page = usePage<any>();
 
-    useEffect(() => {
-        async function load() {
-            try {
-                const res = await fetch(`/admin/api/invoices/${id}`);
-                const json = await res.json();
-                setInvoice(json.data);
-            } catch (e: any) {
-                toast.error(e?.message ?? "Erreur chargement facture");
-            } finally {
-                setLoading(false);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+    const [submittingPayment, setSubmittingPayment] = useState(false);
+    const [paymentAmount, setPaymentAmount] = useState<string>("");
+    const [paymentMethod, setPaymentMethod] = useState("Cash");
+    const [paymentDate, setPaymentDate] = useState(new Date().toISOString().split('T')[0]);
+    const [paymentRef, setPaymentRef] = useState("");
+    const [paymentNotes, setPaymentNotes] = useState("");
+
+    const [actionLoading, setActionLoading] = useState(false);
+
+    const loadInvoice = async () => {
+        try {
+            const res = await fetch(`/admin/api/invoices/${id}`);
+            const json = await res.json();
+            setInvoice(json.data);
+            if (json.data?.amount_due) {
+                setPaymentAmount(json.data.amount_due.toString());
             }
+        } catch (e: any) {
+            toast.error(e?.message ?? "Erreur chargement facture");
+        } finally {
+            setLoading(false);
         }
-        load();
+    };
+
+    useEffect(() => {
+        loadInvoice();
     }, [id]);
+
+    const handleAddPayment = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSubmittingPayment(true);
+        try {
+            const res = await fetch('/admin/api/payments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    invoice_id: invoice!.id,
+                    amount: Number(paymentAmount),
+                    payment_method: paymentMethod,
+                    date: paymentDate,
+                    reference: paymentRef,
+                    notes: paymentNotes
+                })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                toast.success('Paiement enregistré');
+                setIsPaymentModalOpen(false);
+                loadInvoice();
+            } else {
+                toast.error(data.message || 'Erreur lors de l\'enregistrement');
+            }
+        } catch (e: any) {
+            toast.error(e.message);
+        } finally {
+            setSubmittingPayment(false);
+        }
+    };
+
+    const handleDeletePayment = async (paymentId: number) => {
+        if (!confirm("Voulez-vous supprimer ce paiement ?")) return;
+        try {
+            const res = await fetch(`/admin/api/payments/${paymentId}`, {
+                method: 'DELETE',
+                headers: { 'Accept': 'application/json' }
+            });
+            if (res.ok) {
+                toast.success('Paiement supprimé');
+                loadInvoice();
+            } else {
+                toast.error('Erreur lors de la suppression');
+            }
+        } catch (e: any) {
+            toast.error(e.message);
+        }
+    };
 
     const handleDownloadPdf = () => {
         window.open(`/admin/api/invoices/${id}/pdf/download`, '_blank');
@@ -45,7 +120,35 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
         router.visit(`/admin/invoices/${id}/edit`);
     };
 
+    const handleCopyPublicLink = () => {
+        if (!invoice?.uuid) return;
+        const url = `${window.location.origin}/i/${invoice.uuid}`;
+        navigator.clipboard.writeText(url);
+        toast.success("Lien public copié dans le presse-papiers !");
+    };
+
+    const handleWorkflowAction = async (actionFn: (id: number) => Promise<any>, successMsg: string) => {
+        if (!invoice) return;
+        setActionLoading(true);
+        try {
+            const res = await actionFn(invoice.id);
+            if (res.ok) {
+                toast.success(successMsg);
+                loadInvoice();
+            } else {
+                toast.error(res.errors ? Object.values(res.errors).flat().join(', ') : "Erreur");
+            }
+        } catch (e: any) {
+            toast.error(e.message || "Une erreur est survenue");
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
     const getStatusBadge = (status: string) => {
+        if (status === 'APPROVED' && invoice?.amount_paid && invoice.amount_paid > 0) {
+            return <Badge className="bg-orange-500 hover:bg-orange-600">Partiellement Payée</Badge>;
+        }
         const variants: Record<string, { variant: "default" | "secondary" | "destructive" | "outline", label: string }> = {
             DRAFT: { variant: "secondary", label: "Brouillon" },
             PENDING: { variant: "outline", label: "En attente" },
@@ -117,15 +220,70 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
 
                     <div className="flex gap-3">
                         {canEdit && (
-                            <Button variant="outline" onClick={handleEdit} className="border-orange-200 hover:bg-orange-50 hover:text-orange-700">
+                            <Button variant="outline" onClick={handleEdit} className="border-orange-200 hover:bg-orange-50 hover:text-orange-700" disabled={actionLoading}>
                                 <Edit className="mr-2 h-4 w-4" />
                                 Modifier
+                            </Button>
+                        )}
+
+                        {invoice.status === 'DRAFT' && invoice.type === 'invoice' && (
+                            <Button variant="default" onClick={() => handleWorkflowAction(submitInvoiceApi, "Facture soumise avec succès")} disabled={actionLoading} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                <Send className="mr-2 h-4 w-4" />
+                                Soumettre
+                            </Button>
+                        )}
+
+                        {invoice.status === 'DRAFT' && invoice.type === 'proforma' && (
+                            <Button variant="default" onClick={() => handleWorkflowAction(validateProformaApi, "Proforma validée")} disabled={actionLoading} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                <CheckCircle className="mr-2 h-4 w-4" />
+                                Valider Proforma
+                            </Button>
+                        )}
+
+                        {invoice.status === 'PENDING' && invoice.type === 'invoice' && (
+                            <Button variant="default" onClick={() => handleWorkflowAction(approveInvoiceApi, "Facture approuvée")} disabled={actionLoading} className="bg-green-600 hover:bg-green-700 text-white">
+                                <CheckCircle className="mr-2 h-4 w-4" />
+                                Approuver
+                            </Button>
+                        )}
+
+                        {invoice.status === 'APPROVED' && invoice.type === 'invoice' && invoice.amount_due === invoice.total && (
+                            <Button variant="default" onClick={() => handleWorkflowAction(markPaidInvoiceApi, "Facture marquée comme payée")} disabled={actionLoading} className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                                <CheckCircle className="mr-2 h-4 w-4" />
+                                Marquer Payée
+                            </Button>
+                        )}
+
+                        {invoice.status === 'PAID' && invoice.type === 'invoice' && invoice.payments && invoice.payments.length === 0 && (
+                            <Button variant="destructive" onClick={() => handleWorkflowAction(markUnpaidInvoiceApi, "Paiement annulé")} disabled={actionLoading}>
+                                <Ban className="mr-2 h-4 w-4" />
+                                Annuler Paiement
                             </Button>
                         )}
                         <Button variant="outline" onClick={handlePrint} className="border-border/50 hover:bg-muted/50">
                             <Printer className="mr-2 h-4 w-4" />
                             Imprimer
                         </Button>
+                        {invoice.uuid && (
+                            <>
+                                <Button variant="outline" onClick={handleCopyPublicLink} className="border-border/50 hover:bg-muted/50 text-blue-600 border-blue-200 hover:border-blue-300">
+                                    <LinkIcon className="mr-2 h-4 w-4" />
+                                    Copier le lien
+                                </Button>
+                                <Button variant="outline" asChild className="border-border/50 hover:bg-muted/50 text-green-600 border-green-200 hover:border-green-300">
+                                    <a href={`https://wa.me/?text=${encodeURIComponent(`Bonjour, voici votre facture ${invoice.number}. Vous pouvez la consulter en ligne et la télécharger à cette adresse : ${window.location.origin}/i/${invoice.uuid}`)}`} target="_blank" rel="noreferrer">
+                                        <MessageCircle className="mr-2 h-4 w-4" />
+                                        WhatsApp
+                                    </a>
+                                </Button>
+                                <Button variant="outline" asChild className="border-border/50 hover:bg-muted/50 hidden sm:flex">
+                                    <a href={`/i/${invoice.uuid}`} target="_blank" rel="noreferrer">
+                                        <ExternalLink className="mr-2 h-4 w-4" />
+                                        Ouvrir (Client)
+                                    </a>
+                                </Button>
+                            </>
+                        )}
                         <Button onClick={handleDownloadPdf} className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white shadow-lg shadow-orange-500/20">
                             <Download className="mr-2 h-4 w-4" />
                             Télécharger PDF
@@ -237,6 +395,67 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                             </div>
                         </div>
 
+                        {/* Payments Section */}
+                        {(invoice.status === 'APPROVED' || invoice.status === 'PAID') && (
+                            <div className="pt-8 border-t border-white/10 mt-8">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-lg font-bold text-foreground">Historique des Paiements</h3>
+                                    {invoice.status === 'APPROVED' && invoice.amount_due! > 0 && (
+                                        <Button onClick={() => setIsPaymentModalOpen(true)} size="sm" className="bg-orange-600 hover:bg-orange-700 text-white">
+                                            <Plus className="mr-2 h-4 w-4" /> Ajouter un paiement
+                                        </Button>
+                                    )}
+                                </div>
+
+                                {invoice.payments && invoice.payments.length > 0 ? (
+                                    <div className="rounded-xl border border-white/10 overflow-hidden bg-background/40">
+                                        <table className="w-full text-sm">
+                                            <thead className="bg-muted/40 border-b border-white/10">
+                                                <tr>
+                                                    <th className="p-4 text-left font-semibold text-muted-foreground w-32">Date</th>
+                                                    <th className="p-4 text-left font-semibold text-muted-foreground">Méthode</th>
+                                                    <th className="p-4 text-left font-semibold text-muted-foreground">Référence</th>
+                                                    <th className="p-4 text-right font-semibold text-muted-foreground w-40">Montant</th>
+                                                    <th className="p-4 text-center font-semibold text-muted-foreground w-20"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-white/5">
+                                                {invoice.payments.map((p, idx) => (
+                                                    <tr key={idx} className="hover:bg-muted/20 transition-colors">
+                                                        <td className="p-4 font-medium text-foreground/90">{new Date(p.date).toLocaleDateString('fr-FR')}</td>
+                                                        <td className="p-4 text-muted-foreground">{p.payment_method}</td>
+                                                        <td className="p-4 text-muted-foreground">{p.reference || '-'}</td>
+                                                        <td className="p-4 text-right font-bold text-green-600 dark:text-green-400">+{Number(p.amount).toLocaleString('fr-FR')} FCFA</td>
+                                                        <td className="p-4 text-center">
+                                                            <div className="flex items-center justify-center gap-2">
+                                                                <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted" onClick={() => window.open(`/admin/api/payments/${p.id}/pdf/view`, '_blank')} title="Imprimer le reçu">
+                                                                    <Printer className="h-4 w-4" />
+                                                                </Button>
+                                                                <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:bg-destructive/10" onClick={() => handleDeletePayment(p.id)} title="Supprimer le paiement">
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </Button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                            <tfoot className="bg-muted/20 border-t border-white/10">
+                                                <tr>
+                                                    <td colSpan={3} className="p-4 text-right font-semibold text-muted-foreground">Reste à payer</td>
+                                                    <td className="p-4 text-right font-bold text-orange-600 dark:text-orange-400">{invoice.amount_due?.toLocaleString('fr-FR')} FCFA</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                ) : (
+                                    <div className="text-center p-8 border border-dashed border-border rounded-xl bg-muted/20">
+                                        <p className="text-muted-foreground">Aucun paiement enregistré pour cette facture.</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         {/* Notes */}
                         {invoice.notes && (
                             <div className="pt-2">
@@ -249,6 +468,75 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                     </CardContent>
                 </Card>
             </div>
+
+            {/* Payment Modal */}
+            <Dialog open={isPaymentModalOpen} onOpenChange={setIsPaymentModalOpen}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Enregistrer un paiement</DialogTitle>
+                    </DialogHeader>
+                    <form onSubmit={handleAddPayment} className="space-y-4 pt-4">
+                        <div className="space-y-2">
+                            <Label>Montant (FCFA)</Label>
+                            <Input
+                                type="number"
+                                min="1"
+                                max={invoice.amount_due}
+                                value={paymentAmount}
+                                onChange={(e) => setPaymentAmount(e.target.value)}
+                                required
+                            />
+                            <p className="text-xs text-muted-foreground">Reste à payer: {invoice.amount_due?.toLocaleString('fr-FR')} FCFA</p>
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Méthode de paiement</Label>
+                            <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Cash">Espèces</SelectItem>
+                                    <SelectItem value="Virement">Virement bancaire</SelectItem>
+                                    <SelectItem value="Cheque">Chèque</SelectItem>
+                                    <SelectItem value="Mobile Money">Mobile Money</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Date</Label>
+                            <Input
+                                type="date"
+                                value={paymentDate}
+                                onChange={(e) => setPaymentDate(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Référence (Optionnel)</Label>
+                            <Input
+                                placeholder="Numéro de chèque, transaction..."
+                                value={paymentRef}
+                                onChange={(e) => setPaymentRef(e.target.value)}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Notes (Optionnel)</Label>
+                            <Textarea
+                                value={paymentNotes}
+                                onChange={(e) => setPaymentNotes(e.target.value)}
+                                rows={2}
+                            />
+                        </div>
+                        <div className="pt-4 flex justify-end space-x-2">
+                            <Button type="button" variant="outline" onClick={() => setIsPaymentModalOpen(false)}>Annuler</Button>
+                            <Button type="submit" disabled={submittingPayment} className="bg-orange-600 hover:bg-orange-700 text-white">
+                                {submittingPayment ? "Enregistrement..." : "Enregistrer"}
+                            </Button>
+                        </div>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
         </AppLayout>
     );
 }

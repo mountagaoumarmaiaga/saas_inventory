@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\HasActivityLogs;
 
 class Entreprise extends Model
 {
-    protected $guarded = [];
+    use HasActivityLogs, HasFactory;
+
+    protected $fillable = ['name', 'address', 'phone', 'email', 'tax_number', 'logo_path', 'settings'];
 
     public function users() { return $this->hasMany(User::class); }
     public function categories() { return $this->hasMany(Category::class); }

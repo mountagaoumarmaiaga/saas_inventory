@@ -32,12 +32,16 @@ class InvoiceRepository implements InvoiceRepositoryInterface
     public function create(int $entrepriseId, array $data): Invoice
     {
         $data['entreprise_id'] = $entrepriseId;
-        return Invoice::create($data);
+        
+        $invoice = new Invoice();
+        $invoice->forceFill($data)->save();
+        
+        return $invoice;
     }
 
     public function update(Invoice $invoice, array $data): Invoice
     {
-        $invoice->update($data);
+        $invoice->forceFill($data)->save();
         return $invoice;
     }
 

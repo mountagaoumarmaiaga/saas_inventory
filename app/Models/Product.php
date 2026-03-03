@@ -3,17 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasActivityLogs;
+
+use App\Models\Traits\BelongsToTenant;
 
 class Product extends Model
 {
-    protected $guarded = [];
+    use \Illuminate\Database\Eloquent\Factories\HasFactory, HasActivityLogs, BelongsToTenant;
+
+    protected $fillable = [
+        'name', 'description', 'sku', 'barcode', 'purchase_price', 
+        'sale_price', 'min_quantity', 'quantity', 'is_active', 
+        'category_id', 'sub_category_id', 'image_path', 'unit'
+    ];
 
     protected $casts = [
         'purchase_price' => 'decimal:2',
         'sale_price' => 'decimal:2',
     ];
 
-    public function entreprise() { return $this->belongsTo(Entreprise::class); }
     public function category() { return $this->belongsTo(Category::class); }
     public function subCategory() { return $this->belongsTo(SubCategory::class); }
     public function stockMovements() { return $this->hasMany(StockMovement::class); }

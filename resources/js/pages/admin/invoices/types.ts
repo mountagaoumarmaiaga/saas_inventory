@@ -18,9 +18,20 @@ export interface Client {
     address?: string;
 }
 
+export interface Payment {
+    id: number;
+    amount: number;
+    payment_method: string;
+    date: string;
+    reference?: string;
+    notes?: string;
+    created_at: string;
+}
+
 export interface Invoice {
     id: number;
     number: string;
+    uuid?: string;
     type: 'invoice' | 'proforma';
     status: string;
     client_id: number;
@@ -30,7 +41,10 @@ export interface Invoice {
     notes?: string;
     subtotal: number;
     total: number;
+    amount_paid?: number;
+    amount_due?: number;
     items: InvoiceItem[];
+    payments?: Payment[];
     delivery_notes?: DeliveryNote[];
     created_at: string;
     updated_at: string;

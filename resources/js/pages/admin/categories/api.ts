@@ -6,6 +6,30 @@ function getCsrfToken() {
   return el?.content ?? "";
 }
 
+function getCookie(name: string) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+  return null;
+}
+
+function getHeaders(extraHeaders: Record<string, string> = {}) {
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+    ...extraHeaders,
+  };
+
+  const useCookie = getCookie("XSRF-TOKEN");
+  if (useCookie) {
+    headers["X-XSRF-TOKEN"] = decodeURIComponent(useCookie);
+  } else {
+    headers["X-CSRF-TOKEN"] = getCsrfToken();
+  }
+
+  return headers;
+}
+
 export function normalizeListResponse(json: any): { items: Category[]; meta: PaginationMeta } {
   if (!json) return { items: [], meta: {} };
 
@@ -28,10 +52,7 @@ export async function fetchCategories(queryString: string): Promise<{ items: Cat
   const res = await fetch(`/admin/api/categories?${queryString}`, {
     method: "GET",
     credentials: "same-origin",
-    headers: {
-      Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest"
-    },
+    headers: getHeaders(),
   });
 
   if (!res.ok) {
@@ -48,11 +69,7 @@ export async function createCategoryApi(fd: FormData): Promise<Response> {
   return fetch("/admin/api/categories", {
     method: "POST",
     credentials: "same-origin",
-    headers: {
-      Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
-      "X-CSRF-TOKEN": getCsrfToken(),
-    },
+    headers: getHeaders(),
     body: fd,
   });
 }
@@ -64,11 +81,7 @@ export async function updateCategoryApi(id: number, fd: FormData): Promise<Respo
   return fetch(`/admin/api/categories/${id}`, {
     method: "POST",
     credentials: "same-origin",
-    headers: {
-      Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
-      "X-CSRF-TOKEN": getCsrfToken(),
-    },
+    headers: getHeaders(),
     body: fd,
   });
 }
@@ -78,11 +91,7 @@ export async function deleteCategoryApi(id: number): Promise<Response> {
   return fetch(`/admin/api/categories/${id}`, {
     method: "DELETE",
     credentials: "same-origin",
-    headers: {
-      Accept: "application/json",
-      "X-Requested-With": "XMLHttpRequest",
-      "X-CSRF-TOKEN": getCsrfToken(),
-    },
+    headers: getHeaders(),
   });
 }
 

@@ -17,9 +17,17 @@ class CustomCspPolicy implements Preset
 
         $policy
             ->add(Directive::STYLE, Keyword::UNSAFE_INLINE)
+            ->add(Directive::STYLE, 'https://fonts.googleapis.com')
             ->add(Directive::SCRIPT, Keyword::UNSAFE_EVAL)
+            // style-src-attr allows inline style="" attributes on elements set by JS libraries
+            // (Recharts, Radix UI, etc.) — NOT overridden by nonce unlike style-src
+            ->add(Directive::STYLE_ATTR, Keyword::UNSAFE_INLINE)
+            // Google Fonts actual font files
+            ->add(Directive::FONT, Keyword::SELF)
+            ->add(Directive::FONT, 'https://fonts.gstatic.com')
+            // Supabase storage / images
             ->add(Directive::CONNECT, 'https://*.supabase.co')
-            ->add(Directive::IMG, [Keyword::SELF, 'data:', 'https://*.supabase.co']);
+            ->add(Directive::IMG, [Keyword::SELF, 'data:', 'https://*.supabase.co', 'https://fonts.gstatic.com']);
 
         if (app()->environment('local')) {
             $policy

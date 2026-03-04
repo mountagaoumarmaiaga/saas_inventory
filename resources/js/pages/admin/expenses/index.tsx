@@ -81,12 +81,12 @@ export default function ExpensesIndex({ stats }: ExpensesIndexProps) {
                     </div>
                     <div className="flex gap-2">
                         <Link href="/admin/expense-categories">
-                            <Button variant="outline" className="border-orange-200 text-orange-700 hover:bg-orange-50 dark:border-orange-900 dark:text-orange-400 dark:hover:bg-orange-900/20">
+                            <Button variant="outline" className="border-indigo-200 text-indigo-700 hover:bg-indigo-50 dark:border-orange-900 dark:text-orange-400 dark:hover:bg-orange-900/20">
                                 <FileText className="mr-2 h-4 w-4" /> Catégories
                             </Button>
                         </Link>
                         <Link href="/admin/expenses/create">
-                            <Button className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white shadow-lg shadow-orange-500/20">
+                            <Button className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white shadow-lg shadow-indigo-500/20">
                                 <Plus className="mr-2 h-4 w-4" /> Nouvelle Dépense
                             </Button>
                         </Link>
@@ -136,7 +136,7 @@ export default function ExpensesIndex({ stats }: ExpensesIndexProps) {
                     <CardContent className="p-0">
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left">
-                                <thead className="bg-muted/40 text-muted-foreground uppercase text-xs border-b border-white/10">
+                                <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
                                     <tr>
                                         <th className="px-6 py-4 font-semibold">Date</th>
                                         <th className="px-6 py-4 font-semibold">Catégorie</th>
@@ -161,7 +161,7 @@ export default function ExpensesIndex({ stats }: ExpensesIndexProps) {
                                         </tr>
                                     ) : (
                                         expenses.data.map((expense) => (
-                                            <tr key={expense.id} className="hover:bg-muted/20 transition-colors">
+                                            <tr key={expense.id}  className="group hover:bg-gradient-to-r hover:from-indigo-500/5 hover:to-blue-500/5 transition-all duration-300 hover:bg-muted/20 transition-colors">
                                                 <td className="px-6 py-4 font-medium">
                                                     {new Date(expense.date).toLocaleDateString('fr-FR')}
                                                 </td>
@@ -174,7 +174,7 @@ export default function ExpensesIndex({ stats }: ExpensesIndexProps) {
                                                 <td className="px-6 py-4 text-muted-foreground">
                                                     {expense.reference || '-'}
                                                 </td>
-                                                <td className="px-6 py-4 text-right font-bold text-orange-600 dark:text-orange-400">
+                                                <td className="px-6 py-4 text-right font-bold text-indigo-600 dark:text-orange-400">
                                                     {Number(expense.amount).toLocaleString('fr-FR')}
                                                 </td>
                                                 <td className="px-6 py-4 text-center">

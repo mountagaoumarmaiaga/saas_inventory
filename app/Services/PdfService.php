@@ -184,7 +184,7 @@ class PdfService
             // Check if it's a local storage URL
             if (str_contains($entreprise->logo_url, '/storage/')) {
                 // Extract path from URL (e.g., /storage/logos/2/file.png -> logos/2/file.png)
-                $path = str_replace('/storage/', '', parse_url($entreprise->logo_url, PHP_URL_PATH));
+                $path = ltrim(str_replace('/storage/', '', parse_url($entreprise->logo_url, PHP_URL_PATH)), '/');
                 
                 // Try to get from public disk
                 if (\Storage::disk('public')->exists($path)) {
@@ -192,6 +192,7 @@ class PdfService
                 }
             } elseif (str_starts_with($entreprise->logo_url, 'http')) {
                 // External URL (Supabase) - use file_get_contents with timeout
+                // For direct file fetch
                 $context = stream_context_create([
                     'http' => [
                         'timeout' => 2,
@@ -209,6 +210,10 @@ class PdfService
             if ($imageContent && strlen($imageContent) > 0) {
                 $finfo = new \finfo(FILEINFO_MIME_TYPE);
                 $mimeType = $finfo->buffer($imageContent);
+                // Fix: some finfo versions return "text/plain" or fail for SVG
+                if ($mimeType === 'text/plain' && str_ends_with($entreprise->logo_url, '.svg')) {
+                    $mimeType = 'image/svg+xml';
+                }
                 return 'data:' . $mimeType . ';base64,' . base64_encode($imageContent);
             }
         } catch (\Exception $e) {

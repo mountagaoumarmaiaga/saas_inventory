@@ -36,7 +36,7 @@ export default function AdminDashboard(props: any) {
         {/* Top Bar: Greeting & Quick Filters */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-border/40">
           <div className="space-y-1">
-            <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+            <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
               Bonjour, {auth.user.name.split(' ')[0]} 👋
             </h2>
             <p className="text-muted-foreground">
@@ -175,7 +175,7 @@ export default function AdminDashboard(props: any) {
           </div>
 
           <div className="col-span-1 md:col-span-2 lg:col-span-3 rounded-2xl border-2 border-white/10 dark:border-zinc-800/50 bg-background/60 backdrop-blur-xl shadow-xl overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-border/10 flex items-center justify-between bg-gradient-to-r from-orange-500/5 via-amber-500/5 to-transparent">
+            <div className="p-6 border-b border-border/10 flex items-center justify-between bg-gradient-to-r from-indigo-500/5 via-blue-500/5 to-transparent">
               <div>
                 <h3 className="text-lg font-bold leading-none tracking-tight">Transactions Récentes</h3>
                 <p className="text-sm text-muted-foreground mt-1">Vos 5 dernières factures générées.</p>
@@ -198,10 +198,10 @@ export default function AdminDashboard(props: any) {
                 <tbody className="divide-y divide-border/30">
                   {props.recentInvoices && props.recentInvoices.length > 0 ? (
                     props.recentInvoices.map((invoice: any) => (
-                      <tr key={invoice.id} className="group hover:bg-gradient-to-r hover:from-orange-500/5 hover:to-amber-500/5 transition-all duration-300">
+                      <tr key={invoice.id} className="group hover:bg-gradient-to-r hover:from-indigo-500/5 hover:to-blue-500/5 transition-all duration-300">
                         <td className="px-6 py-4 font-medium text-foreground">
                           <div className="flex items-center gap-3">
-                            <div className="size-8 rounded-full bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center text-orange-600 text-xs font-bold border border-orange-200/50">
+                            <div className="size-8 rounded-full bg-gradient-to-br from-indigo-500/10 to-blue-500/10 flex items-center justify-center text-indigo-600 text-xs font-bold border border-indigo-200/50">
                               {invoice.client.name.substring(0, 2).toUpperCase()}
                             </div>
                             {invoice.client.name}
@@ -214,13 +214,13 @@ export default function AdminDashboard(props: any) {
                         <td className="px-6 py-4">
                           <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border shadow-sm
                                             ${invoice.status === 'PAID' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' :
-                              invoice.status === 'PENDING' ? 'bg-amber-500/10 text-amber-600 border-amber-500/20' :
+                              invoice.status === 'PENDING' ? 'bg-blue-500/10 text-blue-600 border-blue-500/20' :
                                 'bg-slate-500/10 text-slate-600 border-slate-500/20'}`}>
                             {invoice.status === 'PAID' ? 'Payé' : invoice.status === 'PENDING' ? 'En attente' : invoice.status}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <Button variant="ghost" size="icon" asChild className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity bg-background hover:bg-orange-50 text-muted-foreground hover:text-orange-600 shadow-sm border border-border/50">
+                          <Button variant="ghost" size="icon" asChild className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity bg-background hover:bg-indigo-50 text-muted-foreground hover:text-indigo-600 shadow-sm border border-border/50">
                             <Link href={`/admin/invoices/${invoice.id}`}>
                               <ArrowRight className="size-4" />
                             </Link>

@@ -137,7 +137,7 @@ export default function AdminSubCategoriesIndex() {
         <div className="rounded-xl border border-border/40 bg-background/50 backdrop-blur-xl shadow-sm overflow-hidden flex flex-col">
           <div className="relative overflow-x-auto">
             <table className="w-full text-sm">
-              <thead>
+              <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
                 <tr className="border-b border-border/40 bg-muted/20">
                   <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Nom</th>
                   <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Catégorie</th>
@@ -166,7 +166,7 @@ export default function AdminSubCategoriesIndex() {
                   </tr>
                 ) : (
                   items.map((s) => (
-                    <tr key={s.id} className="group hover:bg-muted/30 transition-colors">
+                    <tr key={s.id}  className="group hover:bg-gradient-to-r hover:from-indigo-500/5 hover:to-blue-500/5 transition-all duration-300 group hover:bg-muted/30 transition-colors">
                       <td className="p-4 font-medium text-foreground">{s.name}</td>
                       <td className="p-4">
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-500/10 text-blue-600 border border-blue-500/20">

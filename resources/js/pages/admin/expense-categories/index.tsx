@@ -111,7 +111,7 @@ export default function ExpenseCategoriesIndex() {
                         </h1>
                         <p className="text-muted-foreground mt-1">Gérez les catégories pour vos dépenses.</p>
                     </div>
-                    <Button onClick={openCreateModal} className="bg-orange-600 hover:bg-orange-700 text-white shadow-lg shadow-orange-500/20">
+                    <Button onClick={openCreateModal} className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/20">
                         <Plus className="mr-2 h-4 w-4" /> Nouvelle Catégorie
                     </Button>
                 </div>
@@ -162,7 +162,7 @@ export default function ExpenseCategoriesIndex() {
                             </div>
                             <div className="pt-4 flex justify-end space-x-2">
                                 <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>Annuler</Button>
-                                <Button type="submit" disabled={submitting} className="bg-orange-600 hover:bg-orange-700 text-white">
+                                <Button type="submit" disabled={submitting} className="bg-indigo-600 hover:bg-indigo-700 text-white">
                                     {submitting ? "Enregistrement..." : "Enregistrer"}
                                 </Button>
                             </div>

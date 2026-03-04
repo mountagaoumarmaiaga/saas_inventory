@@ -119,7 +119,7 @@ export default function AdminProductsIndex() {
                 <div className="rounded-xl border border-border/40 bg-background/50 backdrop-blur-xl shadow-sm overflow-hidden flex flex-col">
                     <div className="relative overflow-x-auto flex-1">
                         <table className="w-full text-sm">
-                            <thead className="bg-muted/30 border-b border-border/40">
+                            <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[80px]">Image</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Produit</th>
@@ -158,7 +158,7 @@ export default function AdminProductsIndex() {
                                     </tr>
                                 ) : (
                                     items.map((p) => (
-                                        <tr key={p.id} className="group hover:bg-muted/30 transition-colors duration-200">
+                                        <tr key={p.id}  className="group hover:bg-gradient-to-r hover:from-indigo-500/5 hover:to-blue-500/5 transition-all duration-300 group hover:bg-muted/30 transition-colors duration-200">
                                             <td className="px-6 py-4">
                                                 <div className="relative h-10 w-10 rounded-lg border border-border/50 bg-muted/30 flex items-center justify-center overflow-hidden">
                                                     {p.image_path ? (

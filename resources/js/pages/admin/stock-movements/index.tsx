@@ -231,7 +231,7 @@ export default function AdminStockMovementsIndex() {
                     <div className="rounded-xl border border-border/40 bg-background/50 backdrop-blur-xl shadow-sm overflow-hidden flex flex-col">
                         <div className="relative overflow-x-auto">
                             <table className="w-full text-sm">
-                                <thead>
+                                <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
                                     <tr className="border-b border-border/40 bg-muted/20">
                                         {columns.map((c) => (
                                             <th key={c.key} className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">
@@ -264,7 +264,7 @@ export default function AdminStockMovementsIndex() {
                                         </tr>
                                     ) : (
                                         items.map((item) => (
-                                            <tr key={item.id} className="group hover:bg-muted/30 transition-colors">
+                                            <tr key={item.id}  className="group hover:bg-gradient-to-r hover:from-indigo-500/5 hover:to-blue-500/5 transition-all duration-300 group hover:bg-muted/30 transition-colors">
                                                 {columns.map((c) => (
                                                     <td key={c.key} className="p-4 align-middle font-medium text-foreground">
                                                         <div className="truncate max-w-[200px]">

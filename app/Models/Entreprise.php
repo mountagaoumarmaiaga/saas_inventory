@@ -10,8 +10,13 @@ class Entreprise extends Model
 {
     use HasActivityLogs, HasFactory;
 
-    protected $fillable = ['name', 'address', 'phone', 'email', 'tax_number', 'logo_path', 'settings'];
-
+    protected $fillable = [
+        'name', 'address', 'phone', 'email', 'tax_number', 'logo_path', 'settings',
+        'invoice_header', 'invoice_footer', 'invoice_template',
+        'delivery_note_template', 'purchase_template', 'quote_template',
+        'currency', 'currency_symbol', 'currency_position', 'qr_payment_link',
+        'logo_url', 'rccm', 'niu'
+    ];
     public function users() { return $this->hasMany(User::class); }
     public function categories() { return $this->hasMany(Category::class); }
     public function subCategories() { return $this->hasMany(SubCategory::class); }

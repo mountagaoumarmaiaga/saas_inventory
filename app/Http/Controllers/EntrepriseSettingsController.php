@@ -21,6 +21,9 @@ class EntrepriseSettingsController extends Controller
 
     public function update(Request $request)
     {
+        \Log::info('--- INVOICE SETTINGS UPDATE REQUEST ---');
+        \Log::info($request->all());
+
         $entreprise = Entreprise::findOrFail($request->user()->entreprise_id);
         
         $data = $request->validate([
@@ -38,6 +41,9 @@ class EntrepriseSettingsController extends Controller
             'currency_position' => 'sometimes|in:left,right',
             'qr_payment_link' => 'nullable|string|url'
         ]);
+
+        \Log::info('--- VALIDATED DATA ---');
+        \Log::info($data);
 
         $entreprise->update($data);
 

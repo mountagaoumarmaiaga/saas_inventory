@@ -280,7 +280,7 @@ export default function AdminProductCreate() {
                                             placeholder="Ex: 5"
                                         />
                                         <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                                             Notification automatique au seuil
                                         </p>
                                         {errors.min_quantity && <p className="text-sm text-red-500 font-medium">{errors.min_quantity[0]}</p>}

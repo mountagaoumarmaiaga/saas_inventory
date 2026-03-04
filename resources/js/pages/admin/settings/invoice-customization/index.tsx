@@ -189,7 +189,7 @@ export default function InvoiceCustomization() {
                 <Head title="Personnalisation Factures" />
                 <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
                     <div className="relative">
-                        <div className="h-16 w-16 rounded-full border-4 border-orange-500/20 border-t-orange-500 animate-spin" />
+                        <div className="h-16 w-16 rounded-full border-4 border-indigo-500/20 border-t-orange-500 animate-spin" />
                     </div>
                     <p className="text-muted-foreground font-medium">Chargement des paramètres...</p>
                 </div>
@@ -234,7 +234,7 @@ export default function InvoiceCustomization() {
                                     id="name"
                                     value={settings.name}
                                     onChange={(e) => setSettings({ ...settings, name: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-orange-500/50 transition-all duration-300 shadow-lg"
+                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
                                 />
                             </div>
                             <div className="space-y-3">
@@ -244,7 +244,7 @@ export default function InvoiceCustomization() {
                                     type="email"
                                     value={settings.email}
                                     onChange={(e) => setSettings({ ...settings, email: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-orange-500/50 transition-all duration-300 shadow-lg"
+                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
                                 />
                             </div>
                         </div>
@@ -255,7 +255,7 @@ export default function InvoiceCustomization() {
                                     id="phone"
                                     value={settings.phone || ''}
                                     onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-orange-500/50 transition-all duration-300 shadow-lg"
+                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
                                     placeholder="+223 XX XXX XX XX"
                                 />
                             </div>
@@ -265,7 +265,7 @@ export default function InvoiceCustomization() {
                                     id="address"
                                     value={settings.address || ''}
                                     onChange={(e) => setSettings({ ...settings, address: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-orange-500/50 transition-all duration-300 shadow-lg"
+                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
                                 />
                             </div>
                         </div>
@@ -292,12 +292,12 @@ export default function InvoiceCustomization() {
                                 type="file"
                                 accept="image/*"
                                 onChange={handleLogoChange}
-                                className="flex-1 h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-orange-500/10 file:text-orange-600 file:font-medium hover:file:bg-orange-500/20 transition-all"
+                                className="flex-1 h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-500/10 file:text-indigo-600 file:font-medium hover:file:bg-indigo-500/20 transition-all"
                             />
                             <Button
                                 onClick={handleUploadLogo}
                                 disabled={!logoFile || uploadingLogo}
-                                className="h-12 px-6 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 rounded-xl disabled:opacity-50"
+                                className="h-12 px-6 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 transition-all duration-300 hover:scale-105 rounded-xl disabled:opacity-50"
                             >
                                 <Upload className="mr-2 h-5 w-5" />
                                 {uploadingLogo ? "Upload..." : "Upload"}
@@ -386,7 +386,7 @@ export default function InvoiceCustomization() {
                                 value={settings.invoice_header || ''}
                                 onChange={(e) => setSettings({ ...settings, invoice_header: e.target.value })}
                                 rows={3}
-                                className="rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-orange-500/50 transition-all duration-300 shadow-lg"
+                                className="rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
                             />
                         </div>
                         <div className="space-y-3">
@@ -397,7 +397,7 @@ export default function InvoiceCustomization() {
                                 value={settings.invoice_footer || ''}
                                 onChange={(e) => setSettings({ ...settings, invoice_footer: e.target.value })}
                                 rows={3}
-                                className="rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-orange-500/50 transition-all duration-300 shadow-lg"
+                                className="rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
                             />
                         </div>
                     </CardContent>
@@ -419,7 +419,7 @@ export default function InvoiceCustomization() {
                         >
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {TEMPLATES.map((tpl) => (
-                                    <div key={tpl.id} className="flex items-start space-x-3 border-2 border-white/20 rounded-xl p-5 cursor-pointer hover:bg-gradient-to-br hover:from-orange-500/10 hover:to-amber-500/10 hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg">
+                                    <div key={tpl.id} className="flex items-start space-x-3 border-2 border-white/20 rounded-xl p-5 cursor-pointer hover:bg-gradient-to-br hover:from-orange-500/10 hover:to-amber-500/10 hover:border-indigo-500/30 transition-all duration-300 hover:shadow-lg">
                                         <RadioGroupItem value={tpl.id} id={tpl.id} className="mt-0.5" />
                                         <Label htmlFor={tpl.id} className="cursor-pointer flex-1">
                                             <div className="font-bold text-foreground">{tpl.name}</div>
@@ -502,7 +502,7 @@ export default function InvoiceCustomization() {
                     <Button
                         onClick={handleSave}
                         disabled={saving}
-                        className="h-12 px-8 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 rounded-xl disabled:opacity-50"
+                        className="h-12 px-8 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 transition-all duration-300 hover:scale-105 rounded-xl disabled:opacity-50"
                     >
                         <Save className="mr-2 h-5 w-5" />
                         {saving ? "Sauvegarde..." : "Sauvegarder"}

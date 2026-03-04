@@ -247,7 +247,7 @@ export default function CreateInvoice() {
                                         <option key={c.id} value={c.id}>{c.name}</option>
                                     ))}
                                 </select>
-                                {clients.length === 0 && <p className="text-[10px] text-orange-500 font-medium pt-1">• Aucun client trouvé.</p>}
+                                {clients.length === 0 && <p className="text-[10px] text-indigo-500 font-medium pt-1">• Aucun client trouvé.</p>}
                             </div>
 
                             <div className="space-y-2">

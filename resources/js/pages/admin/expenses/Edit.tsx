@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+
+const getCsrfToken = () => decodeURIComponent(document.cookie.split(';').find(c => c.trim().startsWith('XSRF-TOKEN='))?.split('=')[1] ?? '');
 import { Head, router } from "@inertiajs/react";
 import AppLayout from "@/layouts/app-layout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -60,7 +62,7 @@ export default function ExpenseEdit({ id }: { id: number }) {
         try {
             const res = await fetch(`/admin/api/expenses/${id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-XSRF-TOKEN': getCsrfToken() },
                 body: JSON.stringify(formData)
             });
             const data = await res.json();
@@ -81,7 +83,7 @@ export default function ExpenseEdit({ id }: { id: number }) {
         return (
             <AppLayout breadcrumbs={[{ title: "Admin", href: "/admin/dashboard" }, { title: "Dépenses", href: "/admin/expenses" }, { title: "Modification", href: "#" }]}>
                 <div className="flex items-center justify-center p-12">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
                 </div>
             </AppLayout>
         );
@@ -97,11 +99,11 @@ export default function ExpenseEdit({ id }: { id: number }) {
 
             <div className="p-6 max-w-4xl mx-auto space-y-6">
                 <div>
-                    <Button variant="ghost" onClick={() => router.visit('/admin/expenses')} className="pl-0 hover:bg-transparent hover:text-orange-600 transition-colors">
+                    <Button variant="ghost" onClick={() => router.visit('/admin/expenses')} className="pl-0 hover:bg-transparent hover:text-indigo-600 transition-colors">
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Retour aux dépenses
                     </Button>
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent mt-2">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mt-2">
                         Modifier Dépense
                     </h1>
                 </div>
@@ -166,7 +168,7 @@ export default function ExpenseEdit({ id }: { id: number }) {
                                 <Button type="button" variant="outline" onClick={() => router.visit('/admin/expenses')}>
                                     Annuler
                                 </Button>
-                                <Button type="submit" disabled={submitting} className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white shadow-lg shadow-orange-500/20">
+                                <Button type="submit" disabled={submitting} className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/20">
                                     {submitting ? "Mise à jour..." : "Mettre à jour la dépense"}
                                 </Button>
                             </div>

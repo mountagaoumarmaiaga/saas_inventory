@@ -243,7 +243,7 @@ export default function AdminInvoicesIndex() {
                     ) : (
                         <div className="relative w-full overflow-auto">
                             <table className="w-full caption-bottom text-sm">
-                                <thead>
+                                <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
                                     <tr className="border-b border-border/40 bg-muted/20">
                                         <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Numéro</th>
                                         <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Client</th>
@@ -256,13 +256,13 @@ export default function AdminInvoicesIndex() {
 
                                 <tbody className="divide-y divide-border/30">
                                     {groupItemsByDate(items, (i: Invoice) => i.created_at || i.date).flatMap(group => [
-                                        <tr key={`header-${group.label}`} className="bg-muted/10">
+                                        <tr key={`header-${group.label} `} className="group hover:bg-gradient-to-r hover:from-indigo-500/5 hover:to-blue-500/5 transition-all duration-300 bg-muted/10">
                                             <td colSpan={6} className="py-2 px-4 font-semibold text-xs text-muted-foreground">
                                                 {group.label}
                                             </td>
                                         </tr>,
                                         ...group.items.map((invoice) => (
-                                            <tr key={invoice.id} className="group hover:bg-muted/30 transition-colors">
+                                            <tr key={invoice.id}  className="group hover:bg-gradient-to-r hover:from-indigo-500/5 hover:to-blue-500/5 transition-all duration-300 group hover:bg-muted/30 transition-colors">
                                                 <td className="p-4 align-middle font-medium">
                                                     <div className="flex flex-col">
                                                         <span className="text-foreground">{invoice.number}</span>
@@ -309,7 +309,7 @@ export default function AdminInvoicesIndex() {
                                                             </Button>
                                                         )}
                                                         {invoice.status === 'PAID' && (
-                                                            <Button variant="ghost" size="icon" onClick={() => handleStatusChange(invoice, 'unpay')} title="Marquer comme Impayé" className="h-8 w-8 text-orange-600 hover:text-orange-700 hover:bg-orange-50">
+                                                            <Button variant="ghost" size="icon" onClick={() => handleStatusChange(invoice, 'unpay')} title="Marquer comme Impayé" className="h-8 w-8 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50">
                                                                 <XCircle className="h-4 w-4" />
                                                             </Button>
                                                         )}

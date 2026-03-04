@@ -86,7 +86,7 @@ export default function AdminDeliveryNotesIndex() {
                     ) : (
                         <div className="relative w-full overflow-auto">
                             <table className="w-full caption-bottom text-sm">
-                                <thead>
+                                <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
                                     <tr className="border-b border-border/40 bg-muted/20">
                                         <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Référence</th>
                                         <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Date</th>
@@ -101,13 +101,13 @@ export default function AdminDeliveryNotesIndex() {
                                         const grouped = groupItemsByDate(items, (item: DeliveryNote) => item.created_at || item.delivery_date);
 
                                         return grouped.flatMap(group => [
-                                            <tr key={`header-${group.label}`} className="bg-muted/10">
+                                            <tr key={`header-${group.label} `} className="group hover:bg-gradient-to-r hover:from-indigo-500/5 hover:to-blue-500/5 transition-all duration-300 bg-muted/10">
                                                 <td colSpan={5} className="py-2 px-4 font-semibold text-xs text-muted-foreground">
                                                     {group.label}
                                                 </td>
                                             </tr>,
                                             ...group.items.map(item => (
-                                                <tr key={item.id} className="group hover:bg-muted/30 transition-colors">
+                                                <tr key={item.id}  className="group hover:bg-gradient-to-r hover:from-indigo-500/5 hover:to-blue-500/5 transition-all duration-300 group hover:bg-muted/30 transition-colors">
                                                     <td className="p-4 align-middle font-medium text-foreground">{item.reference}</td>
                                                     <td className="p-4 align-middle text-muted-foreground text-xs">{new Date(item.delivery_date).toLocaleDateString()}</td>
                                                     <td className="p-4 align-middle">

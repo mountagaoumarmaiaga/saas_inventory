@@ -134,7 +134,7 @@ export default function SuppliersIndex() {
                 <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden flex flex-col">
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left">
-                            <thead className="bg-muted/50 text-muted-foreground text-xs uppercase font-medium border-b border-border">
+                            <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
                                 <tr>
                                     <th className="px-6 py-4">Nom</th>
                                     <th className="px-6 py-4">Contact</th>
@@ -166,7 +166,7 @@ export default function SuppliersIndex() {
                                     </tr>
                                 ) : (
                                     items.map((supplier) => (
-                                        <tr key={supplier.id} className="hover:bg-muted/30 transition-colors group">
+                                        <tr key={supplier.id}  className="group hover:bg-gradient-to-r hover:from-indigo-500/5 hover:to-blue-500/5 transition-all duration-300 hover:bg-muted/30 transition-colors group">
                                             <td className="px-6 py-4">
                                                 <div className="font-medium text-foreground">{supplier.name}</div>
                                                 {supplier.tax_number && (

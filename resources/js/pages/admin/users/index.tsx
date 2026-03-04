@@ -168,7 +168,7 @@ export default function AdminUsersIndex() {
                         </div>
                         <Button
                             onClick={() => setCreateOpen(true)}
-                            className="h-12 px-6 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105"
+                            className="h-12 px-6 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 transition-all duration-300 hover:scale-105"
                         >
                             <UserPlus className="mr-2 h-5 w-5" />
                             Ajouter un utilisateur
@@ -182,7 +182,7 @@ export default function AdminUsersIndex() {
                             <Input
                                 type="search"
                                 placeholder="Rechercher par nom ou email..."
-                                className="h-12 pl-11 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-orange-500/50 transition-all duration-300 shadow-lg"
+                                className="h-12 pl-11 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
                                 value={q}
                                 onChange={(e) => setQ(e.target.value)}
                             />
@@ -205,7 +205,7 @@ export default function AdminUsersIndex() {
                             </div>
                         ) : filteredUsers.length === 0 ? (
                             <div className="relative flex flex-col items-center justify-center p-12 text-center">
-                                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center border-2 border-orange-500/20">
+                                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center border-2 border-indigo-500/20">
                                     <UserIcon className="h-8 w-8 text-orange-500/60" />
                                 </div>
                                 <h3 className="mt-4 font-semibold text-foreground">Aucun utilisateur</h3>
@@ -216,7 +216,7 @@ export default function AdminUsersIndex() {
                         ) : (
                             <div className="relative w-full overflow-auto">
                                 <table className="w-full caption-bottom text-sm">
-                                    <thead className="bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border-b-2 border-orange-500/20">
+                                    <thead className="bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border-b-2 border-indigo-500/20">
                                         <tr>
                                             <th className="h-14 px-4 text-left align-middle font-bold text-sm text-foreground/90">Nom</th>
                                             <th className="h-14 px-4 text-left align-middle font-bold text-sm text-foreground/90">Email</th>
@@ -232,7 +232,7 @@ export default function AdminUsersIndex() {
                                                 <td className="p-4 align-middle text-muted-foreground">{user.email}</td>
                                                 <td className="p-4 align-middle">
                                                     {user.role === 'admin' ? (
-                                                        <Badge className="gap-1 bg-gradient-to-r from-orange-500/20 to-amber-500/20 border-orange-500/30 text-orange-700 dark:text-orange-400">
+                                                        <Badge className="gap-1 bg-gradient-to-r from-orange-500/20 to-amber-500/20 border-indigo-500/30 text-indigo-700 dark:text-orange-400">
                                                             <Shield className="h-3 w-3" />
                                                             Admin
                                                         </Badge>
@@ -252,7 +252,7 @@ export default function AdminUsersIndex() {
                                                                 setSelectedUser(user);
                                                                 setEditOpen(true);
                                                             }}
-                                                            className="hover:bg-orange-500/10 hover:text-orange-600"
+                                                            className="hover:bg-indigo-500/10 hover:text-indigo-600"
                                                         >
                                                             <Pencil className="h-4 w-4" />
                                                         </Button>

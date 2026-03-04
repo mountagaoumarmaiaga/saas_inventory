@@ -318,7 +318,7 @@ export default function ShowPurchase({ id }: Props) {
                                 </Badge>
                                 {purchase.payment_status && (
                                     <Badge variant={purchase.payment_status === 'PAID' ? 'default' : purchase.payment_status === 'PARTIAL' ? 'outline' : 'destructive'}
-                                        className={purchase.payment_status === 'PAID' ? 'bg-emerald-500' : purchase.payment_status === 'PARTIAL' ? 'border-amber-500 text-amber-600' : ''}>
+                                        className={purchase.payment_status === 'PAID' ? 'bg-emerald-500' : purchase.payment_status === 'PARTIAL' ? 'border-blue-500 text-blue-600' : ''}>
                                         {purchase.payment_status === 'PAID' ? 'Payé' : purchase.payment_status === 'PARTIAL' ? 'Partiel' : 'Non payé'}
                                     </Badge>
                                 )}
@@ -384,7 +384,7 @@ export default function ShowPurchase({ id }: Props) {
                                                     <span className={`px-2 py-1 rounded text-xs font-semibold ${item.received_quantity === item.quantity
                                                         ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400'
                                                         : item.received_quantity > 0
-                                                            ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400'
+                                                            ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
                                                             : 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300'
                                                         }`}>
                                                         {item.received_quantity}

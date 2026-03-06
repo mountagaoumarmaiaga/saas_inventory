@@ -23,10 +23,12 @@ class CustomCspPolicy implements Preset
             ->add(Directive::MEDIA, Keyword::SELF)
             ->add(Directive::OBJECT, Keyword::NONE)
             ->add(Directive::SCRIPT, Keyword::SELF)
+            ->add(Directive::SCRIPT, 'https://challenges.cloudflare.com')
+            ->add(Directive::SCRIPT, 'https://*.laravel.cloud')
             ->add(Directive::STYLE, Keyword::SELF)
-            ->addNonce(Directive::SCRIPT)
             
             // Custom Directives
+            ->add(Directive::SCRIPT, Keyword::UNSAFE_INLINE)
             ->add(Directive::STYLE, Keyword::UNSAFE_INLINE)
             ->add(Directive::STYLE, 'https://fonts.googleapis.com')
             ->add(Directive::SCRIPT, Keyword::UNSAFE_EVAL)

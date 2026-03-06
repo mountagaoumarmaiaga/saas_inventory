@@ -53,10 +53,10 @@ export default function StackedAreaChart({ data }: StackedAreaChartProps) {
         return null;
     };
 
-    if (!mounted) return <div style={{ width: '100%', height: '100%' }} />;
+    if (!mounted) return <div style={{ width: '100%', height: '100%', minHeight: '200px' }} />;
 
     return (
-        <ResponsiveContainer width="100%" height="100%" debounce={50} minWidth={1} minHeight={1}>
+        <ResponsiveContainer width="99%" height="100%">
             <AreaChart
                 data={data.map(d => ({
                     ...d,

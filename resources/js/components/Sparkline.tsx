@@ -13,19 +13,21 @@ export default function Sparkline({ data, color = '#10b981' }: SparklineProps) {
     // Transform data into chart format
     const chartData = data.map((value, index) => ({ value, index }));
 
-    if (!mounted) return <div style={{ width: '100%', height: '100%' }} />;
+    if (!mounted) return <div style={{ width: '100%', height: '100%', minHeight: '96px' }} />;
 
     return (
-        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
-            <LineChart data={chartData}>
-                <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke={color}
-                    strokeWidth={2}
-                    dot={false}
-                />
-            </LineChart>
-        </ResponsiveContainer>
+        <div style={{ width: '100%', height: '100%', minHeight: '96px' }}>
+            <ResponsiveContainer width="99%" height="100%">
+                <LineChart data={chartData}>
+                    <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke={color}
+                        strokeWidth={2}
+                        dot={false}
+                    />
+                </LineChart>
+            </ResponsiveContainer>
+        </div>
     );
 }

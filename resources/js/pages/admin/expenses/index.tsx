@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Head, Link, router } from "@inertiajs/react";
+import axios from "axios";
 import AppLayout from "@/layouts/app-layout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,11 +27,8 @@ export default function ExpensesIndex({ stats }: ExpensesIndexProps) {
     const loadExpenses = async () => {
         try {
             setLoading(true);
-            const res = await fetch(`/admin/api/expenses?page=${page}`, {
-                headers: { 'Accept': 'application/json' }
-            });
-            const data = await res.json();
-            setExpenses({ data: data.data, meta: data });
+            const res = await axios.get(`/admin/api/expenses?page=${page}`);
+            setExpenses({ data: res.data.data, meta: res.data });
         } catch (e: any) {
             toast.error("Erreur de chargement des dépenses");
         } finally {
@@ -45,19 +43,11 @@ export default function ExpensesIndex({ stats }: ExpensesIndexProps) {
     const handleDelete = async (id: number) => {
         if (!confirm('Voulez-vous supprimer cette dépense ?')) return;
         try {
-            const res = await fetch(`/admin/api/expenses/${id}`, {
-                method: 'DELETE',
-                headers: { 'Accept': 'application/json' }
-            });
-            if (res.ok) {
-                toast.success('Dépense supprimée');
-                loadExpenses();
-            } else {
-                const data = await res.json();
-                toast.error(data.message || 'Erreur lors de la suppression');
-            }
+            await axios.delete(`/admin/api/expenses/${id}`);
+            toast.success('Dépense supprimée');
+            loadExpenses();
         } catch (e: any) {
-            toast.error(e.message);
+            toast.error(e.response?.data?.message || e.message || 'Erreur lors de la suppression');
         }
     };
 

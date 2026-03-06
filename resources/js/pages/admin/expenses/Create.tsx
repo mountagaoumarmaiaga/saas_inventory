@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-const getCsrfToken = () => decodeURIComponent(document.cookie.split(';').find(c => c.trim().startsWith('XSRF-TOKEN='))?.split('=')[1] ?? '');
 import { Head, Link, router } from "@inertiajs/react";
+import axios from "axios";
 import AppLayout from "@/layouts/app-layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -28,11 +28,8 @@ export default function ExpenseCreate() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const res = await fetch('/admin/api/expense-categories', {
-                    headers: { 'Accept': 'application/json' }
-                });
-                const data = await res.json();
-                setCategories(data);
+                const res = await axios.get('/admin/api/expense-categories');
+                setCategories(res.data);
             } catch (e) {
                 toast.error("Erreur de chargement des catégories");
             }
@@ -49,18 +46,15 @@ export default function ExpenseCreate() {
         dataForm.append('receipt', file);
 
         try {
-            const res = await fetch('/admin/api/expenses/analyze-receipt', {
-                method: 'POST',
+            const res = await axios.post('/admin/api/expenses/analyze-receipt', dataForm, {
                 headers: {
-                    'Accept': 'application/json',
-                    'X-XSRF-TOKEN': getCsrfToken()
-                },
-                body: dataForm
+                    'Content-Type': 'multipart/form-data'
+                }
             });
 
-            const result = await res.json();
+            const result = res.data;
 
-            if (res.ok && result.data) {
+            if (result.data) {
                 toast.success('Reçu analysé avec succès !');
 
                 // Pre-fill fields if data was found
@@ -74,8 +68,8 @@ export default function ExpenseCreate() {
             } else {
                 toast.error(result.message || 'Impossible d\'analyser ce reçu.');
             }
-        } catch (error) {
-            toast.error('Erreur lors de la communication avec le service OCR.');
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || 'Erreur lors de la communication avec le service OCR.');
         } finally {
             setAnalyzing(false);
             // Reset input
@@ -87,20 +81,11 @@ export default function ExpenseCreate() {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const res = await fetch('/admin/api/expenses', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-XSRF-TOKEN': getCsrfToken() },
-                body: JSON.stringify(formData)
-            });
-            const data = await res.json();
-            if (res.ok) {
-                toast.success('Dépense enregistrée avec succès');
-                router.visit('/admin/expenses');
-            } else {
-                toast.error(data.message || 'Erreur lors de la création');
-            }
+            await axios.post('/admin/api/expenses', formData);
+            toast.success('Dépense enregistrée avec succès');
+            router.visit('/admin/expenses');
         } catch (e: any) {
-            toast.error(e.message);
+            toast.error(e.response?.data?.message || e.message || 'Erreur lors de la création');
         } finally {
             setSubmitting(false);
         }

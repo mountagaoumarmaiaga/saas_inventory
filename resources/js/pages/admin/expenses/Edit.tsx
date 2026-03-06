@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-const getCsrfToken = () => decodeURIComponent(document.cookie.split(';').find(c => c.trim().startsWith('XSRF-TOKEN='))?.split('=')[1] ?? '');
 import { Head, router } from "@inertiajs/react";
+import axios from "axios";
 import AppLayout from "@/layouts/app-layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -28,12 +28,12 @@ export default function ExpenseEdit({ id }: { id: number }) {
         const loadInitialData = async () => {
             try {
                 const [catsRes, expenseRes] = await Promise.all([
-                    fetch('/admin/api/expense-categories', { headers: { 'Accept': 'application/json' } }),
-                    fetch(`/admin/api/expenses/${id}`, { headers: { 'Accept': 'application/json' } })
+                    axios.get('/admin/api/expense-categories'),
+                    axios.get(`/admin/api/expenses/${id}`)
                 ]);
 
-                const catsData = await catsRes.json();
-                const expenseData = await expenseRes.json();
+                const catsData = catsRes.data;
+                const expenseData = expenseRes.data;
 
                 setCategories(catsData);
 
@@ -60,20 +60,11 @@ export default function ExpenseEdit({ id }: { id: number }) {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const res = await fetch(`/admin/api/expenses/${id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-XSRF-TOKEN': getCsrfToken() },
-                body: JSON.stringify(formData)
-            });
-            const data = await res.json();
-            if (res.ok) {
-                toast.success('Dépense mise à jour avec succès');
-                router.visit('/admin/expenses');
-            } else {
-                toast.error(data.message || 'Erreur lors de la mise à jour');
-            }
+            await axios.put(`/admin/api/expenses/${id}`, formData);
+            toast.success('Dépense mise à jour avec succès');
+            router.visit('/admin/expenses');
         } catch (e: any) {
-            toast.error(e.message);
+            toast.error(e.response?.data?.message || e.message || 'Erreur lors de la mise à jour');
         } finally {
             setSubmitting(false);
         }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Head, router } from "@inertiajs/react";
+import axios from "axios";
 import AppLayout from "@/layouts/app-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,11 +24,8 @@ export default function ExpenseCategoriesIndex() {
 
     const loadCategories = async () => {
         try {
-            const res = await fetch('/admin/api/expense-categories', {
-                headers: { 'Accept': 'application/json' }
-            });
-            const data = await res.json();
-            setCategories(data);
+            const res = await axios.get('/admin/api/expense-categories');
+            setCategories(res.data);
         } catch (e: any) {
             toast.error(e.message || "Erreur de chargement");
         } finally {
@@ -45,23 +43,14 @@ export default function ExpenseCategoriesIndex() {
         try {
             const isEdit = formData.id > 0;
             const url = isEdit ? `/admin/api/expense-categories/${formData.id}` : '/admin/api/expense-categories';
-            const method = isEdit ? 'PUT' : 'POST';
+            const method = isEdit ? 'put' : 'post';
 
-            const res = await fetch(url, {
-                method,
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify({ name: formData.name })
-            });
-            const data = await res.json();
-            if (res.ok) {
-                toast.success(isEdit ? 'Catégorie mise à jour' : 'Catégorie créée');
-                setIsModalOpen(false);
-                loadCategories();
-            } else {
-                toast.error(data.message || "Erreur");
-            }
+            const res = await axios[method](url, { name: formData.name });
+            toast.success(isEdit ? 'Catégorie mise à jour' : 'Catégorie créée');
+            setIsModalOpen(false);
+            loadCategories();
         } catch (e: any) {
-            toast.error(e.message);
+            toast.error(e.response?.data?.message || e.message || "Erreur");
         } finally {
             setSubmitting(false);
         }
@@ -70,19 +59,11 @@ export default function ExpenseCategoriesIndex() {
     const handleDelete = async (id: number) => {
         if (!confirm('Voulez-vous supprimer cette catégorie ?')) return;
         try {
-            const res = await fetch(`/admin/api/expense-categories/${id}`, {
-                method: 'DELETE',
-                headers: { 'Accept': 'application/json' }
-            });
-            if (res.ok) {
-                toast.success('Catégorie supprimée');
-                loadCategories();
-            } else {
-                const data = await res.json();
-                toast.error(data.message || 'Erreur lors de la suppression');
-            }
+            await axios.delete(`/admin/api/expense-categories/${id}`);
+            toast.success('Catégorie supprimée');
+            loadCategories();
         } catch (e: any) {
-            toast.error(e.message);
+            toast.error(e.response?.data?.message || e.message || 'Erreur lors de la suppression');
         }
     };
 

@@ -20,7 +20,7 @@
         </script>
 
         {{-- Inline style to set the HTML background color based on our theme in app.css --}}
-        <style @cspNonce>
+        <style>
             html { background-color: oklch(1 0 0); }
             html.dark { background-color: oklch(0.145 0 0); }
         </style>
@@ -35,7 +35,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         @viteReactRefresh
-        @routes(nonce: app(\Spatie\Csp\Nonce\NonceGenerator::class)->generate())
+        @routes(nonce: app('csp-nonce'))
         {{-- ✅ GARDE TA LIGNE, c’est OK pour inertia --}}
         @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
 

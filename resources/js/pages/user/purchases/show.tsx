@@ -106,7 +106,11 @@ export default function ShowPurchase({ id }: Props) {
             setCancelDialogOpen(false);
             loadPurchase();
         } catch (e: any) {
-            toast.error(e?.response?.data?.message || "Erreur lors de l'annulation");
+            if (e?.response?.status === 404) {
+                toast.error("Sur les bons de commande, l'utilisateur n'a pas ce droit.");
+            } else {
+                toast.error(e?.response?.data?.message || "Erreur lors de l'annulation");
+            }
             setLoading(false);
         }
     };

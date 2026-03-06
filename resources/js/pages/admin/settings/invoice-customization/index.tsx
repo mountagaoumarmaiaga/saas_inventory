@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Head, router } from "@inertiajs/react";
+import axios from "axios";
 import AppLayout from "@/layouts/app-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -70,11 +71,11 @@ export default function InvoiceCustomization() {
 
     async function loadSettings() {
         try {
-            const res = await fetch('/admin/api/settings/invoice');
-            const json = await res.json();
-            setSettings(json.data);
-            if (json.data.logo_url) {
-                setLogoPreview(json.data.logo_url);
+            const res = await axios.get('/admin/api/settings/invoice');
+            const data = res.data.data;
+            setSettings(data);
+            if (data.logo_url) {
+                setLogoPreview(data.logo_url);
             }
         } catch (e: any) {
             toast.error(e?.message ?? "Erreur chargement paramètres");
@@ -103,19 +104,13 @@ export default function InvoiceCustomization() {
             const formData = new FormData();
             formData.append('logo', logoFile);
 
-            const res = await fetch('/admin/api/settings/invoice/logo', {
-                method: 'POST',
+            const res = await axios.post('/admin/api/settings/invoice/logo', formData, {
                 headers: {
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                },
-                body: formData,
+                    'Content-Type': 'multipart/form-data',
+                }
             });
 
-            if (!res.ok) throw new Error('Erreur upload logo');
-
-            const json = await res.json();
-            setSettings(json.data);
+            setSettings(res.data.data);
             setLogoFile(null);
             toast.success("Logo uploadé avec succès !");
         } catch (e: any) {
@@ -130,50 +125,35 @@ export default function InvoiceCustomization() {
 
         setSaving(true);
         try {
-            const res = await fetch('/admin/api/settings/invoice', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-                },
-                body: JSON.stringify({
-                    name: settings.name,
-                    email: settings.email,
-                    phone: settings.phone,
-                    address: settings.address,
-                    invoice_header: settings.invoice_header,
-                    invoice_footer: settings.invoice_footer,
-                    invoice_template: settings.invoice_template,
-                    delivery_note_template: settings.delivery_note_template,
-                    purchase_template: settings.purchase_template,
-                    currency: settings.currency,
-                    currency_symbol: settings.currency_symbol,
-                    currency_position: settings.currency_position,
-                    qr_payment_link: settings.qr_payment_link,
-                }),
+            const res = await axios.put('/admin/api/settings/invoice', {
+                name: settings.name,
+                email: settings.email,
+                phone: settings.phone,
+                address: settings.address,
+                invoice_header: settings.invoice_header,
+                invoice_footer: settings.invoice_footer,
+                invoice_template: settings.invoice_template,
+                delivery_note_template: settings.delivery_note_template,
+                purchase_template: settings.purchase_template,
+                currency: settings.currency,
+                currency_symbol: settings.currency_symbol,
+                currency_position: settings.currency_position,
+                qr_payment_link: settings.qr_payment_link,
             });
 
-            if (!res.ok) {
-                if (res.status === 422) {
-                    const errorData = await res.json();
-                    if (errorData.errors) {
-                        const messages = Object.values(errorData.errors).flat().join('\n');
-                        throw new Error(messages || errorData.message || 'Erreur de validation');
-                    }
-                    throw new Error(errorData.message || 'Erreur de validation');
-                }
-                throw new Error('Erreur sauvegarde');
-            }
-
-            const json = await res.json();
-            setSettings(json.data);
+            setSettings(res.data.data);
             toast.success("Paramètres sauvegardés !");
 
             // Reload settings to ensure UI is in sync
             await loadSettings();
         } catch (e: any) {
-            toast.error(e?.message ?? "Erreur sauvegarde");
+            if (e.response && e.response.status === 422) {
+                const errorData = e.response.data;
+                const messages = errorData.errors ? Object.values(errorData.errors).flat().join('\n') : errorData.message;
+                toast.error(messages || 'Erreur de validation');
+            } else {
+                toast.error(e?.response?.data?.message || e?.message || "Erreur sauvegarde");
+            }
         } finally {
             setSaving(false);
         }

@@ -45,7 +45,9 @@ class CustomCspPolicy implements Preset
                 ->add(Directive::CONNECT, 'ws://localhost:*')
                 ->add(Directive::CONNECT, 'http://localhost:*')
                 ->add(Directive::SCRIPT, 'http://localhost:*')
-                ->add(Directive::STYLE, 'http://localhost:*');
+                ->add(Directive::SCRIPT, Keyword::UNSAFE_INLINE)
+                ->add(Directive::STYLE, 'http://localhost:*')
+                ->add(Directive::IMG, 'http://localhost:*');
         }
     }
 }

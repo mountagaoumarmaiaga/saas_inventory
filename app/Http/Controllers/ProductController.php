@@ -13,10 +13,14 @@ use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
-    public function __construct(
-        private ProductRepositoryInterface $products,
-        private ImageService $images
-    ) {}
+    private ProductRepositoryInterface $products;
+    private ImageService $images;
+
+    public function __construct()
+    {
+        $this->products = app(ProductRepositoryInterface::class);
+        $this->images = app(ImageService::class);
+    }
 
     public function index(Request $request)
     {

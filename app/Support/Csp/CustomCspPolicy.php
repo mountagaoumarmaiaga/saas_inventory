@@ -36,9 +36,15 @@ class CustomCspPolicy implements Preset
             // Google Fonts actual font files
             ->add(Directive::FONT, Keyword::SELF)
             ->add(Directive::FONT, 'https://fonts.gstatic.com')
-            // Supabase storage / images
+            // Supabase storage / images and external SVGs
             ->add(Directive::CONNECT, 'https://*.supabase.co')
-            ->add(Directive::IMG, [Keyword::SELF, 'data:', 'https://*.supabase.co', 'https://fonts.gstatic.com']);
+            ->add(Directive::IMG, [
+                Keyword::SELF, 
+                'data:', 
+                'https://*.supabase.co', 
+                'https://fonts.gstatic.com',
+                'https://grainy-gradients.vercel.app'
+            ]);
 
         if (app()->environment('local')) {
             $policy

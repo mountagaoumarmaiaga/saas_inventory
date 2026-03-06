@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 import pdf from './pdf'
 /**
 * @see \App\Http\Controllers\QuoteController::index
@@ -45,6 +45,43 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
+* @see \App\Http\Controllers\QuoteController::index
+* @see app/Http/Controllers/QuoteController.php:23
+* @route '/admin/api/quotes'
+*/
+const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\QuoteController::index
+* @see app/Http/Controllers/QuoteController.php:23
+* @route '/admin/api/quotes'
+*/
+indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\QuoteController::index
+* @see app/Http/Controllers/QuoteController.php:23
+* @route '/admin/api/quotes'
+*/
+indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+index.form = indexForm
+
+/**
 * @see \App\Http\Controllers\QuoteController::store
 * @see app/Http/Controllers/QuoteController.php:53
 * @route '/admin/api/quotes'
@@ -77,6 +114,28 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
     method: 'post',
 })
+
+/**
+* @see \App\Http\Controllers\QuoteController::store
+* @see app/Http/Controllers/QuoteController.php:53
+* @route '/admin/api/quotes'
+*/
+const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\QuoteController::store
+* @see app/Http/Controllers/QuoteController.php:53
+* @route '/admin/api/quotes'
+*/
+storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\QuoteController::show
@@ -147,6 +206,43 @@ show.head = (args: { quote: number | { id: number } } | [quote: number | { id: n
 })
 
 /**
+* @see \App\Http\Controllers\QuoteController::show
+* @see app/Http/Controllers/QuoteController.php:45
+* @route '/admin/api/quotes/{quote}'
+*/
+const showForm = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: show.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\QuoteController::show
+* @see app/Http/Controllers/QuoteController.php:45
+* @route '/admin/api/quotes/{quote}'
+*/
+showForm.get = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: show.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\QuoteController::show
+* @see app/Http/Controllers/QuoteController.php:45
+* @route '/admin/api/quotes/{quote}'
+*/
+showForm.head = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: show.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+show.form = showForm
+
+/**
 * @see \App\Http\Controllers\QuoteController::update
 * @see app/Http/Controllers/QuoteController.php:125
 * @route '/admin/api/quotes/{quote}'
@@ -203,6 +299,38 @@ update.put = (args: { quote: number | { id: number } } | [quote: number | { id: 
     url: update.url(args, options),
     method: 'put',
 })
+
+/**
+* @see \App\Http\Controllers\QuoteController::update
+* @see app/Http/Controllers/QuoteController.php:125
+* @route '/admin/api/quotes/{quote}'
+*/
+const updateForm = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: update.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PUT',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\QuoteController::update
+* @see app/Http/Controllers/QuoteController.php:125
+* @route '/admin/api/quotes/{quote}'
+*/
+updateForm.put = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: update.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PUT',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+update.form = updateForm
 
 /**
 * @see \App\Http\Controllers\QuoteController::destroy
@@ -263,6 +391,38 @@ destroy.delete = (args: { quote: number | { id: number } } | [quote: number | { 
 })
 
 /**
+* @see \App\Http\Controllers\QuoteController::destroy
+* @see app/Http/Controllers/QuoteController.php:192
+* @route '/admin/api/quotes/{quote}'
+*/
+const destroyForm = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'DELETE',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\QuoteController::destroy
+* @see app/Http/Controllers/QuoteController.php:192
+* @route '/admin/api/quotes/{quote}'
+*/
+destroyForm.delete = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'DELETE',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+destroy.form = destroyForm
+
+/**
 * @see \App\Http\Controllers\QuoteController::convert
 * @see app/Http/Controllers/QuoteController.php:199
 * @route '/admin/api/quotes/{quote}/convert-to-invoice'
@@ -319,6 +479,28 @@ convert.post = (args: { quote: number | { id: number } } | [quote: number | { id
     url: convert.url(args, options),
     method: 'post',
 })
+
+/**
+* @see \App\Http\Controllers\QuoteController::convert
+* @see app/Http/Controllers/QuoteController.php:199
+* @route '/admin/api/quotes/{quote}/convert-to-invoice'
+*/
+const convertForm = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: convert.url(args, options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\QuoteController::convert
+* @see app/Http/Controllers/QuoteController.php:199
+* @route '/admin/api/quotes/{quote}/convert-to-invoice'
+*/
+convertForm.post = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: convert.url(args, options),
+    method: 'post',
+})
+
+convert.form = convertForm
 
 const quotes = {
     index: Object.assign(index, index),

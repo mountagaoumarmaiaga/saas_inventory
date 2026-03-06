@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\ExpenseController::index
 * @see app/Http/Controllers/Admin/ExpenseController.php:68
@@ -44,6 +44,43 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
+* @see \App\Http\Controllers\Admin\ExpenseController::index
+* @see app/Http/Controllers/Admin/ExpenseController.php:68
+* @route '/user/api/expenses'
+*/
+const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::index
+* @see app/Http/Controllers/Admin/ExpenseController.php:68
+* @route '/user/api/expenses'
+*/
+indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::index
+* @see app/Http/Controllers/Admin/ExpenseController.php:68
+* @route '/user/api/expenses'
+*/
+indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+index.form = indexForm
+
+/**
 * @see \App\Http\Controllers\Admin\ExpenseController::store
 * @see app/Http/Controllers/Admin/ExpenseController.php:79
 * @route '/user/api/expenses'
@@ -78,6 +115,28 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 })
 
 /**
+* @see \App\Http\Controllers\Admin\ExpenseController::store
+* @see app/Http/Controllers/Admin/ExpenseController.php:79
+* @route '/user/api/expenses'
+*/
+const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::store
+* @see app/Http/Controllers/Admin/ExpenseController.php:79
+* @route '/user/api/expenses'
+*/
+storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+store.form = storeForm
+
+/**
 * @see \App\Http\Controllers\Admin\ExpenseController::analyze
 * @see app/Http/Controllers/Admin/ExpenseController.php:128
 * @route '/user/api/expenses/analyze-receipt'
@@ -110,6 +169,28 @@ analyze.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: analyze.url(options),
     method: 'post',
 })
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::analyze
+* @see app/Http/Controllers/Admin/ExpenseController.php:128
+* @route '/user/api/expenses/analyze-receipt'
+*/
+const analyzeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: analyze.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::analyze
+* @see app/Http/Controllers/Admin/ExpenseController.php:128
+* @route '/user/api/expenses/analyze-receipt'
+*/
+analyzeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: analyze.url(options),
+    method: 'post',
+})
+
+analyze.form = analyzeForm
 
 /**
 * @see \App\Http\Controllers\Admin\ExpenseController::show
@@ -180,6 +261,43 @@ show.head = (args: { expense: number | { id: number } } | [expense: number | { i
 })
 
 /**
+* @see \App\Http\Controllers\Admin\ExpenseController::show
+* @see app/Http/Controllers/Admin/ExpenseController.php:97
+* @route '/user/api/expenses/{expense}'
+*/
+const showForm = (args: { expense: number | { id: number } } | [expense: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: show.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::show
+* @see app/Http/Controllers/Admin/ExpenseController.php:97
+* @route '/user/api/expenses/{expense}'
+*/
+showForm.get = (args: { expense: number | { id: number } } | [expense: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: show.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::show
+* @see app/Http/Controllers/Admin/ExpenseController.php:97
+* @route '/user/api/expenses/{expense}'
+*/
+showForm.head = (args: { expense: number | { id: number } } | [expense: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: show.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+show.form = showForm
+
+/**
 * @see \App\Http\Controllers\Admin\ExpenseController::update
 * @see app/Http/Controllers/Admin/ExpenseController.php:104
 * @route '/user/api/expenses/{expense}'
@@ -238,6 +356,38 @@ update.put = (args: { expense: number | { id: number } } | [expense: number | { 
 })
 
 /**
+* @see \App\Http\Controllers\Admin\ExpenseController::update
+* @see app/Http/Controllers/Admin/ExpenseController.php:104
+* @route '/user/api/expenses/{expense}'
+*/
+const updateForm = (args: { expense: number | { id: number } } | [expense: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: update.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PUT',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::update
+* @see app/Http/Controllers/Admin/ExpenseController.php:104
+* @route '/user/api/expenses/{expense}'
+*/
+updateForm.put = (args: { expense: number | { id: number } } | [expense: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: update.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PUT',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+update.form = updateForm
+
+/**
 * @see \App\Http\Controllers\Admin\ExpenseController::destroy
 * @see app/Http/Controllers/Admin/ExpenseController.php:121
 * @route '/user/api/expenses/{expense}'
@@ -294,6 +444,38 @@ destroy.delete = (args: { expense: number | { id: number } } | [expense: number 
     url: destroy.url(args, options),
     method: 'delete',
 })
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::destroy
+* @see app/Http/Controllers/Admin/ExpenseController.php:121
+* @route '/user/api/expenses/{expense}'
+*/
+const destroyForm = (args: { expense: number | { id: number } } | [expense: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'DELETE',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::destroy
+* @see app/Http/Controllers/Admin/ExpenseController.php:121
+* @route '/user/api/expenses/{expense}'
+*/
+destroyForm.delete = (args: { expense: number | { id: number } } | [expense: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'DELETE',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+destroy.form = destroyForm
 
 const expenses = {
     index: Object.assign(index, index),

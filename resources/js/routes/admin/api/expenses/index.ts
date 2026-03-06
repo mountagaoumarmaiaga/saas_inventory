@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\Admin\ExpenseController::analyze
 * @see app/Http/Controllers/Admin/ExpenseController.php:128
@@ -32,6 +32,28 @@ analyze.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: analyze.url(options),
     method: 'post',
 })
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::analyze
+* @see app/Http/Controllers/Admin/ExpenseController.php:128
+* @route '/admin/api/expenses/analyze-receipt'
+*/
+const analyzeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: analyze.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseController::analyze
+* @see app/Http/Controllers/Admin/ExpenseController.php:128
+* @route '/admin/api/expenses/analyze-receipt'
+*/
+analyzeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: analyze.url(options),
+    method: 'post',
+})
+
+analyze.form = analyzeForm
 
 const expenses = {
     analyze: Object.assign(analyze, analyze),

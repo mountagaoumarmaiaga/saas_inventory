@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../wayfinder'
 /**
 * @see routes/web.php:237
 * @route '/admin/settings/invoice-customization'
@@ -38,6 +38,40 @@ invoiceCustomization.head = (options?: RouteQueryOptions): RouteDefinition<'head
     url: invoiceCustomization.url(options),
     method: 'head',
 })
+
+/**
+* @see routes/web.php:237
+* @route '/admin/settings/invoice-customization'
+*/
+const invoiceCustomizationForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: invoiceCustomization.url(options),
+    method: 'get',
+})
+
+/**
+* @see routes/web.php:237
+* @route '/admin/settings/invoice-customization'
+*/
+invoiceCustomizationForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: invoiceCustomization.url(options),
+    method: 'get',
+})
+
+/**
+* @see routes/web.php:237
+* @route '/admin/settings/invoice-customization'
+*/
+invoiceCustomizationForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: invoiceCustomization.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+invoiceCustomization.form = invoiceCustomizationForm
 
 const settings = {
     invoiceCustomization: Object.assign(invoiceCustomization, invoiceCustomization),

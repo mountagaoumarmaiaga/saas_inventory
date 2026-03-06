@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see routes/web.php:278
 * @route '/admin/expense-categories'
@@ -40,6 +40,40 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
+* @see routes/web.php:278
+* @route '/admin/expense-categories'
+*/
+const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see routes/web.php:278
+* @route '/admin/expense-categories'
+*/
+indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see routes/web.php:278
+* @route '/admin/expense-categories'
+*/
+indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+index.form = indexForm
+
+/**
 * @see \App\Http\Controllers\Admin\ExpenseCategoryController::index
 * @see app/Http/Controllers/Admin/ExpenseCategoryController.php:11
 * @route '/admin/api/expense-categories'
@@ -84,6 +118,43 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
+* @see \App\Http\Controllers\Admin\ExpenseCategoryController::index
+* @see app/Http/Controllers/Admin/ExpenseCategoryController.php:11
+* @route '/admin/api/expense-categories'
+*/
+const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseCategoryController::index
+* @see app/Http/Controllers/Admin/ExpenseCategoryController.php:11
+* @route '/admin/api/expense-categories'
+*/
+indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseCategoryController::index
+* @see app/Http/Controllers/Admin/ExpenseCategoryController.php:11
+* @route '/admin/api/expense-categories'
+*/
+indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+index.form = indexForm
+
+/**
 * @see \App\Http\Controllers\Admin\ExpenseCategoryController::store
 * @see app/Http/Controllers/Admin/ExpenseCategoryController.php:20
 * @route '/admin/api/expense-categories'
@@ -116,6 +187,28 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
     method: 'post',
 })
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseCategoryController::store
+* @see app/Http/Controllers/Admin/ExpenseCategoryController.php:20
+* @route '/admin/api/expense-categories'
+*/
+const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseCategoryController::store
+* @see app/Http/Controllers/Admin/ExpenseCategoryController.php:20
+* @route '/admin/api/expense-categories'
+*/
+storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\Admin\ExpenseCategoryController::update
@@ -180,6 +273,53 @@ update.patch = (args: { expense_category: string | number } | [expense_category:
 })
 
 /**
+* @see \App\Http\Controllers\Admin\ExpenseCategoryController::update
+* @see app/Http/Controllers/Admin/ExpenseCategoryController.php:33
+* @route '/admin/api/expense-categories/{expense_category}'
+*/
+const updateForm = (args: { expense_category: string | number } | [expense_category: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: update.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PUT',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseCategoryController::update
+* @see app/Http/Controllers/Admin/ExpenseCategoryController.php:33
+* @route '/admin/api/expense-categories/{expense_category}'
+*/
+updateForm.put = (args: { expense_category: string | number } | [expense_category: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: update.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PUT',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseCategoryController::update
+* @see app/Http/Controllers/Admin/ExpenseCategoryController.php:33
+* @route '/admin/api/expense-categories/{expense_category}'
+*/
+updateForm.patch = (args: { expense_category: string | number } | [expense_category: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: update.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PATCH',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+update.form = updateForm
+
+/**
 * @see \App\Http\Controllers\Admin\ExpenseCategoryController::destroy
 * @see app/Http/Controllers/Admin/ExpenseCategoryController.php:48
 * @route '/admin/api/expense-categories/{expense_category}'
@@ -230,6 +370,38 @@ destroy.delete = (args: { expense_category: string | number } | [expense_categor
     url: destroy.url(args, options),
     method: 'delete',
 })
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseCategoryController::destroy
+* @see app/Http/Controllers/Admin/ExpenseCategoryController.php:48
+* @route '/admin/api/expense-categories/{expense_category}'
+*/
+const destroyForm = (args: { expense_category: string | number } | [expense_category: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'DELETE',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\Admin\ExpenseCategoryController::destroy
+* @see app/Http/Controllers/Admin/ExpenseCategoryController.php:48
+* @route '/admin/api/expense-categories/{expense_category}'
+*/
+destroyForm.delete = (args: { expense_category: string | number } | [expense_category: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'DELETE',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+destroy.form = destroyForm
 
 const expenseCategories = {
     index: Object.assign(index, index),

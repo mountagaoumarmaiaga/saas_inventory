@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\SuperAdmin\EnterpriseController::index
 * @see app/Http/Controllers/SuperAdmin/EnterpriseController.php:15
@@ -44,6 +44,43 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
+* @see \App\Http\Controllers\SuperAdmin\EnterpriseController::index
+* @see app/Http/Controllers/SuperAdmin/EnterpriseController.php:15
+* @route '/super-admin/enterprises'
+*/
+const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\SuperAdmin\EnterpriseController::index
+* @see app/Http/Controllers/SuperAdmin/EnterpriseController.php:15
+* @route '/super-admin/enterprises'
+*/
+indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\SuperAdmin\EnterpriseController::index
+* @see app/Http/Controllers/SuperAdmin/EnterpriseController.php:15
+* @route '/super-admin/enterprises'
+*/
+indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: index.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+index.form = indexForm
+
+/**
 * @see \App\Http\Controllers\SuperAdmin\EnterpriseController::store
 * @see app/Http/Controllers/SuperAdmin/EnterpriseController.php:23
 * @route '/super-admin/enterprises'
@@ -76,6 +113,28 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
     method: 'post',
 })
+
+/**
+* @see \App\Http\Controllers\SuperAdmin\EnterpriseController::store
+* @see app/Http/Controllers/SuperAdmin/EnterpriseController.php:23
+* @route '/super-admin/enterprises'
+*/
+const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\SuperAdmin\EnterpriseController::store
+* @see app/Http/Controllers/SuperAdmin/EnterpriseController.php:23
+* @route '/super-admin/enterprises'
+*/
+storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\SuperAdmin\EnterpriseController::resetPassword
@@ -128,6 +187,28 @@ resetPassword.post = (args: { id: string | number } | [id: string | number ] | s
     url: resetPassword.url(args, options),
     method: 'post',
 })
+
+/**
+* @see \App\Http\Controllers\SuperAdmin\EnterpriseController::resetPassword
+* @see app/Http/Controllers/SuperAdmin/EnterpriseController.php:70
+* @route '/super-admin/enterprises/{id}/reset-password'
+*/
+const resetPasswordForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: resetPassword.url(args, options),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\SuperAdmin\EnterpriseController::resetPassword
+* @see app/Http/Controllers/SuperAdmin/EnterpriseController.php:70
+* @route '/super-admin/enterprises/{id}/reset-password'
+*/
+resetPasswordForm.post = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: resetPassword.url(args, options),
+    method: 'post',
+})
+
+resetPassword.form = resetPasswordForm
 
 const enterprises = {
     index: Object.assign(index, index),

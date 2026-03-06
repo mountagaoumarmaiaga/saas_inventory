@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PaymentController::view
 * @see app/Http/Controllers/PaymentController.php:91
@@ -68,6 +68,43 @@ view.head = (args: { payment: number | { id: number } } | [payment: number | { i
 })
 
 /**
+* @see \App\Http\Controllers\PaymentController::view
+* @see app/Http/Controllers/PaymentController.php:91
+* @route '/admin/api/payments/{payment}/pdf/view'
+*/
+const viewForm = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: view.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\PaymentController::view
+* @see app/Http/Controllers/PaymentController.php:91
+* @route '/admin/api/payments/{payment}/pdf/view'
+*/
+viewForm.get = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: view.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\PaymentController::view
+* @see app/Http/Controllers/PaymentController.php:91
+* @route '/admin/api/payments/{payment}/pdf/view'
+*/
+viewForm.head = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: view.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+view.form = viewForm
+
+/**
 * @see \App\Http\Controllers\PaymentController::download
 * @see app/Http/Controllers/PaymentController.php:97
 * @route '/admin/api/payments/{payment}/pdf/download'
@@ -134,6 +171,43 @@ download.head = (args: { payment: number | { id: number } } | [payment: number |
     url: download.url(args, options),
     method: 'head',
 })
+
+/**
+* @see \App\Http\Controllers\PaymentController::download
+* @see app/Http/Controllers/PaymentController.php:97
+* @route '/admin/api/payments/{payment}/pdf/download'
+*/
+const downloadForm = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: download.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\PaymentController::download
+* @see app/Http/Controllers/PaymentController.php:97
+* @route '/admin/api/payments/{payment}/pdf/download'
+*/
+downloadForm.get = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: download.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\PaymentController::download
+* @see app/Http/Controllers/PaymentController.php:97
+* @route '/admin/api/payments/{payment}/pdf/download'
+*/
+downloadForm.head = (args: { payment: number | { id: number } } | [payment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: download.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+download.form = downloadForm
 
 const pdf = {
     view: Object.assign(view, view),

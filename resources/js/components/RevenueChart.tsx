@@ -63,10 +63,10 @@ export default function RevenueChart({ data }: RevenueChartProps) {
         return null;
     };
 
-    if (!mounted) return <div style={{ width: '100%', height: '100%' }} />;
+    if (!mounted) return <div style={{ width: '100%', height: '100%', minHeight: '200px' }} />;
 
     return (
-        <ResponsiveContainer width="100%" height="100%" debounce={50} minWidth={1} minHeight={1}>
+        <ResponsiveContainer width="99%" height="100%">
             <AreaChart
                 data={chartData}
                 margin={{ top: 10, right: 10, left: 0, bottom: 0 }}

@@ -13,23 +13,10 @@ interface CashflowChartProps {
 }
 
 export default function CashflowChart({ data }: CashflowChartProps) {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [hasDimensions, setHasDimensions] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        if (!containerRef.current) return;
-        const obs = new ResizeObserver((entries) => {
-            // Use requestAnimationFrame to avoid "ResizeObserver loop" browser errors
-            requestAnimationFrame(() => {
-                for (const entry of entries) {
-                    if (entry.contentRect.width > 0 && entry.contentRect.height > 0) {
-                        setHasDimensions(true);
-                    }
-                }
-            });
-        });
-        obs.observe(containerRef.current);
-        return () => obs.disconnect();
+        setMounted(true);
     }, []);
 
     // Format date labels
@@ -90,10 +77,12 @@ export default function CashflowChart({ data }: CashflowChartProps) {
         return null;
     };
 
+    if (!mounted) return <div style={{ width: '100%', height: '100%', minHeight: '200px' }} />;
+
     return (
-        <div ref={containerRef} style={{ width: '100%', height: '100%' }}>
-            {hasDimensions && data && data.length > 0 && (
-                <ResponsiveContainer width="100%" height="100%" debounce={50} minWidth={1} minHeight={1}>
+        <div style={{ width: '100%', height: '100%', minHeight: '200px' }}>
+            {data && data.length > 0 && (
+                <ResponsiveContainer width="99%" height="100%">
                     <ComposedChart
                         data={chartData}
                         margin={{ top: 20, right: 20, left: 10, bottom: 0 }}

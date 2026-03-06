@@ -13,31 +13,7 @@ interface ChartContainerProps {
     onRetry?: () => void;
 }
 
-function ChartWrapper({ children }: { children: ReactNode }) {
-    const [ready, setReady] = useState(false);
-    const ref = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!ref.current) return;
-        const obs = new ResizeObserver((entries) => {
-            requestAnimationFrame(() => {
-                for (const e of entries) {
-                    if (e.contentRect.width > 0 && e.contentRect.height > 0) {
-                        setReady(true);
-                    }
-                }
-            });
-        });
-        obs.observe(ref.current);
-        return () => obs.disconnect();
-    }, []);
-
-    return (
-        <div ref={ref} style={{ width: '100%', height: '100%' }}>
-            {ready && children}
-        </div>
-    );
-}
+// ChartWrapper removed, Recharts handles ResizeObserver organically
 
 export default function ChartContainer({
     title,
@@ -49,28 +25,8 @@ export default function ChartContainer({
     error = null,
     onRetry
 }: ChartContainerProps) {
-    const [hasDimensions, setHasDimensions] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!containerRef.current) return;
-
-        const resizeObserver = new ResizeObserver((entries) => {
-            requestAnimationFrame(() => {
-                for (const entry of entries) {
-                    if (entry.contentRect.width > 0 && entry.contentRect.height > 0) {
-                        setHasDimensions(true);
-                    }
-                }
-            });
-        });
-
-        resizeObserver.observe(containerRef.current);
-
-        return () => {
-            resizeObserver.disconnect();
-        };
-    }, []);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
 
     // Container style for strict dimensions
     const containerStyle = {
@@ -100,10 +56,10 @@ export default function ChartContainer({
             )}
 
             {/* Content Area */}
-            <div className="flex-1 w-full min-h-0 relative p-4" ref={containerRef}>
+            <div className="flex-1 w-full relative p-4" style={{ minHeight: '200px' }}>
                 <AnimatePresence mode="wait">
                     {/* Loading State */}
-                    {(!hasDimensions || loading) && (
+                    {(!mounted || loading) && (
                         <motion.div
                             key="loader"
                             initial={{ opacity: 0 }}
@@ -118,7 +74,7 @@ export default function ChartContainer({
                     )}
 
                     {/* Error State */}
-                    {hasDimensions && !loading && error && (
+                    {mounted && !loading && error && (
                         <motion.div
                             key="error"
                             initial={{ opacity: 0 }}
@@ -146,16 +102,16 @@ export default function ChartContainer({
                     )}
 
                     {/* Chart Content */}
-                    {hasDimensions && !loading && !error && (
+                    {mounted && !loading && !error && (
                         <motion.div
                             key="content"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="w-full h-full"
+                            className="absolute inset-0 p-4"
                         >
-                            <ChartWrapper>
+                            <div style={{ width: '100%', height: '100%', minHeight: '100px', minWidth: '100px' }}>
                                 {children}
-                            </ChartWrapper>
+                            </div>
                         </motion.div>
                     )}
                 </AnimatePresence>

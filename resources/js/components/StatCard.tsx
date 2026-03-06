@@ -22,33 +22,18 @@ interface StatCardProps {
 
 // Guard: only render Recharts once the container has real pixel dimensions
 function SparklineResponsive({ data, color }: { data: { date: string; value: number }[]; color: string }) {
-    const ref = useRef<HTMLDivElement>(null);
-    const [ready, setReady] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
 
-    useEffect(() => {
-        if (!ref.current) return;
-        const obs = new ResizeObserver((entries) => {
-            requestAnimationFrame(() => {
-                for (const e of entries) {
-                    if (e.contentRect.width > 0 && e.contentRect.height > 0) {
-                        setReady(true);
-                    }
-                }
-            });
-        });
-        obs.observe(ref.current);
-        return () => obs.disconnect();
-    }, []);
+    if (!mounted) return <div className="absolute inset-x-0 bottom-0 h-24 opacity-20 pointer-events-none" />;
 
     return (
-        <div ref={ref} className="absolute inset-x-0 bottom-0 h-24 opacity-20 pointer-events-none">
-            {ready && (
-                <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1} debounce={50}>
-                    <LineChart data={data}>
-                        <Line type="monotone" dataKey="value" stroke={color} strokeWidth={2} dot={false} isAnimationActive={false} />
-                    </LineChart>
-                </ResponsiveContainer>
-            )}
+        <div className="absolute inset-x-0 bottom-0 h-24 opacity-20 pointer-events-none" style={{ minHeight: 96 }}>
+            <ResponsiveContainer width="99%" height="100%">
+                <LineChart data={data}>
+                    <Line type="monotone" dataKey="value" stroke={color} strokeWidth={2} dot={false} isAnimationActive={false} />
+                </LineChart>
+            </ResponsiveContainer>
         </div>
     );
 }

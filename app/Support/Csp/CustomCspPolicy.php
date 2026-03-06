@@ -12,10 +12,21 @@ class CustomCspPolicy implements Preset
 {
     public function configure(Policy $policy): void
     {
-        // Apply the Basic preset first
-        (new Basic())->configure($policy);
-
+        // Apply the Basic preset manually without addNonce(Directive::STYLE)
+        // so that 'unsafe-inline' works for React and Vite UI Components.
         $policy
+            ->add(Directive::BASE, Keyword::SELF)
+            ->add(Directive::CONNECT, Keyword::SELF)
+            ->add(Directive::DEFAULT, Keyword::SELF)
+            ->add(Directive::FORM_ACTION, Keyword::SELF)
+            ->add(Directive::IMG, Keyword::SELF)
+            ->add(Directive::MEDIA, Keyword::SELF)
+            ->add(Directive::OBJECT, Keyword::NONE)
+            ->add(Directive::SCRIPT, Keyword::SELF)
+            ->add(Directive::STYLE, Keyword::SELF)
+            ->addNonce(Directive::SCRIPT)
+            
+            // Custom Directives
             ->add(Directive::STYLE, Keyword::UNSAFE_INLINE)
             ->add(Directive::STYLE, 'https://fonts.googleapis.com')
             ->add(Directive::SCRIPT, Keyword::UNSAFE_EVAL)

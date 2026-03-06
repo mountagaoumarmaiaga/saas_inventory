@@ -208,14 +208,14 @@ $formatCurrency = function($amount) use ($currencySymbol, $currencyPosition) {
             @foreach($purchase->items as $item)
             <tr>
                 <td>
-                    <strong>{{ $item->description }}</strong>
+                    <strong>{{ $item->product->name ?? $item->description }}</strong>
                     @if($item->product && $item->product->reference)
                         <div style="font-size: 11px; color: #64748b; margin-top: 4px;">Réf : {{ $item->product->reference }}</div>
                     @endif
                 </td>
                 <td class="text-center">{{ $item->quantity }}</td>
                 <td class="text-right">{{ $formatCurrency($item->unit_price) }}</td>
-                <td class="text-right">{{ $formatCurrency($item->line_total) }}</td>
+                <td class="text-right">{{ $formatCurrency($item->total_price) }}</td>
             </tr>
             @endforeach
         </tbody>

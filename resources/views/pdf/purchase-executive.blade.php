@@ -305,13 +305,13 @@ $formatCurrency = function($amount) use ($currencySymbol, $currencyPosition) {
             <tr>
                 <td class="qty-strong accent-text">{{ $item->quantity }}</td>
                 <td>
-                    <div style="font-weight: bold; color: #0f172a; font-size: 13px;">{{ $item->description }}</div>
+                    <div style="font-weight: bold; color: #0f172a; font-size: 13px;">{{ $item->product->name ?? $item->description }}</div>
                     @if($item->product && $item->product->reference)
                         <div style="font-size: 11px; color: #64748b; margin-top: 4px;">Code Suivi / BL : {{ $item->product->reference }}</div>
                     @endif
                 </td>
                 <td class="text-right amount-val" style="color: #64748b;">{{ $formatCurrency($item->unit_price) }}</td>
-                <td class="text-right amount-val">{{ $formatCurrency($item->line_total) }}</td>
+                <td class="text-right amount-val">{{ $formatCurrency($item->total_price) }}</td>
             </tr>
             @endforeach
         </tbody>

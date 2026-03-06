@@ -197,11 +197,11 @@ export default function ShowPurchase({ id }: Props) {
     };
 
     const handlePrint = () => {
-        window.open(`/purchases/${purchase.id}/pdf/view`, '_blank');
+        window.open(`/user/api/purchases/${purchase.id}/pdf/view`, '_blank');
     };
 
     const handleDownloadPdf = () => {
-        window.open(`/purchases/${purchase.id}/pdf/download`, '_blank');
+        window.open(`/user/api/purchases/${purchase.id}/pdf/download`, '_blank');
     };
 
     return (

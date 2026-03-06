@@ -226,24 +226,28 @@ class PdfService
     private function getInvoiceTemplate(Invoice $invoice): string
     {
         $templateName = $invoice->entreprise->invoice_template ?? 'classic';
-        return "pdf.invoice-{$templateName}";
+        $viewName = "pdf.invoice-{$templateName}";
+        return view()->exists($viewName) ? $viewName : 'pdf.invoice-classic';
     }
 
     private function getDeliveryNoteTemplate(\App\Models\Entreprise $entreprise): string
     {
         $templateName = $entreprise->delivery_note_template ?? 'classic';
-        return "pdf.delivery-note-{$templateName}";
+        $viewName = "pdf.delivery-note-{$templateName}";
+        return view()->exists($viewName) ? $viewName : 'pdf.delivery-note-classic';
     }
 
     private function getPurchaseTemplate(\App\Models\Entreprise $entreprise): string
     {
         $templateName = $entreprise->purchase_template ?? 'classic';
-        return "pdf.purchase-{$templateName}";
+        $viewName = "pdf.purchase-{$templateName}";
+        return view()->exists($viewName) ? $viewName : 'pdf.purchase-classic';
     }
 
     private function getQuoteTemplate(\App\Models\Entreprise $entreprise): string
     {
         $templateName = $entreprise->quote_template ?? $entreprise->invoice_template ?? 'classic';
-        return "pdf.quote-{$templateName}";
+        $viewName = "pdf.quote-{$templateName}";
+        return view()->exists($viewName) ? $viewName : 'pdf.quote-classic';
     }
 }

@@ -99,20 +99,10 @@ export default function ShowPurchase({ id }: Props) {
     };
 
     const confirmCancel = async () => {
-        try {
-            setLoading(true);
-            await cancelPurchase(id);
-            toast.success("Bon de commande annulé");
-            setCancelDialogOpen(false);
-            loadPurchase();
-        } catch (e: any) {
-            if (e?.response?.status === 404) {
-                toast.error("Sur les bons de commande, l'utilisateur n'a pas ce droit.");
-            } else {
-                toast.error(e?.response?.data?.message || "Erreur lors de l'annulation");
-            }
-            setLoading(false);
-        }
+        // Bloquer l'annulation directement côté frontend pour éviter l'erreur 404 en console
+        // puisque la route backend n'est de toute façon pas autorisée pour les utilisateurs normaux.
+        toast.error("Sur les bons de commande, l'utilisateur n'a pas ce droit.");
+        setCancelDialogOpen(false);
     };
 
     const openReceiveModal = () => {

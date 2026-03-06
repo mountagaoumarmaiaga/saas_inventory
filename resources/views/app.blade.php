@@ -9,7 +9,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
-        <script nonce="{{ csp_nonce() }}">
+        <script @cspNonce>
             (function() {
                 const appearance = '{{ $appearance ?? "system" }}';
                 if (appearance === 'system') {
@@ -35,7 +35,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         @viteReactRefresh
-        @routes(nonce: csp_nonce())
+        @routes(nonce: app('csp-nonce'))
         {{-- ✅ GARDE TA LIGNE, c’est OK pour inertia --}}
         @vite(['resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
 

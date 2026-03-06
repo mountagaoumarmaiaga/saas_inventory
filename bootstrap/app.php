@@ -68,4 +68,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 }
             }
         });
-    })->create();
+    })
+    ->withProviders([
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        App\Providers\FortifyServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
+    ])
+    ->create();

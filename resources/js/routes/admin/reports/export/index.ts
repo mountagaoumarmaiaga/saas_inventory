@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\ReportController::pdf
 * @see app/Http/Controllers/ReportController.php:38
@@ -44,43 +44,6 @@ pdf.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 })
 
 /**
-* @see \App\Http\Controllers\ReportController::pdf
-* @see app/Http/Controllers/ReportController.php:38
-* @route '/admin/reports/export/pdf'
-*/
-const pdfForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: pdf.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\ReportController::pdf
-* @see app/Http/Controllers/ReportController.php:38
-* @route '/admin/reports/export/pdf'
-*/
-pdfForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: pdf.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\ReportController::pdf
-* @see app/Http/Controllers/ReportController.php:38
-* @route '/admin/reports/export/pdf'
-*/
-pdfForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: pdf.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-pdf.form = pdfForm
-
-/**
 * @see \App\Http\Controllers\ReportController::excel
 * @see app/Http/Controllers/ReportController.php:58
 * @route '/admin/reports/export/excel'
@@ -123,43 +86,6 @@ excel.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: excel.url(options),
     method: 'head',
 })
-
-/**
-* @see \App\Http\Controllers\ReportController::excel
-* @see app/Http/Controllers/ReportController.php:58
-* @route '/admin/reports/export/excel'
-*/
-const excelForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: excel.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\ReportController::excel
-* @see app/Http/Controllers/ReportController.php:58
-* @route '/admin/reports/export/excel'
-*/
-excelForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: excel.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\ReportController::excel
-* @see app/Http/Controllers/ReportController.php:58
-* @route '/admin/reports/export/excel'
-*/
-excelForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: excel.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-excel.form = excelForm
 
 const exportMethod = {
     pdf: Object.assign(pdf, pdf),

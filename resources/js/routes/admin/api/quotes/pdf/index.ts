@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\QuoteController::view
 * @see app/Http/Controllers/QuoteController.php:243
@@ -68,43 +68,6 @@ view.head = (args: { quote: number | { id: number } } | [quote: number | { id: n
 })
 
 /**
-* @see \App\Http\Controllers\QuoteController::view
-* @see app/Http/Controllers/QuoteController.php:243
-* @route '/admin/api/quotes/{quote}/pdf/view'
-*/
-const viewForm = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\QuoteController::view
-* @see app/Http/Controllers/QuoteController.php:243
-* @route '/admin/api/quotes/{quote}/pdf/view'
-*/
-viewForm.get = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\QuoteController::view
-* @see app/Http/Controllers/QuoteController.php:243
-* @route '/admin/api/quotes/{quote}/pdf/view'
-*/
-viewForm.head = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-view.form = viewForm
-
-/**
 * @see \App\Http\Controllers\QuoteController::download
 * @see app/Http/Controllers/QuoteController.php:249
 * @route '/admin/api/quotes/{quote}/pdf/download'
@@ -171,43 +134,6 @@ download.head = (args: { quote: number | { id: number } } | [quote: number | { i
     url: download.url(args, options),
     method: 'head',
 })
-
-/**
-* @see \App\Http\Controllers\QuoteController::download
-* @see app/Http/Controllers/QuoteController.php:249
-* @route '/admin/api/quotes/{quote}/pdf/download'
-*/
-const downloadForm = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: download.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\QuoteController::download
-* @see app/Http/Controllers/QuoteController.php:249
-* @route '/admin/api/quotes/{quote}/pdf/download'
-*/
-downloadForm.get = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: download.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\QuoteController::download
-* @see app/Http/Controllers/QuoteController.php:249
-* @route '/admin/api/quotes/{quote}/pdf/download'
-*/
-downloadForm.head = (args: { quote: number | { id: number } } | [quote: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: download.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-download.form = downloadForm
 
 const pdf = {
     view: Object.assign(view, view),

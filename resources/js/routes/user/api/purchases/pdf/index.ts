@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PurchaseController::view
 * @see app/Http/Controllers/PurchaseController.php:327
@@ -68,43 +68,6 @@ view.head = (args: { purchase: number | { id: number } } | [purchase: number | {
 })
 
 /**
-* @see \App\Http\Controllers\PurchaseController::view
-* @see app/Http/Controllers/PurchaseController.php:327
-* @route '/user/api/purchases/{purchase}/pdf/view'
-*/
-const viewForm = (args: { purchase: number | { id: number } } | [purchase: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\PurchaseController::view
-* @see app/Http/Controllers/PurchaseController.php:327
-* @route '/user/api/purchases/{purchase}/pdf/view'
-*/
-viewForm.get = (args: { purchase: number | { id: number } } | [purchase: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\PurchaseController::view
-* @see app/Http/Controllers/PurchaseController.php:327
-* @route '/user/api/purchases/{purchase}/pdf/view'
-*/
-viewForm.head = (args: { purchase: number | { id: number } } | [purchase: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-view.form = viewForm
-
-/**
 * @see \App\Http\Controllers\PurchaseController::download
 * @see app/Http/Controllers/PurchaseController.php:333
 * @route '/user/api/purchases/{purchase}/pdf/download'
@@ -171,43 +134,6 @@ download.head = (args: { purchase: number | { id: number } } | [purchase: number
     url: download.url(args, options),
     method: 'head',
 })
-
-/**
-* @see \App\Http\Controllers\PurchaseController::download
-* @see app/Http/Controllers/PurchaseController.php:333
-* @route '/user/api/purchases/{purchase}/pdf/download'
-*/
-const downloadForm = (args: { purchase: number | { id: number } } | [purchase: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: download.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\PurchaseController::download
-* @see app/Http/Controllers/PurchaseController.php:333
-* @route '/user/api/purchases/{purchase}/pdf/download'
-*/
-downloadForm.get = (args: { purchase: number | { id: number } } | [purchase: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: download.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\PurchaseController::download
-* @see app/Http/Controllers/PurchaseController.php:333
-* @route '/user/api/purchases/{purchase}/pdf/download'
-*/
-downloadForm.head = (args: { purchase: number | { id: number } } | [purchase: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: download.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-download.form = downloadForm
 
 const pdf = {
     view: Object.assign(view, view),

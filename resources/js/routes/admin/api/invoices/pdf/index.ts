@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\InvoiceController::view
 * @see app/Http/Controllers/InvoiceController.php:270
@@ -62,43 +62,6 @@ view.head = (args: { id: string | number } | [id: string | number ] | string | n
 })
 
 /**
-* @see \App\Http\Controllers\InvoiceController::view
-* @see app/Http/Controllers/InvoiceController.php:270
-* @route '/admin/api/invoices/{id}/pdf/view'
-*/
-const viewForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\InvoiceController::view
-* @see app/Http/Controllers/InvoiceController.php:270
-* @route '/admin/api/invoices/{id}/pdf/view'
-*/
-viewForm.get = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\InvoiceController::view
-* @see app/Http/Controllers/InvoiceController.php:270
-* @route '/admin/api/invoices/{id}/pdf/view'
-*/
-viewForm.head = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-view.form = viewForm
-
-/**
 * @see \App\Http\Controllers\InvoiceController::download
 * @see app/Http/Controllers/InvoiceController.php:279
 * @route '/admin/api/invoices/{id}/pdf/download'
@@ -159,43 +122,6 @@ download.head = (args: { id: string | number } | [id: string | number ] | string
     url: download.url(args, options),
     method: 'head',
 })
-
-/**
-* @see \App\Http\Controllers\InvoiceController::download
-* @see app/Http/Controllers/InvoiceController.php:279
-* @route '/admin/api/invoices/{id}/pdf/download'
-*/
-const downloadForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: download.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\InvoiceController::download
-* @see app/Http/Controllers/InvoiceController.php:279
-* @route '/admin/api/invoices/{id}/pdf/download'
-*/
-downloadForm.get = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: download.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\InvoiceController::download
-* @see app/Http/Controllers/InvoiceController.php:279
-* @route '/admin/api/invoices/{id}/pdf/download'
-*/
-downloadForm.head = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: download.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-download.form = downloadForm
 
 const pdf = {
     view: Object.assign(view, view),

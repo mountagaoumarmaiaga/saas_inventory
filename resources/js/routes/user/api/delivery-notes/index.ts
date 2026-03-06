@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\DeliveryNoteController::index
 * @see app/Http/Controllers/DeliveryNoteController.php:40
@@ -42,43 +42,6 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(options),
     method: 'head',
 })
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::index
-* @see app/Http/Controllers/DeliveryNoteController.php:40
-* @route '/user/api/delivery-notes'
-*/
-const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::index
-* @see app/Http/Controllers/DeliveryNoteController.php:40
-* @route '/user/api/delivery-notes'
-*/
-indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url(options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::index
-* @see app/Http/Controllers/DeliveryNoteController.php:40
-* @route '/user/api/delivery-notes'
-*/
-indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: index.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\DeliveryNoteController::show
@@ -143,43 +106,6 @@ show.head = (args: { id: string | number } | [id: string | number ] | string | n
 })
 
 /**
-* @see \App\Http\Controllers\DeliveryNoteController::show
-* @see app/Http/Controllers/DeliveryNoteController.php:57
-* @route '/user/api/delivery-notes/{id}'
-*/
-const showForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: show.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::show
-* @see app/Http/Controllers/DeliveryNoteController.php:57
-* @route '/user/api/delivery-notes/{id}'
-*/
-showForm.get = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: show.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::show
-* @see app/Http/Controllers/DeliveryNoteController.php:57
-* @route '/user/api/delivery-notes/{id}'
-*/
-showForm.head = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: show.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-show.form = showForm
-
-/**
 * @see \App\Http\Controllers\DeliveryNoteController::update
 * @see app/Http/Controllers/DeliveryNoteController.php:93
 * @route '/user/api/delivery-notes/{id}'
@@ -232,38 +158,6 @@ update.put = (args: { id: string | number } | [id: string | number ] | string | 
 })
 
 /**
-* @see \App\Http\Controllers\DeliveryNoteController::update
-* @see app/Http/Controllers/DeliveryNoteController.php:93
-* @route '/user/api/delivery-notes/{id}'
-*/
-const updateForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: update.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'PUT',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'post',
-})
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::update
-* @see app/Http/Controllers/DeliveryNoteController.php:93
-* @route '/user/api/delivery-notes/{id}'
-*/
-updateForm.put = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: update.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'PUT',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'post',
-})
-
-update.form = updateForm
-
-/**
 * @see \App\Http\Controllers\DeliveryNoteController::createFromInvoice
 * @see app/Http/Controllers/DeliveryNoteController.php:70
 * @route '/user/api/delivery-notes/from-invoice/{id}'
@@ -314,28 +208,6 @@ createFromInvoice.post = (args: { id: string | number } | [id: string | number ]
     url: createFromInvoice.url(args, options),
     method: 'post',
 })
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::createFromInvoice
-* @see app/Http/Controllers/DeliveryNoteController.php:70
-* @route '/user/api/delivery-notes/from-invoice/{id}'
-*/
-const createFromInvoiceForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: createFromInvoice.url(args, options),
-    method: 'post',
-})
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::createFromInvoice
-* @see app/Http/Controllers/DeliveryNoteController.php:70
-* @route '/user/api/delivery-notes/from-invoice/{id}'
-*/
-createFromInvoiceForm.post = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: createFromInvoice.url(args, options),
-    method: 'post',
-})
-
-createFromInvoice.form = createFromInvoiceForm
 
 /**
 * @see \App\Http\Controllers\DeliveryNoteController::pdf
@@ -398,43 +270,6 @@ pdf.head = (args: { id: string | number } | [id: string | number ] | string | nu
     url: pdf.url(args, options),
     method: 'head',
 })
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::pdf
-* @see app/Http/Controllers/DeliveryNoteController.php:24
-* @route '/user/api/delivery-notes/{id}/pdf'
-*/
-const pdfForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: pdf.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::pdf
-* @see app/Http/Controllers/DeliveryNoteController.php:24
-* @route '/user/api/delivery-notes/{id}/pdf'
-*/
-pdfForm.get = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: pdf.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\DeliveryNoteController::pdf
-* @see app/Http/Controllers/DeliveryNoteController.php:24
-* @route '/user/api/delivery-notes/{id}/pdf'
-*/
-pdfForm.head = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: pdf.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-pdf.form = pdfForm
 
 const deliveryNotes = {
     index: Object.assign(index, index),

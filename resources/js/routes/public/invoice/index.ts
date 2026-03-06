@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PublicInvoiceController::show
 * @see app/Http/Controllers/PublicInvoiceController.php:11
@@ -60,43 +60,6 @@ show.head = (args: { uuid: string | number } | [uuid: string | number ] | string
     url: show.url(args, options),
     method: 'head',
 })
-
-/**
-* @see \App\Http\Controllers\PublicInvoiceController::show
-* @see app/Http/Controllers/PublicInvoiceController.php:11
-* @route '/i/{uuid}'
-*/
-const showForm = (args: { uuid: string | number } | [uuid: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: show.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\PublicInvoiceController::show
-* @see app/Http/Controllers/PublicInvoiceController.php:11
-* @route '/i/{uuid}'
-*/
-showForm.get = (args: { uuid: string | number } | [uuid: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: show.url(args, options),
-    method: 'get',
-})
-
-/**
-* @see \App\Http\Controllers\PublicInvoiceController::show
-* @see app/Http/Controllers/PublicInvoiceController.php:11
-* @route '/i/{uuid}'
-*/
-showForm.head = (args: { uuid: string | number } | [uuid: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: show.url(args, {
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-show.form = showForm
 
 const invoice = {
     show: Object.assign(show, show),

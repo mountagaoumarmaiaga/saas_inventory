@@ -66,8 +66,11 @@ class PdfService
         $template = $this->getDeliveryNoteTemplate($dn->entreprise);
         
         $pdf = Pdf::loadView($template, [
-            'dn' => $dn,
-            'logoBase64' => $logoBase64
+            'deliveryNote' => $dn,
+            'entreprise' => $dn->entreprise,
+            'logoBase64' => $logoBase64,
+            'currencySymbol' => $dn->entreprise->currency_symbol ?? 'FCFA',
+            'currencyPosition' => $dn->entreprise->currency_position ?? 'right',
         ]);
         
         $filename = ($dn->reference ?? $dn->number ?? 'BL') . '.pdf';
@@ -81,8 +84,11 @@ class PdfService
         $template = $this->getDeliveryNoteTemplate($dn->entreprise);
         
         $pdf = Pdf::loadView($template, [
-            'dn' => $dn,
-            'logoBase64' => $logoBase64
+            'deliveryNote' => $dn,
+            'entreprise' => $dn->entreprise,
+            'logoBase64' => $logoBase64,
+            'currencySymbol' => $dn->entreprise->currency_symbol ?? 'FCFA',
+            'currencyPosition' => $dn->entreprise->currency_position ?? 'right',
         ]);
         
         $filename = ($dn->reference ?? $dn->number ?? 'BL') . '.pdf';
@@ -225,29 +231,29 @@ class PdfService
 
     private function getInvoiceTemplate(Invoice $invoice): string
     {
-        $templateName = $invoice->entreprise->invoice_template ?? 'classic';
+        $templateName = $invoice->entreprise->invoice_template ?? 'tempo';
         $viewName = "pdf.invoice-{$templateName}";
-        return view()->exists($viewName) ? $viewName : 'pdf.invoice-classic';
+        return view()->exists($viewName) ? $viewName : 'pdf.invoice-tempo';
     }
 
     private function getDeliveryNoteTemplate(\App\Models\Entreprise $entreprise): string
     {
-        $templateName = $entreprise->delivery_note_template ?? 'classic';
+        $templateName = $entreprise->delivery_note_template ?? 'tempo';
         $viewName = "pdf.delivery-note-{$templateName}";
-        return view()->exists($viewName) ? $viewName : 'pdf.delivery-note-classic';
+        return view()->exists($viewName) ? $viewName : 'pdf.delivery-note-tempo';
     }
 
     private function getPurchaseTemplate(\App\Models\Entreprise $entreprise): string
     {
-        $templateName = $entreprise->purchase_template ?? 'classic';
+        $templateName = $entreprise->purchase_template ?? 'tempo';
         $viewName = "pdf.purchase-{$templateName}";
-        return view()->exists($viewName) ? $viewName : 'pdf.purchase-classic';
+        return view()->exists($viewName) ? $viewName : 'pdf.purchase-tempo';
     }
 
     private function getQuoteTemplate(\App\Models\Entreprise $entreprise): string
     {
-        $templateName = $entreprise->quote_template ?? $entreprise->invoice_template ?? 'classic';
+        $templateName = $entreprise->quote_template ?? $entreprise->invoice_template ?? 'tempo';
         $viewName = "pdf.quote-{$templateName}";
-        return view()->exists($viewName) ? $viewName : 'pdf.quote-classic';
+        return view()->exists($viewName) ? $viewName : 'pdf.quote-tempo';
     }
 }

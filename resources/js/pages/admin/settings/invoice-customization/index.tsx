@@ -21,9 +21,10 @@ interface CustomizationSettings {
     logo_url?: string;
     invoice_header: string;
     invoice_footer: string;
-    invoice_template: 'classic' | 'modern' | 'professional' | 'executive' | 'creative' | 'elegant' | 'industrial' | 'minimalist' | 'retail' | 'bold';
-    delivery_note_template: 'classic' | 'modern' | 'minimalist';
-    purchase_template: 'classic' | 'modern' | 'minimalist' | 'executive' | 'creative';
+    invoice_template: 'tempo' | 'studio' | 'geometric' | 'medical' | 'classic';
+    delivery_note_template: 'tempo' | 'studio' | 'geometric' | 'medical' | 'classic';
+    purchase_template: 'tempo' | 'studio' | 'geometric' | 'medical' | 'classic';
+    primary_color?: string;
     currency: string;
     currency_symbol: string;
     currency_position: 'left' | 'right';
@@ -31,31 +32,14 @@ interface CustomizationSettings {
 }
 
 const TEMPLATES = [
-    { id: 'classic', name: 'Finance / Consulting', desc: 'Mise en page classique, bleue et très structurée' },
-    { id: 'modern', name: 'Tech / IT', desc: 'Design borderless tech avec accents cyan' },
-    { id: 'professional', name: 'Santé / Pharmacie', desc: 'Vert médical, informations séparées, ultra lisible' },
-    { id: 'executive', name: 'Logistique / Transport', desc: 'Design robuste, gris anthracite et détails oranges' },
-    { id: 'creative', name: 'Universel / Standard', desc: 'Minimaliste élégant, monochrome, hyper lisible' },
-    { id: 'elegant', name: 'Luxe / Beauté', desc: 'Design prestige avec touches dorées' },
-    { id: 'industrial', name: 'BTP / Industrie', desc: 'Contraste fort, jaune sécurité et gris foncé' },
-    { id: 'minimalist', name: 'Freelance / Créa', desc: 'Un maximum d\'espace blanc, ultra épuré' },
-    { id: 'retail', name: 'Commerce / E-shop', desc: 'Focus sur les totaux et détails articles' },
-    { id: 'bold', name: 'Agence / Marketing', desc: 'Typographie vibrante et moderne' },
+    { id: 'tempo', name: 'Tempo / Nomade', desc: 'Design structuré avec fond en-têtes contrasté (idéal en Bleu/Vert)' },
+    { id: 'studio', name: 'Studio Graphique', desc: 'Minimaliste, typo bold "FACTURE" en haut à droite' },
+    { id: 'geometric', name: 'Géométrique', desc: 'Angles pleins sur les bords, ultra moderne' },
+    { id: 'medical', name: 'Institutionnel', desc: 'En-tête détaillée et bordures colorées (type Médical/BTP)' },
 ];
 
-const DELIVERY_NOTE_TEMPLATES = [
-    { id: 'classic', name: 'Classique', desc: 'Mise en page épurée, centrée sur l\'essentiel' },
-    { id: 'modern', name: 'Moderne', desc: 'Design avec touches de couleur primaire' },
-    { id: 'minimalist', name: 'Minimaliste', desc: 'Très simple, axé sur les quantités' },
-];
-
-const PURCHASE_TEMPLATES = [
-    { id: 'classic', name: 'Classique', desc: 'Mise en page épurée et structurée' },
-    { id: 'modern', name: 'Moderne', desc: 'Design dynamique avec couleurs' },
-    { id: 'minimalist', name: 'Minimaliste', desc: 'Lignes claires et simples' },
-    { id: 'executive', name: 'Corporate', desc: 'Entête fortement marquée' },
-    { id: 'creative', name: 'Créatif', desc: 'Design moderne asymétrique' },
-];
+const DELIVERY_NOTE_TEMPLATES = TEMPLATES;
+const PURCHASE_TEMPLATES = TEMPLATES;
 
 export default function InvoiceCustomization() {
     const [settings, setSettings] = useState<CustomizationSettings | null>(null);
@@ -104,9 +88,12 @@ export default function InvoiceCustomization() {
             const formData = new FormData();
             formData.append('logo', logoFile);
 
+            const csrfToken = document.head.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
             const res = await axios.post('/admin/api/settings/invoice/logo', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'X-CSRF-TOKEN': csrfToken || '',
                 }
             });
 
@@ -139,6 +126,7 @@ export default function InvoiceCustomization() {
                 currency_symbol: settings.currency_symbol,
                 currency_position: settings.currency_position,
                 qr_payment_link: settings.qr_payment_link,
+                primary_color: settings.primary_color,
             });
 
             setSettings(res.data.data);
@@ -285,6 +273,88 @@ export default function InvoiceCustomization() {
                         </div>
                     </CardContent>
                 </Card>
+
+                {/* Primary Color */}
+                <Card className="relative border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden mt-6">
+                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-cyan-500/5 pointer-events-none" />
+                    <CardHeader className="relative border-b border-white/10">
+                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent">
+                            Couleur Principale
+                        </CardTitle>
+                        <CardDescription>Couleur thématique de vos documents PDF (en-têtes, tableaux, titres)</CardDescription>
+                    </CardHeader>
+                    <CardContent className="relative space-y-6 pt-6">
+                        {/* Color preview banner */}
+                        <div
+                            className="w-full h-12 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center"
+                            style={{ backgroundColor: settings.primary_color || '#1e3a8a' }}
+                        >
+                            <span className="text-white font-bold text-sm tracking-widest uppercase drop-shadow" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
+                                Aperçu — {settings.primary_color || '#1e3a8a'}
+                            </span>
+                        </div>
+
+                        {/* Palette grid */}
+                        {(() => {
+                            const palette = [
+                                // Blues
+                                '#1e3a8a', '#1d4ed8', '#0ea5e9', '#0891b2',
+                                // Greens
+                                '#166534', '#15803d', '#16a34a', '#4ade80',
+                                // Reds / Oranges
+                                '#991b1b', '#dc2626', '#ea580c', '#d97706',
+                                // Purples / Pinks
+                                '#6b21a8', '#7c3aed', '#db2777', '#e11d48',
+                                // Neutrals
+                                '#111827', '#374151', '#6b7280', '#334155',
+                            ];
+                            return (
+                                <div>
+                                    <Label className="text-sm font-semibold text-foreground/90 mb-3 block">Palette de couleurs</Label>
+                                    <div className="grid grid-cols-10 gap-2">
+                                        {palette.map((color) => {
+                                            const isSelected = (settings.primary_color || '#1e3a8a').toLowerCase() === color.toLowerCase();
+                                            return (
+                                                <button
+                                                    key={color}
+                                                    type="button"
+                                                    title={color}
+                                                    onClick={() => setSettings({ ...settings, primary_color: color })}
+                                                    className={`h-9 w-full rounded-lg shadow-md transition-all duration-200 hover:scale-110 hover:shadow-xl relative ${isSelected ? 'ring-4 ring-offset-2 ring-white scale-110 shadow-xl' : 'ring-1 ring-black/10'}`}
+                                                    style={{ backgroundColor: color }}
+                                                >
+                                                    {isSelected && (
+                                                        <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold">✓</span>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            );
+                        })()}
+
+                        {/* Custom hex input */}
+                        <div className="flex items-center gap-4">
+                            <Label className="text-sm font-semibold text-foreground/90 whitespace-nowrap">Couleur personnalisée :</Label>
+                            <input
+                                type="color"
+                                value={settings.primary_color || '#1e3a8a'}
+                                onChange={(e) => setSettings({ ...settings, primary_color: e.target.value })}
+                                className="h-10 w-14 rounded-lg cursor-pointer border-2 border-white/20 shadow-lg"
+                                title="Choisir une couleur personnalisée"
+                            />
+                            <Input
+                                value={settings.primary_color || '#1e3a8a'}
+                                onChange={(e) => setSettings({ ...settings, primary_color: e.target.value })}
+                                placeholder="#1e3a8a"
+                                maxLength={7}
+                                className="h-10 w-36 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-indigo-500 transition-all font-mono text-sm"
+                            />
+                        </div>
+                    </CardContent>
+                </Card>
+
 
                 {/* Payment & Currency */}
                 <Card className="relative border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">

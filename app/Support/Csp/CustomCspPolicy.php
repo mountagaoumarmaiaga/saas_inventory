@@ -16,46 +16,35 @@ class CustomCspPolicy implements Preset
         // so that 'unsafe-inline' works for React and Vite UI Components.
         $policy
             ->add(Directive::BASE, Keyword::SELF)
-            ->add(Directive::CONNECT, Keyword::SELF)
+            ->add(Directive::CONNECT, [Keyword::SELF, 'https://*.supabase.co', 'http://localhost:*', 'ws://localhost:*'])
             ->add(Directive::DEFAULT, Keyword::SELF)
             ->add(Directive::FORM_ACTION, Keyword::SELF)
-            ->add(Directive::IMG, Keyword::SELF)
+            ->add(Directive::IMG, [
+                Keyword::SELF,
+                'data:',
+                'https:',
+                'http://localhost:*'
+            ])
             ->add(Directive::MEDIA, Keyword::SELF)
             ->add(Directive::OBJECT, Keyword::NONE)
-            ->add(Directive::SCRIPT, Keyword::SELF)
-            ->add(Directive::SCRIPT, 'https://challenges.cloudflare.com')
-            ->add(Directive::SCRIPT, 'https://*.laravel.cloud')
-            ->add(Directive::STYLE, Keyword::SELF)
-            
-            // Custom Directives
-            ->add(Directive::SCRIPT, Keyword::UNSAFE_INLINE)
-            ->add(Directive::STYLE, Keyword::UNSAFE_INLINE)
-            ->add(Directive::STYLE, 'https://fonts.googleapis.com')
-            ->add(Directive::SCRIPT, Keyword::UNSAFE_EVAL)
+            ->add(Directive::SCRIPT, [
+                Keyword::SELF,
+                'https://challenges.cloudflare.com',
+                'https://*.laravel.cloud',
+                'http://localhost:*',
+                Keyword::UNSAFE_INLINE,
+                Keyword::UNSAFE_EVAL
+            ])
+            ->add(Directive::STYLE, [
+                Keyword::SELF,
+                'https://fonts.googleapis.com',
+                'http://localhost:*',
+                Keyword::UNSAFE_INLINE
+            ])
             // style-src-attr allows inline style="" attributes on elements set by JS libraries
             // (Recharts, Radix UI, etc.) — NOT overridden by nonce unlike style-src
             ->add(Directive::STYLE_ATTR, Keyword::UNSAFE_INLINE)
             // Google Fonts actual font files
-            ->add(Directive::FONT, Keyword::SELF)
-            ->add(Directive::FONT, 'https://fonts.gstatic.com')
-            // Supabase storage / images and external SVGs
-            ->add(Directive::CONNECT, 'https://*.supabase.co')
-            ->add(Directive::IMG, [
-                Keyword::SELF, 
-                'data:', 
-                'https://*.supabase.co', 
-                'https://fonts.gstatic.com',
-                'https://grainy-gradients.vercel.app'
-            ]);
-
-        if (app()->environment('local')) {
-            $policy
-                ->add(Directive::CONNECT, 'ws://localhost:*')
-                ->add(Directive::CONNECT, 'http://localhost:*')
-                ->add(Directive::SCRIPT, 'http://localhost:*')
-                ->add(Directive::SCRIPT, Keyword::UNSAFE_INLINE)
-                ->add(Directive::STYLE, 'http://localhost:*')
-                ->add(Directive::IMG, 'http://localhost:*');
-        }
+            ->add(Directive::FONT, [Keyword::SELF, 'https://fonts.gstatic.com']);
     }
 }

@@ -428,10 +428,10 @@ export default function ShowPurchase({ id }: Props) {
                                     </div>
                                     <div className="flex justify-between text-sm items-center">
                                         <span className="text-red-600 dark:text-red-400 font-medium">Reste à payer</span>
-                                        <span className="font-bold text-red-600 dark:text-red-400">{formatCurrency(purchase.amount_due || 0)}</span>
+                                        <span className="font-bold text-red-600 dark:text-red-400">{formatCurrency(Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)))}</span>
                                     </div>
                                 </div>
-                                {purchase.amount_due > 0 && purchase.status !== 'CANCELLED' && (
+                                {Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)) > 0 && purchase.status !== 'CANCELLED' && (
                                     <Button onClick={() => setPaymentModalOpen(true)} className="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white">
                                         Enregistrer un paiement
                                     </Button>
@@ -544,10 +544,10 @@ export default function ShowPurchase({ id }: Props) {
                                 required
                                 min="0.01"
                                 step="0.01"
-                                max={purchase?.amount_due}
+                                max={purchase ? Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)) : 0}
                                 value={paymentAmount}
                                 onChange={(e) => setPaymentAmount(e.target.value)}
-                                placeholder={`Ex: ${purchase?.amount_due}`}
+                                placeholder={`Ex: ${purchase ? Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)) : 0}`}
                             />
                         </div>
 

@@ -374,6 +374,17 @@ export default function ShowPurchase({ id }: Props) {
                                         {formatCurrency(purchase.total_amount)}
                                     </span>
                                 </div>
+                                <Separator className="bg-emerald-500/10" />
+                                <div className="space-y-2">
+                                    <div className="flex justify-between text-sm items-center">
+                                        <span className="text-emerald-700 dark:text-emerald-400 font-medium">Déjà payé</span>
+                                        <span className="font-bold text-emerald-700 dark:text-emerald-400">{formatCurrency(purchase.amount_paid || 0)}</span>
+                                    </div>
+                                    <div className="flex justify-between text-sm items-center">
+                                        <span className="text-red-600 dark:text-red-400 font-medium">Reste à payer</span>
+                                        <span className="font-bold text-red-600 dark:text-red-400">{formatCurrency(Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)))}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

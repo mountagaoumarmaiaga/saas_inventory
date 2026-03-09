@@ -42,3 +42,10 @@ export const cancelPurchase = async (id: number): Promise<Purchase> => {
     const { data } = await axios.post(`/user/api/purchases/${id}/cancel`);
     return data.purchase;
 };
+
+export const recordPayment = async (id: number, payload: FormData): Promise<Purchase> => {
+    const { data } = await axios.post(`/user/api/purchases/${id}/record-payment`, payload, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return data.purchase;
+};

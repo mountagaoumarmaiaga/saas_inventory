@@ -6,12 +6,13 @@ import { fr } from "date-fns/locale";
 import { toast } from "react-toastify";
 
 import AppLayout from "@/layouts/app-layout";
-import { fetchPurchase, markAsOrdered, cancelPurchase, receiveItems } from "./api";
+import { fetchPurchase, markAsOrdered, cancelPurchase, receiveItems, recordPayment } from "./api";
 import { Purchase, ReceiveItemData, PurchaseStatus } from "./types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Label } from "@/components/ui/label";
 import {
     Table,
     TableBody,
@@ -64,6 +65,12 @@ export default function ShowPurchase({ id }: Props) {
 
     // Cancel Confirm state
     const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+
+    // Payment Modal State
+    const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+    const [paymentAmount, setPaymentAmount] = useState<string>("");
+    const [paymentReceipt, setPaymentReceipt] = useState<File | null>(null);
+    const [paying, setPaying] = useState(false);
 
     const loadPurchase = async () => {
         try {
@@ -154,6 +161,31 @@ export default function ShowPurchase({ id }: Props) {
             toast.error(e?.response?.data?.message || "Erreur lors de la réception.");
         } finally {
             setReceiving(false);
+        }
+    };
+
+    const handlePaymentSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!purchase) return;
+
+        try {
+            setPaying(true);
+            const formData = new FormData();
+            formData.append('amount', paymentAmount);
+            if (paymentReceipt) {
+                formData.append('receipt', paymentReceipt);
+            }
+
+            await recordPayment(id, formData);
+            toast.success("Paiement enregistré avec succès.");
+            setPaymentModalOpen(false);
+            setPaymentAmount("");
+            setPaymentReceipt(null);
+            loadPurchase();
+        } catch (e: any) {
+            toast.error(e?.response?.data?.message || "Erreur lors de l'enregistrement du paiement");
+        } finally {
+            setPaying(false);
         }
     };
 
@@ -385,6 +417,11 @@ export default function ShowPurchase({ id }: Props) {
                                         <span className="font-bold text-red-600 dark:text-red-400">{formatCurrency(Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)))}</span>
                                     </div>
                                 </div>
+                                {Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)) > 0 && purchase.status !== 'CANCELLED' && (
+                                    <Button onClick={() => setPaymentModalOpen(true)} className="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white">
+                                        Enregistrer un paiement
+                                    </Button>
+                                )}
                             </div>
                         </div>
 
@@ -473,6 +510,53 @@ export default function ShowPurchase({ id }: Props) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            {/* Payment Record Modal */}
+            <Dialog open={paymentModalOpen} onOpenChange={setPaymentModalOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Enregistrer un Paiement</DialogTitle>
+                        <DialogDescription>
+                            Saisissez le montant réglé au fournisseur pour ce bon de commande.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <form onSubmit={handlePaymentSubmit} className="space-y-4 py-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="amount">Montant (XOF)</Label>
+                            <Input
+                                id="amount"
+                                type="number"
+                                required
+                                min="0.01"
+                                step="0.01"
+                                max={purchase ? Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)) : 0}
+                                value={paymentAmount}
+                                onChange={(e) => setPaymentAmount(e.target.value)}
+                                placeholder={`Ex: ${purchase ? Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)) : 0}`}
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="receipt">Preuve de paiement / Reçu (Optionnel)</Label>
+                            <Input
+                                id="receipt"
+                                type="file"
+                                accept="image/*,.pdf"
+                                onChange={(e) => setPaymentReceipt(e.target.files ? e.target.files[0] : null)}
+                            />
+                            <p className="text-xs text-muted-foreground">Format max 5Mo (PDF, JPG, PNG)</p>
+                        </div>
+
+                        <DialogFooter className="mt-6">
+                            <Button type="button" variant="outline" onClick={() => setPaymentModalOpen(false)}>Annuler</Button>
+                            <Button type="submit" disabled={paying || !paymentAmount} className="bg-emerald-600 hover:bg-emerald-700">
+                                {paying ? "Validation..." : "Enregistrer"}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
 
         </AppLayout>
     );

@@ -1,15 +1,6 @@
 @php
 $entrepriseRecord = $deliveryNote->entreprise ?? $entreprise;
 $primaryColor = $entrepriseRecord->primary_color ?? '#2d5a27';
-
-$formatCurrency = function($amount) use ($currencySymbol, $currencyPosition) {
-    if (!is_numeric($amount)) return '-';
-    $formatted = number_format((float)$amount, 2, ',', ' ');
-    return $currencyPosition === 'left' ? "{$currencySymbol} {$formatted}" : "{$formatted}{$currencySymbol}";
-};
-
-$tvaAmount = ($deliveryNote->subtotal ?? 0) * ($deliveryNote->tva ?? 0) / 100;
-$discount = $deliveryNote->discount ?? 0;
 @endphp
 <!DOCTYPE html>
 <html>
@@ -39,28 +30,20 @@ $discount = $deliveryNote->discount ?? 0;
         .company-name, .client-name { font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #111; text-transform: uppercase; }
         
         /* Items table */
-        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 50px; }
         .items-table th { background-color: {{ $primaryColor }}; color: #fff; text-transform: uppercase; font-size: 10px; padding: 10px; text-align: left; letter-spacing: 1px; border: 1px solid {{ $primaryColor }}; }
         .items-table th.center { text-align: center; }
-        .items-table th.right { text-align: right; }
         .items-table td { padding: 10px; border: 1px solid #ddd; font-size: 11px; color: #333; }
-        .items-table td.center { text-align: center; }
-        .items-table td.right { text-align: right; }
+        .items-table td.center { text-align: center; font-weight: bold; }
         .items-table tr:nth-child(even) { background-color: #fafafa; }
         
-        /* Totals & Notes */
-        .bottom-wrapper { width: 100%; border-collapse: collapse; }
-        .bottom-wrapper td { vertical-align: top; }
-        
-        .notes-box { padding: 15px; background-color: #fcfcfc; border: 1px solid #ddd; border-top: 3px solid {{ $primaryColor }}; font-size: 10px; color: #555; }
-        .notes-title { font-weight: bold; color: #111; margin-bottom: 5px; text-transform: uppercase; font-size: 11px; }
-        
-        .totals-table { width: 100%; border-collapse: collapse; }
-        .totals-table td { padding: 8px 10px; text-align: right; border: 1px solid #ddd; }
-        .totals-table td.label { font-weight: bold; color: #555; font-size: 10px; text-transform: uppercase; background-color: #fafafa; }
-        .totals-table td.value { font-weight: bold; color: #111; font-size: 12px; }
-        .totals-table tr.grand-total td { background-color: {{ $primaryColor }}; color: #fff; font-size: 14px; border: 1px solid {{ $primaryColor }}; }
-        .totals-table tr.grand-total td.label { color: #fff; background-color: {{ $primaryColor }}; }
+        /* Signatures block */
+        .signatures-table { width: 100%; border-collapse: collapse; page-break-inside: avoid; margin-top: 20px; }
+        .signatures-table td { width: 50%; vertical-align: top; }
+        .sig-box { padding: 0; }
+        .sig-title { font-weight: bold; font-size: 12px; text-transform: uppercase; color: {{ $primaryColor }}; margin-bottom: 15px; }
+        .sig-date { font-size: 11px; color: #555; margin-bottom: 60px; }
+        .sig-line { width: 70%; border-bottom: 1px solid #666; }
         
         /* Geometric accents */
         .top-accent { width: 100%; height: 12px; background-color: {{ $primaryColor }}; position: absolute; top: 0; left: 0; }
@@ -114,72 +97,35 @@ $discount = $deliveryNote->discount ?? 0;
         <table class="items-table">
             <thead>
                 <tr>
-                    <th style="width: 48%;">Désignation</th>
-                    <th class="right" style="width: 17%;">Prix Unitaire</th>
                     <th class="center" style="width: 15%;">Quantité</th>
-                    <th class="right" style="width: 20%;">Total</th>
+                    <th style="width: 85%;">Désignation</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($deliveryNote->items as $item)
                 <tr>
-                    <td>{{ $item->product ? $item->product->name : $item->description }}</td>
-                    <td class="right">@if($item->unit_price > 0) {{ $formatCurrency($item->unit_price) }} @else - @endif</td>
                     <td class="center">{{ $item->quantity }}</td>
-                    <td class="right">
-                        @php $lineTotal = $item->total_price ?? ($item->unit_price * $item->quantity); @endphp
-                        @if($lineTotal > 0) {{ $formatCurrency($lineTotal) }} @else OFFERT @endif
-                    </td>
+                    <td>{{ $item->product ? $item->product->name : $item->description }}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
         
-        <table class="bottom-wrapper">
+        <table class="signatures-table">
             <tr>
-                <td style="width: 50%; padding-right: 30px;">
-                    <div class="notes-box">
-                        <div class="notes-title">Notes & Signature</div>
-                        <div style="margin-bottom: 10px;">
-                            @if($entrepriseRecord->invoice_header)
-                                {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
-                            @else
-                                <strong>Accusé de réception :</strong><br>
-                                Les marchandises ou services ci-dessus ont bien été livrés/exécutés et réceptionnés en bon état.
-                            @endif
-                        </div>
-                        <div>
-                            @if($entrepriseRecord->invoice_footer)
-                                {!! nl2br(e($entrepriseRecord->invoice_footer)) !!}
-                            @else
-                                Signature et cachet du client, obligatoirement précédés de la mention manuscrite "Bon pour réception".
-                            @endif
-                        </div>
+                <td style="padding-right: 20px;">
+                    <div class="sig-box">
+                        <div class="sig-title">SIGNATURE LIVREUR</div>
+                        <div class="sig-date"><br></div>
+                        <div class="sig-line"></div>
                     </div>
                 </td>
-                <td style="width: 50%;">
-                    <table class="totals-table">
-                        <tr>
-                            <td class="label">Total HT</td>
-                            <td class="value">{{ $formatCurrency($deliveryNote->subtotal ?? 0) }}</td>
-                        </tr>
-                        @if(($deliveryNote->tva ?? 0) > 0)
-                        <tr>
-                            <td class="label">TVA ({{ $deliveryNote->tva }}%)</td>
-                            <td class="value">{{ $formatCurrency($tvaAmount) }}</td>
-                        </tr>
-                        @endif
-                        @if($discount > 0)
-                        <tr>
-                            <td class="label">Remise</td>
-                            <td class="value">-{{ $formatCurrency($discount) }}</td>
-                        </tr>
-                        @endif
-                        <tr class="grand-total">
-                            <td class="label">Total TTC</td>
-                            <td class="value">{{ $formatCurrency($deliveryNote->total ?? 0) }}</td>
-                        </tr>
-                    </table>
+                <td style="padding-left: 20px; text-align: right;">
+                    <div class="sig-box" style="display: inline-block; text-align: left;">
+                        <div class="sig-title">SIGNATURE CLIENT</div>
+                        <div class="sig-date">Reçu le : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <div class="sig-line" style="width: 100%;"></div>
+                    </div>
                 </td>
             </tr>
         </table>

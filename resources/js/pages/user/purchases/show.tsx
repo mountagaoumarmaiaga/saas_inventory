@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Head, Link, router, usePage } from "@inertiajs/react";
-import { ArrowLeft, Edit, Save, Trash2, CheckCircle2, PackageX, Printer, Download } from "lucide-react";
+import { ArrowLeft, Edit, Save, Trash2, CheckCircle2, PackageX, Printer, Download, CreditCard } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "react-toastify";
@@ -266,6 +266,12 @@ export default function ShowPurchase({ id }: Props) {
                             </Button>
                         )}
 
+                        {Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)) > 0 && purchase.status !== 'CANCELLED' && purchase.status !== 'DRAFT' && (
+                            <Button onClick={() => setPaymentModalOpen(true)} className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg shadow-blue-500/20">
+                                <CreditCard className="mr-2 h-4 w-4" /> Payer
+                            </Button>
+                        )}
+
                         {canCancel && (
                             <Button variant="outline" onClick={handleCancelClick} disabled={loading} className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700">
                                 <Trash2 className="mr-2 h-4 w-4" /> Annuler
@@ -417,11 +423,6 @@ export default function ShowPurchase({ id }: Props) {
                                         <span className="font-bold text-red-600 dark:text-red-400">{formatCurrency(Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)))}</span>
                                     </div>
                                 </div>
-                                {Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)) > 0 && purchase.status !== 'CANCELLED' && (
-                                    <Button onClick={() => setPaymentModalOpen(true)} className="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white">
-                                        Enregistrer un paiement
-                                    </Button>
-                                )}
                             </div>
                         </div>
 

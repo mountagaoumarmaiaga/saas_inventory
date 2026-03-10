@@ -267,7 +267,10 @@ export default function ShowPurchase({ id }: Props) {
                         )}
 
                         {Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)) > 0 && purchase.status !== 'CANCELLED' && purchase.status !== 'DRAFT' && (
-                            <Button onClick={() => setPaymentModalOpen(true)} className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg shadow-blue-500/20">
+                            <Button onClick={() => {
+                                setPaymentAmount(Math.max(0, purchase.total_amount - (purchase.amount_paid || 0)).toString());
+                                setPaymentModalOpen(true);
+                            }} className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg shadow-blue-500/20">
                                 <CreditCard className="mr-2 h-4 w-4" /> Payer
                             </Button>
                         )}

@@ -8,8 +8,9 @@ $formatCurrency = function($amount) use ($currencySymbol, $currencyPosition) {
     return $currencyPosition === 'left' ? "{$currencySymbol} {$formatted}" : "{$formatted} {$currencySymbol}";
 };
 
-$tvaAmount = ($purchase->subtotal ?? 0) * ($purchase->tva ?? 0) / 100;
-$discount = $purchase->discount ?? 0;
+$taxAmount = $purchase->tax_amount ?? 0;
+$totalAmount = $purchase->total_amount ?? 0;
+$subtotal = $totalAmount - $taxAmount;
 @endphp
 <!DOCTYPE html>
 <html>
@@ -173,7 +174,7 @@ $discount = $purchase->discount ?? 0;
                         </div>
                         <div style="border: 1px dashed #ccc; padding: 10px; margin-top: 20px; font-style: italic;">
                             Arrêté la présente commande à la somme de :<br>
-                            <strong>{{ $formatCurrency($purchase->total ?? 0) }}</strong>
+                            <strong>{{ $formatCurrency($totalAmount) }}</strong>
                         </div>
                     </div>
                 </td>
@@ -181,23 +182,17 @@ $discount = $purchase->discount ?? 0;
                     <table class="totals-table">
                         <tr>
                             <td class="label">Sous-total HT</td>
-                            <td class="value">{{ $formatCurrency($purchase->subtotal ?? 0) }}</td>
+                            <td class="value">{{ $formatCurrency($subtotal) }}</td>
                         </tr>
-                        @if(($purchase->tva ?? 0) > 0)
+                        @if($taxAmount > 0)
                         <tr>
-                            <td class="label">TVA ({{ $purchase->tva }}%)</td>
-                            <td class="value">{{ $formatCurrency($tvaAmount) }}</td>
-                        </tr>
-                        @endif
-                        @if($discount > 0)
-                        <tr>
-                            <td class="label">Remise</td>
-                            <td class="value">-{{ $formatCurrency($discount) }}</td>
+                            <td class="label">Taxes additionnelles</td>
+                            <td class="value">{{ $formatCurrency($taxAmount) }}</td>
                         </tr>
                         @endif
                         <tr class="grand-total">
                             <td class="label">Total TTC</td>
-                            <td class="value">{{ $formatCurrency($purchase->total ?? 0) }}</td>
+                            <td class="value">{{ $formatCurrency($totalAmount) }}</td>
                         </tr>
                     </table>
                 </td>

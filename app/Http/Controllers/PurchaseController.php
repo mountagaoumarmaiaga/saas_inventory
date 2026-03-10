@@ -348,7 +348,9 @@ class PurchaseController extends Controller
             'receipt' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
-        if ($request->amount > $purchase->amount_due) {
+        $amountDue = max(0, $purchase->total_amount - ($purchase->amount_paid ?? 0));
+        
+        if ($request->amount > $amountDue) {
             return response()->json(['message' => 'Le montant dépasse le reste à payer.'], 400);
         }
 

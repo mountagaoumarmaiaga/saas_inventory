@@ -16,7 +16,8 @@ class Invoice extends Model
         'subtotal', 'tva', 'total', 'date', 'due_date', 'notes',
         'created_by', 'updated_by', 'approved_by', 'approved_at',
         'paid_by', 'paid_at', 'stock_deducted_at', 'rejection_reason',
-        'public_uuid'
+        'public_uuid', 'modification_requested_at', 'uuid', 'viewed_at',
+        'currency_symbol', 'currency_position', 'exchange_rate'
     ];
 
     protected $casts = [
@@ -25,6 +26,7 @@ class Invoice extends Model
         'approved_at' => 'datetime',
         'paid_at' => 'datetime',
         'stock_deducted_at' => 'datetime',
+        'modification_requested_at' => 'datetime',
         'date' => 'date',
     ];
 

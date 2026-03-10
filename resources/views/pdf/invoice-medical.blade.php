@@ -177,6 +177,10 @@ $discount = $invoice->discount ?? 0;
                             @endif
                             En cas de retard de paiement, une indemnité proportionnelle pourra être appliquée.
                         </div>
+                        <div style="margin-top: 15px; font-style: italic; font-size: 11px; padding: 10px; border: 1px dashed #ccc;">
+                            Arrêté la présente facture à la somme de :<br>
+                            <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($invoice->total ?? 0)) }} {{ $currencySymbol }}</strong>
+                        </div>
                     </div>
                 </td>
                 <td style="width: 45%;">

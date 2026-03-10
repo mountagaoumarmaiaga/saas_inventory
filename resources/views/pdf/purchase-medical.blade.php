@@ -174,7 +174,7 @@ $subtotal = $totalAmount - $taxAmount;
                         </div>
                         <div style="border: 1px dashed #ccc; padding: 10px; margin-top: 20px; font-style: italic;">
                             Arrêté la présente commande à la somme de :<br>
-                            <strong>{{ $formatCurrency($totalAmount) }}</strong>
+                            <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($totalAmount)) }} {{ $currencySymbol }}</strong>
                         </div>
                     </div>
                 </td>

@@ -1,12 +1,12 @@
 @php
-$entrepriseRecord = $purchase->entreprise ?? $entreprise;
+$entrepriseRecord = $quote->entreprise ?? $entreprise;
 $primaryColor = $entrepriseRecord->primary_color ?? '#1e3a8a';
 @endphp
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Facture {{ $purchase->number }}</title>
+    <title>Facture {{ $quote->number }}</title>
     <style>
         @page { margin: 0px; }
         * { box-sizing: border-box; }
@@ -195,7 +195,7 @@ $primaryColor = $entrepriseRecord->primary_color ?? '#1e3a8a';
 <body>
 
 @php
-$entrepriseRecord = $purchase->entreprise ?? $entreprise;
+$entrepriseRecord = $quote->entreprise ?? $entreprise;
 $primaryColor = $entrepriseRecord->primary_color ?? '#1e3a8a';
 
 $formatCurrency = function($amount) use ($currencySymbol, $currencyPosition) {
@@ -204,9 +204,8 @@ $formatCurrency = function($amount) use ($currencySymbol, $currencyPosition) {
     return $currencyPosition === 'left' ? "{$currencySymbol} {$formatted}" : "{$formatted}{$currencySymbol}";
 };
 
-$taxAmount = $purchase->tax_amount ?? 0;
-$totalAmount = $purchase->total_amount ?? 0;
-$subtotal = $totalAmount - $taxAmount;
+$tvaAmount = ($quote->subtotal ?? 0) * ($quote->tva ?? 0) / 100;
+$discount = $quote->discount ?? 0;
 @endphp
 
 <!-- HEADER BAND -->
@@ -214,11 +213,11 @@ $subtotal = $totalAmount - $taxAmount;
     <table class="header-inner" style="width:100%;">
         <tr>
             <td style="width:55%;">
-                <div class="facture-title">BON DE COMMANDE</div>
+                <div class="facture-title">DEVIS</div>
                 <div class="header-meta">
-                    DATE : {{ \Carbon\Carbon::parse($purchase->date)->format('d / m / Y') }}<br>
-                    ÉCHÉANCE : {{ $purchase->due_date ? \Carbon\Carbon::parse($purchase->due_date)->format('d / m / Y') : 'À RÉCEPTION' }}<br>
-                    <span class="number">BON DE COMMANDE N° : {{ $purchase->number }}</span>
+                    DATE : {{ \Carbon\Carbon::parse($quote->date)->format('d / m / Y') }}<br>
+                    ÉCHÉANCE : {{ $quote->due_date ? \Carbon\Carbon::parse($quote->due_date)->format('d / m / Y') : 'À RÉCEPTION' }}<br>
+                    <span class="number">DEVIS N° : {{ $quote->number }}</span>
                 </div>
             </td>
             <td class="logo-cell" style="width:45%;">
@@ -247,10 +246,10 @@ $subtotal = $totalAmount - $taxAmount;
             </td>
             <td class="addr-right">
                 <div class="addr-label">DESTINATAIRE :</div>
-                <div class="addr-name">{{ $purchase->client->name ?? '' }}</div>
-                <div>{!! nl2br(e($purchase->client->address ?? '')) !!}</div>
-                @if($purchase->client->phone ?? null)<div>{{ $purchase->client->phone }}</div>@endif
-                @if($purchase->client->email ?? null)<div>{{ $purchase->client->email }}</div>@endif
+                <div class="addr-name">{{ $quote->client->name ?? '' }}</div>
+                <div>{!! nl2br(e($quote->client->address ?? '')) !!}</div>
+                @if($quote->client->phone ?? null)<div>{{ $quote->client->phone }}</div>@endif
+                @if($quote->client->email ?? null)<div>{{ $quote->client->email }}</div>@endif
             </td>
         </tr>
     </table>
@@ -266,7 +265,7 @@ $subtotal = $totalAmount - $taxAmount;
             </tr>
         </thead>
         <tbody>
-            @foreach($purchase->items as $item)
+            @foreach($quote->items as $item)
             <tr>
                 <td>{{ $item->product ? $item->product->name : $item->description }}</td>
                 <td class="right">
@@ -300,12 +299,17 @@ $subtotal = $totalAmount - $taxAmount;
                         {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
                     @else
                         <strong>Par virement bancaire :</strong><br>
-                        Veuillez indiquer le numéro de facture ({{ $purchase->number }}) lors de votre paiement.
+                        Veuillez indiquer le numéro de facture ({{ $quote->number }}) lors de votre paiement.
                     @endif
                 </div>
-                <div style="margin-top: 20px; font-style: italic; font-size: 11px; padding: 10px; border: 1px dashed #ccc;">
-                    Arrêté la présente commande à la somme de :<br>
-                    <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($totalAmount)) }} {{ $currencySymbol }}</strong>
+                <div style="margin-top: 16px;" class="reglement-text">
+                    @if($entrepriseRecord->invoice_footer)
+                        {!! nl2br(e($entrepriseRecord->invoice_footer)) !!}
+                    @else
+                        En cas de retard de paiement, une indemnité de 10% par jour de retard ainsi que des frais de recouvrement seront exigibles.<br>
+                        <br>
+                        Conditions générales de vente consultables sur demande.
+                    @endif
                 </div>
                 @if(!empty($qrCodeBase64))
                     <div style="margin-top: 12px;">
@@ -317,17 +321,21 @@ $subtotal = $totalAmount - $taxAmount;
                 <table class="totals-table">
                     <tr>
                         <td class="lbl">TOTAL HT :</td>
-                        <td class="val">{{ $formatCurrency($subtotal) }}</td>
+                        <td class="val">{{ $formatCurrency($quote->subtotal ?? 0) }}</td>
                     </tr>
-                    @if($taxAmount > 0)
+                    @if(($quote->tva ?? 0) > 0)
                     <tr>
-                        <td class="lbl">TAXES :</td>
-                        <td class="val">{{ $formatCurrency($taxAmount) }}</td>
+                        <td class="lbl">TVA {{ $quote->tva }}% :</td>
+                        <td class="val">{{ $formatCurrency($tvaAmount) }}</td>
                     </tr>
                     @endif
+                    <tr>
+                        <td class="lbl">REMISE :</td>
+                        <td class="val">{{ $discount > 0 ? $formatCurrency($discount) : '-' }}</td>
+                    </tr>
                     <tr class="grand-total">
                         <td class="lbl">TOTAL TTC :</td>
-                        <td class="val">{{ $formatCurrency($totalAmount) }}</td>
+                        <td class="val">{{ $formatCurrency($quote->total ?? 0) }}</td>
                     </tr>
                 </table>
             </td>

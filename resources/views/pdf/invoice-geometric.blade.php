@@ -65,6 +65,9 @@ $discount = $invoice->discount ?? 0;
         /* Geometric accents */
         .top-accent { width: 100%; height: 12px; background-color: {{ $primaryColor }}; position: absolute; top: 0; left: 0; }
         .bottom-accent { width: 100%; height: 12px; background-color: {{ $primaryColor }}; position: absolute; bottom: 0; left: 0; }
+        
+        /* Footer */
+        .footer { width: 100%; text-align: center; position: fixed; bottom: 20px; font-size: 9px; color: #888; left: 0; right: 0; }
     </style>
 </head>
 <body>
@@ -148,12 +151,10 @@ $discount = $invoice->discount ?? 0;
                                 Veuillez indiquer le numéro de facture ({{ $invoice->number }}).
                             @endif
                         </div>
-                        <div>
-                            @if($entrepriseRecord->invoice_footer)
-                                {!! nl2br(e($entrepriseRecord->invoice_footer)) !!}
-                            @else
-                                En cas de retard de paiement, une indemnité de 10% par jour de retard ainsi que des frais de recouvrement seront exigibles.
-                            @endif
+                        </div>
+                        <div style="margin-top: 15px; font-style: italic; font-size: 11px; padding: 10px; border: 1px dashed #ccc;">
+                            Arrêté la présente facture à la somme de :<br>
+                            <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($invoice->total ?? 0)) }} {{ $currencySymbol }}</strong>
                         </div>
                     </div>
                     
@@ -189,6 +190,13 @@ $discount = $invoice->discount ?? 0;
                 </td>
             </tr>
         </table>
+        <div class="footer">
+            @if($entrepriseRecord->invoice_footer)
+                {!! nl2br(e($entrepriseRecord->invoice_footer)) !!}
+            @else
+                En cas de retard de paiement, une indemnité de 10% par jour de retard ainsi que des frais de recouvrement seront exigibles.
+            @endif
+        </div>
     </div>
 </body>
 </html>

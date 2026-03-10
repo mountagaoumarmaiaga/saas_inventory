@@ -156,6 +156,10 @@ $subtotal = $totalAmount - $taxAmount;
                                 La présente commande est soumise aux conditions générales d'achat.
                             @endif
                         </div>
+                        <div style="margin-top: 15px; font-style: italic; font-size: 11px; padding: 10px; border: 1px dashed #ccc;">
+                            Arrêté la présente commande à la somme de :<br>
+                            <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($totalAmount)) }} {{ $currencySymbol }}</strong>
+                        </div>
                     </div>
                 </td>
                 <td style="width: 50%;">

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Facture {{ $purchase->number }}</title>
+    <title>Facture {{ $quote->number }}</title>
     <style>
         @page { margin: 0px; }
         * { box-sizing: border-box; }
@@ -165,7 +165,7 @@
 <body>
 
 @php
-$entrepriseRecord = $purchase->entreprise ?? $entreprise;
+$entrepriseRecord = $quote->entreprise ?? $entreprise;
 $primaryColor = $entrepriseRecord->primary_color ?? '#111111';
 
 $formatCurrency = function($amount) use ($currencySymbol, $currencyPosition) {
@@ -174,9 +174,8 @@ $formatCurrency = function($amount) use ($currencySymbol, $currencyPosition) {
     return $currencyPosition === 'left' ? "{$currencySymbol} {$formatted}" : "{$formatted}{$currencySymbol}";
 };
 
-$taxAmount = $purchase->tax_amount ?? 0;
-$totalAmount = $purchase->total_amount ?? 0;
-$subtotal = $totalAmount - $taxAmount;
+$tvaAmount = ($quote->subtotal ?? 0) * ($quote->tva ?? 0) / 100;
+$discount = $quote->discount ?? 0;
 @endphp
 
 <div class="outer-border">
@@ -193,11 +192,11 @@ $subtotal = $totalAmount - $taxAmount;
                 @endif
             </td>
             <td class="title-cell" style="width:55%;">
-                <div class="facture-title">BON DE COMMANDE</div>
+                <div class="facture-title">DEVIS</div>
                 <div class="facture-meta">
-                    BON DE COMMANDE N° : {{ $purchase->number }}<br>
-                    DATE : {{ \Carbon\Carbon::parse($purchase->date)->format('d / m / Y') }}<br>
-                    ÉCHÉANCE : {{ $purchase->due_date ? \Carbon\Carbon::parse($purchase->due_date)->format('d / m / Y') : 'À RÉCEPTION' }}
+                    DEVIS N° : {{ $quote->number }}<br>
+                    DATE : {{ \Carbon\Carbon::parse($quote->date)->format('d / m / Y') }}<br>
+                    ÉCHÉANCE : {{ $quote->due_date ? \Carbon\Carbon::parse($quote->due_date)->format('d / m / Y') : 'À RÉCEPTION' }}
                 </div>
             </td>
         </tr>
@@ -214,9 +213,9 @@ $subtotal = $totalAmount - $taxAmount;
             </td>
             <td class="addr-right">
                 <div class="addr-label">DESTINATAIRE :</div>
-                <div class="addr-name">{{ $purchase->client->name ?? '' }}</div>
-                <div>{{ $purchase->client->email ?? '' }}</div>
-                <div>{!! nl2br(e($purchase->client->address ?? '')) !!}</div>
+                <div class="addr-name">{{ $quote->client->name ?? '' }}</div>
+                <div>{{ $quote->client->email ?? '' }}</div>
+                <div>{!! nl2br(e($quote->client->address ?? '')) !!}</div>
             </td>
         </tr>
     </table>
@@ -232,7 +231,7 @@ $subtotal = $totalAmount - $taxAmount;
             </tr>
         </thead>
         <tbody>
-            @foreach($purchase->items as $item)
+            @foreach($quote->items as $item)
             <tr>
                 <td>{{ $item->product ? $item->product->name : $item->description }}</td>
                 <td class="center">{{ $item->quantity }}</td>
@@ -252,17 +251,21 @@ $subtotal = $totalAmount - $taxAmount;
     <table style="width: 50%; margin-left: 50%;">
         <tr>
             <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px; text-transform:uppercase;">TOTAL HT :</td>
-            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px;">{{ $formatCurrency($subtotal) }}</td>
+            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px;">{{ $formatCurrency($quote->subtotal ?? 0) }}</td>
         </tr>
-        @if($taxAmount > 0)
+        @if(($quote->tva ?? 0) > 0)
         <tr>
-            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px; text-transform:uppercase;">TAXES ADDITIONNELLES :</td>
-            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px;">{{ $formatCurrency($taxAmount) }}</td>
+            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px; text-transform:uppercase;">TVA :</td>
+            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px;">{{ $formatCurrency($tvaAmount) }}</td>
         </tr>
         @endif
         <tr>
+            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px; text-transform:uppercase;">REMISE :</td>
+            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px;">{{ $discount > 0 ? $formatCurrency($discount) : '-' }}</td>
+        </tr>
+        <tr>
             <td style="text-align:right; font-weight:bold; padding: 10px 8px; font-size:15px; text-transform:uppercase; border-top: 2px solid #111;">TOTAL TTC :</td>
-            <td style="text-align:right; font-weight:bold; padding: 10px 8px; font-size:15px; border-top: 2px solid #111;">{{ $formatCurrency($totalAmount) }}</td>
+            <td style="text-align:right; font-weight:bold; padding: 10px 8px; font-size:15px; border-top: 2px solid #111;">{{ $formatCurrency($quote->total ?? 0) }}</td>
         </tr>
     </table>
 
@@ -276,7 +279,7 @@ $subtotal = $totalAmount - $taxAmount;
                         {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
                     @else
                         <strong>Par virement bancaire :</strong><br>
-                        Veuillez indiquer le numéro de facture ({{ $purchase->number }}) lors de votre paiement.
+                        Veuillez indiquer le numéro de facture ({{ $quote->number }}) lors de votre paiement.
                     @endif
                 </div>
                 @if(!empty($qrCodeBase64))
@@ -284,10 +287,14 @@ $subtotal = $totalAmount - $taxAmount;
                 @endif
             </td>
             <td class="terms-col">
-                <div class="section-title">MONTANT DE LA COMMANDE</div>
-                <div class="section-text" style="font-style: italic; padding: 15px; border: 1px dashed #ccc;">
-                    Arrêté la présente commande à la somme de :<br>
-                    <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($totalAmount)) }} {{ $currencySymbol }}</strong>
+                <div class="section-title">TERMES &amp; CONDITIONS</div>
+                <div class="section-text">
+                    @if($entrepriseRecord->invoice_footer)
+                        {!! nl2br(e($entrepriseRecord->invoice_footer)) !!}
+                    @else
+                        En cas de retard de paiement, et conformément au code de commerce, une indemnité calculée à trois fois le taux d'intérêt légal ainsi qu'un frais de recouvrement de 40 euros sont exigibles.<br>
+                        Conditions générales de vente consultables sur le site.
+                    @endif
                 </div>
             </td>
         </tr>

@@ -107,18 +107,18 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
             <div className="p-6 space-y-6 max-w-5xl mx-auto">
                 <div className="flex items-center justify-between">
                     <div>
-                        <Button variant="ghost" onClick={() => router.visit('/admin/quotes')} className="pl-0 hover:bg-transparent hover:text-indigo-600 transition-colors">
+                        <Button variant="ghost" onClick={() => router.visit('/admin/quotes')} className="pl-0 hover:bg-transparent hover:text-primary transition-colors">
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             Retour à la liste
                         </Button>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mt-2">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary/90 to-primary bg-clip-text text-transparent mt-2">
                             Devis {quote.number}
                         </h1>
                     </div>
 
                     <div className="flex gap-3">
                         {canEdit && (
-                            <Button variant="outline" onClick={handleEdit} className="border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700">
+                            <Button variant="outline" onClick={handleEdit} className="border-primary/20 hover:bg-primary/5 hover:text-primary/90">
                                 <Edit className="mr-2 h-4 w-4" />
                                 Modifier
                             </Button>
@@ -127,7 +127,7 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
                             <Printer className="mr-2 h-4 w-4" />
                             Imprimer
                         </Button>
-                        <Button onClick={handleDownloadPdf} className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/20">
+                        <Button onClick={handleDownloadPdf} className="bg-gradient-to-r from-primary/90 to-primary hover:from-primary hover:to-primary/90 text-white shadow-lg shadow-primary/20">
                             <Download className="mr-2 h-4 w-4" />
                             Télécharger PDF
                         </Button>
@@ -182,7 +182,7 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
                                     <div className="h-px bg-border flex-grow ml-4"></div>
                                 </h3>
                                 <div className="text-right space-y-1 pt-2">
-                                    <p className="font-bold text-lg text-foreground bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">{page.props.auth?.user?.entreprise?.name || "Entreprise"}</p>
+                                    <p className="font-bold text-lg text-foreground bg-gradient-to-r from-primary/90 to-primary bg-clip-text text-transparent">{page.props.auth?.user?.entreprise?.name || "Entreprise"}</p>
                                     <p className="text-sm text-foreground/80">{page.props.auth?.user?.entreprise?.address || "Adresse non définie"}</p>
                                     <p className="text-sm text-foreground/80">{page.props.auth?.user?.entreprise?.phone ? `Tél: ${page.props.auth.user.entreprise.phone}` : ""}</p>
                                     <p className="text-sm text-muted-foreground">{page.props.auth?.user?.entreprise?.email || "Email non défini"}</p>
@@ -221,7 +221,7 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
 
                         {/* Totals Section */}
                         <div className="flex justify-end pt-4">
-                            <div className="w-80 space-y-4 p-6 rounded-xl bg-gradient-to-br from-indigo-500/5 to-blue-500/5 border border-indigo-500/10">
+                            <div className="w-80 space-y-4 p-6 rounded-xl bg-gradient-to-br from-indigo-500/5 to-blue-500/5 border border-primary/50">
                                 <div className="space-y-2">
                                     <div className="flex justify-between text-sm">
                                         <span className="text-muted-foreground">Total HT</span>
@@ -234,10 +234,10 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
                                         </div>
                                     )}
                                 </div>
-                                <Separator className="bg-indigo-500/10" />
+                                <Separator className="bg-primary/10" />
                                 <div className="flex justify-between items-end">
-                                    <span className="text-sm font-bold text-indigo-900 dark:text-indigo-100 uppercase tracking-wide">Total TTC</span>
-                                    <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
+                                    <span className="text-sm font-bold text-foreground dark:text-indigo-100 uppercase tracking-wide">Total TTC</span>
+                                    <span className="text-2xl font-bold bg-gradient-to-r from-primary/90 to-primary bg-clip-text text-transparent">
                                         {quote.total.toLocaleString('fr-FR')} <span className="text-sm text-muted-foreground font-normal">FCFA</span>
                                     </span>
                                 </div>
@@ -247,7 +247,7 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
                         {quote.notes && (
                             <div className="pt-2">
                                 <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Notes</h3>
-                                <div className="bg-blue-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30 p-5 rounded-xl text-sm text-foreground/80 leading-relaxed shadow-sm">
+                                <div className="bg-primary/5 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30 p-5 rounded-xl text-sm text-foreground/80 leading-relaxed shadow-sm">
                                     {quote.notes}
                                 </div>
                             </div>
@@ -255,7 +255,7 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
                         {quote.terms && (
                             <div className="pt-2">
                                 <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Conditions</h3>
-                                <div className="bg-blue-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30 p-5 rounded-xl text-sm text-foreground/80 leading-relaxed shadow-sm">
+                                <div className="bg-primary/5 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30 p-5 rounded-xl text-sm text-foreground/80 leading-relaxed shadow-sm">
                                     {quote.terms}
                                 </div>
                             </div>

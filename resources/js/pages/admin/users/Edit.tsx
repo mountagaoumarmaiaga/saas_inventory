@@ -80,7 +80,7 @@ export default function EditUser({ user, open, setOpen, onUpdate, updating }: Pr
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-[500px] border-white/10 backdrop-blur-xl bg-background/95 shadow-2xl">
                 <DialogHeader className="pb-4 border-b border-white/10">
-                    <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary/90 to-primary bg-clip-text text-transparent">
                         Modifier l'utilisateur
                     </DialogTitle>
                     <DialogDescription className="text-muted-foreground">
@@ -97,10 +97,10 @@ export default function EditUser({ user, open, setOpen, onUpdate, updating }: Pr
                                 setForm({ ...form, name: e.target.value })
                             }
                             required
-                            className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
+                            className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                         />
                         {errors.name && (
-                            <p className="text-sm text-indigo-500 font-medium">• {errors.name}</p>
+                            <p className="text-sm text-primary/80 font-medium">• {errors.name}</p>
                         )}
                     </div>
 
@@ -114,10 +114,10 @@ export default function EditUser({ user, open, setOpen, onUpdate, updating }: Pr
                                 setForm({ ...form, email: e.target.value })
                             }
                             required
-                            className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
+                            className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                         />
                         {errors.email && (
-                            <p className="text-sm text-indigo-500 font-medium">
+                            <p className="text-sm text-primary/80 font-medium">
                                 • {errors.email}
                             </p>
                         )}
@@ -131,7 +131,7 @@ export default function EditUser({ user, open, setOpen, onUpdate, updating }: Pr
                                 setForm({ ...form, role: val })
                             }
                         >
-                            <SelectTrigger className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500/50 transition-all duration-300 shadow-lg">
+                            <SelectTrigger className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus:ring-2 focus:ring-primary focus:border-primary/50 transition-all duration-300 shadow-lg">
                                 <SelectValue placeholder="Sélectionner un rôle" />
                             </SelectTrigger>
                             <SelectContent>
@@ -144,7 +144,7 @@ export default function EditUser({ user, open, setOpen, onUpdate, updating }: Pr
                             </SelectContent>
                         </Select>
                         {errors.role && (
-                            <p className="text-sm text-indigo-500 font-medium">• {errors.role}</p>
+                            <p className="text-sm text-primary/80 font-medium">• {errors.role}</p>
                         )}
                     </div>
 
@@ -160,10 +160,10 @@ export default function EditUser({ user, open, setOpen, onUpdate, updating }: Pr
                                 setForm({ ...form, password: e.target.value })
                             }
                             placeholder="••••••••"
-                            className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
+                            className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                         />
                         {errors.password && (
-                            <p className="text-sm text-indigo-500 font-medium">
+                            <p className="text-sm text-primary/80 font-medium">
                                 • {errors.password}
                             </p>
                         )}
@@ -185,7 +185,7 @@ export default function EditUser({ user, open, setOpen, onUpdate, updating }: Pr
                                     })
                                 }
                                 required={!!form.password}
-                                className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
+                                className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                             />
                         </div>
                     )}
@@ -202,7 +202,7 @@ export default function EditUser({ user, open, setOpen, onUpdate, updating }: Pr
                         <Button
                             type="submit"
                             disabled={updating}
-                            className="h-11 px-6 bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 hover:from-indigo-700 hover:via-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 transition-all duration-300 rounded-xl"
+                            className="h-11 px-6 bg-gradient-to-r from-primary/90 to-primary hover:from-primary hover:to-primary/90 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 rounded-xl"
                         >
                             <Save className="mr-2 h-4 w-4" />
                             {updating ? "Enregistrement..." : "Enregistrer"}

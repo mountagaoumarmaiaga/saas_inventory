@@ -197,7 +197,7 @@ export default function AdminQuotesIndex() {
                     ) : (
                         <div className="relative w-full overflow-auto">
                             <table className="w-full caption-bottom text-sm">
-                                <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
+                                <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-primary/20">
                                     <tr className="border-b border-border/40 bg-muted/20">
                                         <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Numéro</th>
                                         <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Client</th>
@@ -241,7 +241,7 @@ export default function AdminQuotesIndex() {
                                                 <td className="p-4 align-middle text-right">
                                                     <div className="flex justify-end gap-1">
                                                         {isAdmin && quote.status !== 'ACCEPTED' && (
-                                                            <Button variant="ghost" size="icon" onClick={() => handleConvert(quote)} title="Convertir en facture" className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50">
+                                                            <Button variant="ghost" size="icon" onClick={() => handleConvert(quote)} title="Convertir en facture" className="h-8 w-8 text-primary/80 hover:text-primary hover:bg-primary/5">
                                                                 <Send className="h-4 w-4" />
                                                             </Button>
                                                         )}

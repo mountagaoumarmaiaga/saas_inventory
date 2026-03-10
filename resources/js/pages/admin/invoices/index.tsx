@@ -243,7 +243,7 @@ export default function AdminInvoicesIndex() {
                     ) : (
                         <div className="relative w-full overflow-auto">
                             <table className="w-full caption-bottom text-sm">
-                                <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
+                                <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-primary/20">
                                     <tr className="border-b border-border/40 bg-muted/20">
                                         <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Numéro</th>
                                         <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Client</th>
@@ -289,7 +289,7 @@ export default function AdminInvoicesIndex() {
                                                     <div className="flex justify-end gap-1">
                                                         {/* Workflow Actions */}
                                                         {invoice.status === 'DRAFT' && invoice.type === 'invoice' && (
-                                                            <Button variant="ghost" size="icon" onClick={() => handleStatusChange(invoice, 'submit')} title="Soumettre" className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50">
+                                                            <Button variant="ghost" size="icon" onClick={() => handleStatusChange(invoice, 'submit')} title="Soumettre" className="h-8 w-8 text-primary/80 hover:text-primary hover:bg-primary/5">
                                                                 <Send className="h-4 w-4" />
                                                             </Button>
                                                         )}
@@ -309,7 +309,7 @@ export default function AdminInvoicesIndex() {
                                                             </Button>
                                                         )}
                                                         {invoice.status === 'PAID' && (
-                                                            <Button variant="ghost" size="icon" onClick={() => handleStatusChange(invoice, 'unpay')} title="Marquer comme Impayé" className="h-8 w-8 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50">
+                                                            <Button variant="ghost" size="icon" onClick={() => handleStatusChange(invoice, 'unpay')} title="Marquer comme Impayé" className="h-8 w-8 text-primary hover:text-primary/90 hover:bg-primary/5">
                                                                 <XCircle className="h-4 w-4" />
                                                             </Button>
                                                         )}
@@ -322,7 +322,7 @@ export default function AdminInvoicesIndex() {
                                                                         variant="ghost"
                                                                         size="icon"
                                                                         asChild
-                                                                        className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50"
+                                                                        className="h-8 w-8 text-primary/80 hover:text-primary hover:bg-primary/5"
                                                                         title="Télécharger BL"
                                                                     >
                                                                         <a

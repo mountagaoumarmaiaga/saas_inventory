@@ -66,7 +66,7 @@ export default function StatCard({
         primary: "from-primary/5 to-primary/10 border-primary/20 hover:border-primary/40 shadow-sm",
         success: "from-success/5 to-success/10 border-success/20 hover:border-success/40 shadow-sm",
         warning: "from-warning/5 to-warning/10 border-warning/20 hover:border-warning/40 shadow-sm",
-        info: "from-blue-500/5 to-blue-500/10 border-blue-500/20 hover:border-blue-500/40 shadow-sm",
+        info: "from-blue-500/5 to-blue-500/10 border-primary/20 hover:border-blue-500/40 shadow-sm",
         purple: "from-purple-500/5 to-purple-500/10 border-purple-500/20 hover:border-purple-500/40 shadow-sm",
         destructive: "from-destructive/5 to-destructive/10 border-destructive/20 hover:border-destructive/40 shadow-sm",
     };
@@ -76,7 +76,7 @@ export default function StatCard({
         primary: "bg-primary/20 text-primary",
         success: "bg-success/20 text-success",
         warning: "bg-warning/20 text-warning",
-        info: "bg-blue-500/20 text-blue-500",
+        info: "bg-blue-500/20 text-primary/80",
         purple: "bg-purple-500/20 text-purple-500",
         destructive: "bg-destructive/10 text-destructive",
     };

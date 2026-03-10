@@ -101,11 +101,11 @@ export default function ExpenseCreate() {
 
             <div className="p-6 max-w-4xl mx-auto space-y-6">
                 <div>
-                    <Button variant="ghost" onClick={() => router.visit('/admin/expenses')} className="pl-0 hover:bg-transparent hover:text-indigo-600 transition-colors">
+                    <Button variant="ghost" onClick={() => router.visit('/admin/expenses')} className="pl-0 hover:bg-transparent hover:text-primary transition-colors">
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Retour aux dépenses
                     </Button>
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mt-2">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-primary/90 to-primary bg-clip-text text-transparent mt-2">
                         Nouvelle Dépense
                     </h1>
                 </div>
@@ -113,15 +113,15 @@ export default function ExpenseCreate() {
                 <Card className="border border-white/10 bg-background/60 shadow-xl backdrop-blur-xl">
                     <CardContent className="p-6">
                         {/* OCR Upload Area */}
-                        <div className="mb-8 p-6 rounded-xl border border-dashed border-indigo-500/30 bg-indigo-50/50 dark:bg-indigo-500/5 text-center flex flex-col items-center justify-center space-y-3 relative overflow-hidden transition-all hover:bg-indigo-50 dark:hover:bg-indigo-500/10">
+                        <div className="mb-8 p-6 rounded-xl border border-dashed border-primary/50 bg-primary/5 dark:bg-indigo-500/5 text-center flex flex-col items-center justify-center space-y-3 relative overflow-hidden transition-all hover:bg-primary/5 dark:hover:bg-primary/10">
                             {analyzing ? (
-                                <div className="flex flex-col items-center justify-center text-indigo-600 dark:text-indigo-500 space-y-2">
-                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                                <div className="flex flex-col items-center justify-center text-primary dark:text-primary/80 space-y-2">
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                                     <span className="font-medium text-sm animate-pulse">Analyse du reçu en cours avec l'IA...</span>
                                 </div>
                             ) : (
                                 <>
-                                    <div className="p-3 bg-indigo-100 dark:bg-indigo-500/20 rounded-full text-indigo-600 dark:text-indigo-400">
+                                    <div className="p-3 bg-primary/10 dark:bg-primary/20 rounded-full text-primary dark:text-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
                                     </div>
                                     <div className="space-y-1">
@@ -130,7 +130,7 @@ export default function ExpenseCreate() {
                                             Téléversez une photo de votre reçu. Le système lira automatiquement le montant, la date et le fournisseur.
                                         </p>
                                     </div>
-                                    <Button type="button" variant="outline" className="mt-2 border-indigo-200 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-400 font-medium relative overflow-hidden" onClick={() => document.getElementById('receipt-upload')?.click()}>
+                                    <Button type="button" variant="outline" className="mt-2 border-primary/20 dark:border-primary/50 text-primary/90 dark:text-primary font-medium relative overflow-hidden" onClick={() => document.getElementById('receipt-upload')?.click()}>
                                         Sélectionner une image
                                     </Button>
                                     <input
@@ -202,7 +202,7 @@ export default function ExpenseCreate() {
                                 <Button type="button" variant="outline" onClick={() => router.visit('/admin/expenses')}>
                                     Annuler
                                 </Button>
-                                <Button type="submit" disabled={submitting} className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/20">
+                                <Button type="submit" disabled={submitting} className="bg-gradient-to-r from-primary/90 to-primary hover:from-primary hover:to-primary/90 text-white shadow-lg shadow-primary/20">
                                     {submitting ? "Enregistrement..." : "Enregistrer la dépense"}
                                 </Button>
                             </div>

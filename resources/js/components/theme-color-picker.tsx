@@ -11,7 +11,7 @@ export default function ThemeColorPicker({
 
     const colors: { value: ThemeColor; label: string; bgClass: string }[] = [
         { value: 'orange', label: 'Orange', bgClass: 'bg-[#ee7621]' }, // SaaS Orange
-        { value: 'blue', label: 'Blue', bgClass: 'bg-blue-600' },
+        { value: 'blue', label: 'Blue', bgClass: 'bg-primary' },
         { value: 'green', label: 'Green', bgClass: 'bg-green-600' },
         { value: 'purple', label: 'Purple', bgClass: 'bg-purple-600' },
         { value: 'rose', label: 'Rose', bgClass: 'bg-rose-600' },

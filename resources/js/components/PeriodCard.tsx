@@ -15,7 +15,7 @@ export default function PeriodCard({ title, value, icon: Icon, className, iconCo
     const isEmerald = iconColor.includes('emerald');
 
     let borderColor = "border-border/50";
-    if (isIndigo) borderColor = "border-indigo-100 dark:border-indigo-900/30 hover:border-indigo-200 dark:hover:border-indigo-800/50";
+    if (isIndigo) borderColor = "border-indigo-100 dark:border-indigo-900/30 hover:border-primary/20 dark:hover:border-indigo-800/50";
     if (isViolet) borderColor = "border-violet-100 dark:border-violet-900/30 hover:border-violet-200 dark:hover:border-violet-800/50";
     if (isEmerald) borderColor = "border-emerald-100 dark:border-emerald-900/30 hover:border-emerald-200 dark:hover:border-emerald-800/50";
 

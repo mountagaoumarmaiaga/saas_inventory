@@ -134,7 +134,7 @@ export default function SuppliersIndex() {
                 <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden flex flex-col">
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left">
-                            <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
+                            <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-primary/20">
                                 <tr>
                                     <th className="px-6 py-4">Nom</th>
                                     <th className="px-6 py-4">Contact</th>
@@ -175,7 +175,7 @@ export default function SuppliersIndex() {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="text-sm">
-                                                    {supplier.email && <div className="text-blue-600 hover:underline">{supplier.email}</div>}
+                                                    {supplier.email && <div className="text-primary hover:underline">{supplier.email}</div>}
                                                     {supplier.phone && <div className="text-muted-foreground">{supplier.phone}</div>}
                                                     {!supplier.email && !supplier.phone && <span className="text-muted-foreground italic">Non renseigné</span>}
                                                 </div>

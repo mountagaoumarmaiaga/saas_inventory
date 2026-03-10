@@ -171,7 +171,7 @@ export default function EditInvoice({ id }: { id: string }) {
                 <Head title={`Éditer Facture #${id}`} />
                 <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
                     <div className="relative">
-                        <div className="h-16 w-16 rounded-full border-4 border-indigo-500/20 border-t-indigo-500 animate-spin" />
+                        <div className="h-16 w-16 rounded-full border-4 border-primary/20 border-t-indigo-500 animate-spin" />
                     </div>
                     <p className="text-muted-foreground font-medium">Chargement de la facture...</p>
                 </div>
@@ -200,7 +200,7 @@ export default function EditInvoice({ id }: { id: string }) {
                         </p>
                     </div>
                     {isLocked && (
-                        <div className="bg-blue-500/10 border border-blue-500/20 text-blue-700 dark:text-blue-400 px-4 py-2 rounded-lg font-medium text-xs flex items-center shadow-sm">
+                        <div className="bg-primary/10 border border-primary/20 text-primary/90 dark:text-blue-400 px-4 py-2 rounded-lg font-medium text-xs flex items-center shadow-sm">
                             <Lock className="h-3.5 w-3.5 mr-2" />
                             Lecture seule (Approuvée/Payée)
                         </div>
@@ -244,7 +244,7 @@ export default function EditInvoice({ id }: { id: string }) {
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                {clients.length === 0 && <p className="text-[10px] text-indigo-500 font-medium pt-1">• Aucun client trouvé.</p>}
+                                {clients.length === 0 && <p className="text-[10px] text-primary/80 font-medium pt-1">• Aucun client trouvé.</p>}
                             </div>
 
                             <div className="space-y-2">

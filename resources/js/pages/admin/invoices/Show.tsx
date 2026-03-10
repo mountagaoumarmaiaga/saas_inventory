@@ -147,7 +147,7 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
 
     const getStatusBadge = (status: string) => {
         if (status === 'APPROVED' && invoice?.amount_paid && invoice.amount_paid > 0) {
-            return <Badge className="bg-indigo-500 hover:bg-indigo-600">Partiellement Payée</Badge>;
+            return <Badge className="bg-indigo-500 hover:bg-primary">Partiellement Payée</Badge>;
         }
         const variants: Record<string, { variant: "default" | "secondary" | "destructive" | "outline", label: string }> = {
             DRAFT: { variant: "secondary", label: "Brouillon" },
@@ -209,32 +209,32 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
             <div className="p-6 space-y-6 max-w-5xl mx-auto">
                 <div className="flex items-center justify-between">
                     <div>
-                        <Button variant="ghost" onClick={() => router.visit('/admin/invoices')} className="pl-0 hover:bg-transparent hover:text-indigo-600 transition-colors">
+                        <Button variant="ghost" onClick={() => router.visit('/admin/invoices')} className="pl-0 hover:bg-transparent hover:text-primary transition-colors">
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             Retour à la liste
                         </Button>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mt-2">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary/90 to-primary bg-clip-text text-transparent mt-2">
                             Facture {invoice.number}
                         </h1>
                     </div>
 
                     <div className="flex gap-3">
                         {canEdit && (
-                            <Button variant="outline" onClick={handleEdit} className="border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700" disabled={actionLoading}>
+                            <Button variant="outline" onClick={handleEdit} className="border-primary/20 hover:bg-primary/5 hover:text-primary/90" disabled={actionLoading}>
                                 <Edit className="mr-2 h-4 w-4" />
                                 Modifier
                             </Button>
                         )}
 
                         {invoice.status === 'DRAFT' && invoice.type === 'invoice' && (
-                            <Button variant="default" onClick={() => handleWorkflowAction(submitInvoiceApi, "Facture soumise avec succès")} disabled={actionLoading} className="bg-blue-600 hover:bg-blue-700 text-white">
+                            <Button variant="default" onClick={() => handleWorkflowAction(submitInvoiceApi, "Facture soumise avec succès")} disabled={actionLoading} className="bg-primary hover:bg-primary/90 text-white">
                                 <Send className="mr-2 h-4 w-4" />
                                 Soumettre
                             </Button>
                         )}
 
                         {invoice.status === 'DRAFT' && invoice.type === 'proforma' && (
-                            <Button variant="default" onClick={() => handleWorkflowAction(validateProformaApi, "Proforma validée")} disabled={actionLoading} className="bg-blue-600 hover:bg-blue-700 text-white">
+                            <Button variant="default" onClick={() => handleWorkflowAction(validateProformaApi, "Proforma validée")} disabled={actionLoading} className="bg-primary hover:bg-primary/90 text-white">
                                 <CheckCircle className="mr-2 h-4 w-4" />
                                 Valider Proforma
                             </Button>
@@ -266,7 +266,7 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                         </Button>
                         {invoice.uuid && (
                             <>
-                                <Button variant="outline" onClick={handleCopyPublicLink} className="border-border/50 hover:bg-muted/50 text-blue-600 border-blue-200 hover:border-blue-300">
+                                <Button variant="outline" onClick={handleCopyPublicLink} className="border-border/50 hover:bg-muted/50 text-primary border-blue-200 hover:border-blue-300">
                                     <LinkIcon className="mr-2 h-4 w-4" />
                                     Copier le lien
                                 </Button>
@@ -284,7 +284,7 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                                 </Button>
                             </>
                         )}
-                        <Button onClick={handleDownloadPdf} className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-lg shadow-indigo-500/20">
+                        <Button onClick={handleDownloadPdf} className="bg-gradient-to-r from-primary/90 to-primary hover:from-primary hover:to-primary/90 text-white shadow-lg shadow-primary/20">
                             <Download className="mr-2 h-4 w-4" />
                             Télécharger PDF
                         </Button>
@@ -333,7 +333,7 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                                     <div className="h-px bg-border flex-grow ml-4"></div>
                                 </h3>
                                 <div className="text-right space-y-1 pt-2">
-                                    <p className="font-bold text-lg text-foreground bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">{page.props.auth?.user?.entreprise?.name || "Entreprise"}</p>
+                                    <p className="font-bold text-lg text-foreground bg-gradient-to-r from-primary/90 to-primary bg-clip-text text-transparent">{page.props.auth?.user?.entreprise?.name || "Entreprise"}</p>
                                     <p className="text-sm text-foreground/80">{page.props.auth?.user?.entreprise?.address || "Adresse non définie"}</p>
                                     <p className="text-sm text-foreground/80">{page.props.auth?.user?.entreprise?.phone ? `Tél: ${page.props.auth.user.entreprise.phone}` : ""}</p>
                                     <p className="text-sm text-muted-foreground">{page.props.auth?.user?.entreprise?.email || "Email non défini"}</p>
@@ -372,7 +372,7 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
 
                         {/* Totals Section */}
                         <div className="flex justify-end pt-4">
-                            <div className="w-80 space-y-4 p-6 rounded-xl bg-gradient-to-br from-indigo-500/5 to-blue-500/5 border border-indigo-500/10">
+                            <div className="w-80 space-y-4 p-6 rounded-xl bg-gradient-to-br from-indigo-500/5 to-blue-500/5 border border-primary/50">
                                 <div className="space-y-2">
                                     <div className="flex justify-between text-sm">
                                         <span className="text-muted-foreground">Total HT</span>
@@ -385,10 +385,10 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                                         </div>
                                     )}
                                 </div>
-                                <Separator className="bg-indigo-500/10" />
+                                <Separator className="bg-primary/10" />
                                 <div className="flex justify-between items-end">
-                                    <span className="text-sm font-bold text-indigo-900 dark:text-indigo-100 uppercase tracking-wide">Total TTC</span>
-                                    <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
+                                    <span className="text-sm font-bold text-foreground dark:text-indigo-100 uppercase tracking-wide">Total TTC</span>
+                                    <span className="text-2xl font-bold bg-gradient-to-r from-primary/90 to-primary bg-clip-text text-transparent">
                                         {invoice.total.toLocaleString('fr-FR')} <span className="text-sm text-muted-foreground font-normal">FCFA</span>
                                     </span>
                                 </div>
@@ -401,7 +401,7 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                                 <div className="flex items-center justify-between mb-4">
                                     <h3 className="text-lg font-bold text-foreground">Historique des Paiements</h3>
                                     {invoice.status === 'APPROVED' && invoice.amount_due! > 0 && (
-                                        <Button onClick={() => setIsPaymentModalOpen(true)} size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                                        <Button onClick={() => setIsPaymentModalOpen(true)} size="sm" className="bg-primary hover:bg-primary/90 text-white">
                                             <Plus className="mr-2 h-4 w-4" /> Ajouter un paiement
                                         </Button>
                                     )}
@@ -442,7 +442,7 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                                             <tfoot className="bg-muted/20 border-t border-white/10">
                                                 <tr>
                                                     <td colSpan={3} className="p-4 text-right font-semibold text-muted-foreground">Reste à payer</td>
-                                                    <td className="p-4 text-right font-bold text-indigo-600 dark:text-indigo-400">{invoice.amount_due?.toLocaleString('fr-FR')} FCFA</td>
+                                                    <td className="p-4 text-right font-bold text-primary dark:text-primary">{invoice.amount_due?.toLocaleString('fr-FR')} FCFA</td>
                                                     <td></td>
                                                 </tr>
                                             </tfoot>
@@ -460,7 +460,7 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                         {invoice.notes && (
                             <div className="pt-2">
                                 <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">Notes & Conditions</h3>
-                                <div className="bg-blue-50/50 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30 p-5 rounded-xl text-sm text-foreground/80 leading-relaxed shadow-sm">
+                                <div className="bg-primary/5 dark:bg-amber-950/20 border border-amber-200/50 dark:border-amber-800/30 p-5 rounded-xl text-sm text-foreground/80 leading-relaxed shadow-sm">
                                     {invoice.notes}
                                 </div>
                             </div>
@@ -529,7 +529,7 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                         </div>
                         <div className="pt-4 flex justify-end space-x-2">
                             <Button type="button" variant="outline" onClick={() => setIsPaymentModalOpen(false)}>Annuler</Button>
-                            <Button type="submit" disabled={submittingPayment} className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                            <Button type="submit" disabled={submittingPayment} className="bg-primary hover:bg-primary/90 text-white">
                                 {submittingPayment ? "Enregistrement..." : "Enregistrer"}
                             </Button>
                         </div>

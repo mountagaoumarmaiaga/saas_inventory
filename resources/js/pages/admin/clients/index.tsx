@@ -92,7 +92,7 @@ export default function AdminClientsIndex() {
                         <p className="text-muted-foreground mt-1">Gestion des clients de l'entreprise.</p>
                     </div>
                     <Link href="/admin/clients/create">
-                        <Button className="h-12 px-6 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/40 transition-all duration-300 hover:scale-105 rounded-xl">
+                        <Button className="h-12 px-6 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105 rounded-xl">
                             <Plus className="mr-2 h-5 w-5" />
                             Nouveau Client
                         </Button>
@@ -105,7 +105,7 @@ export default function AdminClientsIndex() {
                         <Input
                             type="search"
                             placeholder="Rechercher..."
-                            className="h-12 pl-11 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-indigo-500/50 transition-all duration-300 shadow-lg"
+                            className="h-12 pl-11 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                             value={q}
                             onChange={(e) => {
                                 setPage(1);
@@ -126,7 +126,7 @@ export default function AdminClientsIndex() {
                         </div>
                     ) : items.length === 0 ? (
                         <div className="relative flex flex-col items-center justify-center p-12 text-center">
-                            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center border-2 border-indigo-500/20">
+                            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center border-2 border-primary/20">
                                 <Users className="h-8 w-8 text-orange-500/60" />
                             </div>
                             <h3 className="mt-4 font-semibold text-foreground">Aucun client</h3>
@@ -137,7 +137,7 @@ export default function AdminClientsIndex() {
                     ) : (
                         <div className="relative w-full overflow-auto">
                             <table className="w-full caption-bottom text-sm">
-                                <thead className="bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border-b-2 border-indigo-500/20">
+                                <thead className="bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border-b-2 border-primary/20">
                                     <tr>
                                         <th className="h-14 px-4 text-left align-middle font-bold text-sm text-foreground/90">Nom</th>
                                         <th className="h-14 px-4 text-left align-middle font-bold text-sm text-foreground/90">Email</th>
@@ -159,7 +159,7 @@ export default function AdminClientsIndex() {
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            className="hover:bg-indigo-500/10 hover:text-indigo-600 transition-all"
+                                                            className="hover:bg-primary/10 hover:text-primary transition-all"
                                                         >
                                                             <Pencil className="h-4 w-4" />
                                                         </Button>
@@ -189,7 +189,7 @@ export default function AdminClientsIndex() {
                                 size="sm"
                                 onClick={() => setPage(p => Math.max(1, p - 1))}
                                 disabled={loading || page <= 1}
-                                className="h-9 hover:bg-indigo-500/10 hover:border-indigo-500/50 hover:text-indigo-600 transition-all disabled:opacity-50"
+                                className="h-9 hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all disabled:opacity-50"
                             >
                                 Précédent
                             </Button>
@@ -198,7 +198,7 @@ export default function AdminClientsIndex() {
                                 size="sm"
                                 onClick={() => setPage(p => p + 1)}
                                 disabled={loading || page >= meta.last_page}
-                                className="h-9 hover:bg-indigo-500/10 hover:border-indigo-500/50 hover:text-indigo-600 transition-all disabled:opacity-50"
+                                className="h-9 hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all disabled:opacity-50"
                             >
                                 Suivant
                             </Button>

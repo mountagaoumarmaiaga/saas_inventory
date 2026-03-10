@@ -86,7 +86,7 @@ export default function AdminDeliveryNotesIndex() {
                     ) : (
                         <div className="relative w-full overflow-auto">
                             <table className="w-full caption-bottom text-sm">
-                                <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-indigo-500/20">
+                                <thead className="bg-gradient-to-r from-indigo-500/10 via-blue-500/10 to-indigo-500/10 border-b-2 border-primary/20">
                                     <tr className="border-b border-border/40 bg-muted/20">
                                         <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Référence</th>
                                         <th className="h-10 px-4 text-left align-middle font-medium text-muted-foreground uppercase tracking-wider text-[11px]">Date</th>
@@ -148,7 +148,7 @@ export default function AdminDeliveryNotesIndex() {
                                                                 className="h-8 w-8 p-0"
                                                             >
                                                                 <a href={`/admin/api/delivery-notes/${item.id}/pdf?action=stream`} target="_blank">
-                                                                    <FileText className="h-4 w-4 text-blue-500/70 group-hover:text-blue-600 transition-colors" />
+                                                                    <FileText className="h-4 w-4 text-primary/80 group-hover:text-primary transition-colors" />
                                                                 </a>
                                                             </Button>
                                                             <Button

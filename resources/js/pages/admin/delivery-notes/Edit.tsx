@@ -73,7 +73,7 @@ export default function AdminDeliveryNoteEdit({ id }: { id: number }) {
                 <Head title="Modifier Bon de Livraison" />
                 <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
                     <div className="relative">
-                        <div className="h-16 w-16 rounded-full border-4 border-indigo-500/20 border-t-indigo-500 animate-spin" />
+                        <div className="h-16 w-16 rounded-full border-4 border-primary/20 border-t-indigo-500 animate-spin" />
                     </div>
                     <p className="text-muted-foreground font-medium">Chargement du bon de livraison...</p>
                 </div>

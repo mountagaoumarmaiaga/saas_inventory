@@ -139,15 +139,12 @@ $discount = $quote->discount ?? 0;
             <tr>
                 <td style="width: 50%; padding-right: 30px;">
                     <div class="notes-box">
-                        <div class="notes-title">Notes & Conditions</div>
+                        @if(!empty($quote->notes))
+                        <div class="notes-title">Notes & Règlement</div>
                         <div style="margin-bottom: 10px;">
-                            @if($entrepriseRecord->invoice_header)
-                                {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
-                            @else
-                                <strong>Accord du devis :</strong><br>
-                                Bon pour accord et exécution des travaux / livraison des biens.
-                            @endif
+                            {!! nl2br(e($quote->notes)) !!}
                         </div>
+                        @endif
                         <div>
                             @if($entrepriseRecord->invoice_footer)
                                 {!! nl2br(e($entrepriseRecord->invoice_footer)) !!}

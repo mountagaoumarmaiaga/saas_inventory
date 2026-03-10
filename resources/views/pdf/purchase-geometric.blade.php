@@ -140,15 +140,12 @@ $subtotal = $totalAmount - $taxAmount;
             <tr>
                 <td style="width: 50%; padding-right: 30px;">
                     <div class="notes-box">
-                        <div class="notes-title">Notes & Conditions</div>
+                        @if(!empty($purchase->notes))
+                        <div class="notes-title">Notes & Règlement</div>
                         <div style="margin-bottom: 10px;">
-                            @if($entrepriseRecord->invoice_header)
-                                {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
-                            @else
-                                <strong>Conditions d'achat :</strong><br>
-                                Veuillez indiquer le numéro de commande ({{ $purchase->number }}) sur toutes les correspondances.
-                            @endif
+                            {!! nl2br(e($purchase->notes)) !!}
                         </div>
+                        @endif
                         <div>
                             @if($entrepriseRecord->invoice_footer)
                                 {!! nl2br(e($entrepriseRecord->invoice_footer)) !!}

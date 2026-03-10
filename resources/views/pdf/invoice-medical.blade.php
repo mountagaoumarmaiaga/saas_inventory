@@ -162,15 +162,12 @@ $discount = $invoice->discount ?? 0;
             <tr>
                 <td style="width: 55%;">
                     <div class="notes-box">
+                        @if(!empty($invoice->notes))
                         <div class="notes-title">Notes et Règlements</div>
                         <div style="margin-bottom: 15px;">
-                            @if($entrepriseRecord->invoice_header)
-                                {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
-                            @else
-                                <strong>Par virement bancaire :</strong><br>
-                                Veuillez indiquer le numéro de facture ({{ $invoice->number }}) lors de votre paiement.
-                            @endif
+                            {!! nl2br(e($invoice->notes)) !!}
                         </div>
+                        @endif
                         <div>
                             @if(!empty($qrCodeBase64))
                                 <img src="{{ $qrCodeBase64 }}" style="width:80px;height:80px; margin-bottom:10px;"><br>

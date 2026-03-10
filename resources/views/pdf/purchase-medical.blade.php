@@ -163,15 +163,12 @@ $subtotal = $totalAmount - $taxAmount;
             <tr>
                 <td style="width: 55%;">
                     <div class="notes-box">
-                        <div class="notes-title">Notes et Conditions</div>
+                        @if(!empty($purchase->notes))
+                        <div class="notes-title">Notes et Règlements</div>
                         <div style="margin-bottom: 15px;">
-                            @if($entrepriseRecord->invoice_header)
-                                {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
-                            @else
-                                La présente commande est ferme et définitive.<br>
-                                Merci d'indiquer notre numéro de commande ({{ $purchase->number }}) sur votre facturation.
-                            @endif
+                            {!! nl2br(e($purchase->notes)) !!}
                         </div>
+                        @endif
                         <div style="border: 1px dashed #ccc; padding: 10px; margin-top: 20px; font-style: italic;">
                             Arrêté la présente commande à la somme de :<br>
                             <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($totalAmount)) }} {{ $currencySymbol }}</strong>

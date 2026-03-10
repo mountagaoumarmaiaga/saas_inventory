@@ -162,15 +162,12 @@ $discount = $quote->discount ?? 0;
             <tr>
                 <td style="width: 55%;">
                     <div class="notes-box">
-                        <div class="notes-title">Conditions d'acceptation</div>
+                        @if(!empty($quote->notes))
+                        <div class="notes-title">Notes et Règlements</div>
                         <div style="margin-bottom: 15px;">
-                            @if($entrepriseRecord->invoice_header)
-                                {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
-                            @else
-                                La signature du devis vaut acceptation ferme des conditions et des limites de prestation.<br>
-                                Un acompte pourra être exigé avant le début des travaux.
-                            @endif
+                            {!! nl2br(e($quote->notes)) !!}
                         </div>
+                        @endif
                         <div style="border: 1px dashed #ccc; padding: 10px; margin-top: 20px; font-style: italic;">
                             Bon pour accord et exécution.<br>
                             <strong>Date et Signature du Client :</strong>

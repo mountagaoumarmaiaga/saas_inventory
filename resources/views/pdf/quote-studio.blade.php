@@ -273,15 +273,12 @@ $discount = $quote->discount ?? 0;
     <table class="bottom-row">
         <tr>
             <td class="reglement-col">
+                @if(!empty($quote->notes))
                 <div class="section-title">RÈGLEMENT :</div>
                 <div class="section-text">
-                    @if($entrepriseRecord->invoice_header)
-                        {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
-                    @else
-                        <strong>Par virement bancaire :</strong><br>
-                        Veuillez indiquer le numéro de facture ({{ $quote->number }}) lors de votre paiement.
-                    @endif
+                    {!! nl2br(e($quote->notes)) !!}
                 </div>
+                @endif
                 @if(!empty($qrCodeBase64))
                     <div style="margin-top: 10px;"><img src="{{ $qrCodeBase64 }}" style="width:65px;height:65px;"></div>
                 @endif

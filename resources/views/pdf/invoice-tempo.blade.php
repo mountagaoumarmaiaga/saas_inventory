@@ -305,15 +305,12 @@ $discount = $invoice->discount ?? 0;
     <table class="bottom-section">
         <tr>
             <td class="reglement-col">
+                @if(!empty($invoice->notes))
                 <div class="reglement-title">RÈGLEMENT :</div>
                 <div class="reglement-text">
-                    @if($entrepriseRecord->invoice_header)
-                        {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
-                    @else
-                        <strong>Par virement bancaire :</strong><br>
-                        Veuillez indiquer le numéro de facture ({{ $invoice->number }}) lors de votre paiement.
-                    @endif
+                    {!! nl2br(e($invoice->notes)) !!}
                 </div>
+                @endif
                 <div style="margin-top: 20px; font-style: italic; font-size: 11px; padding: 10px; border: 1px dashed #ccc;">
                     Arrêté la présente facture à la somme de :<br>
                     <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($invoice->total ?? 0)) }} {{ $currencySymbol }}</strong>

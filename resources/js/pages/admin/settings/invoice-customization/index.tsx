@@ -112,6 +112,8 @@ export default function InvoiceCustomization() {
 
         setSaving(true);
         try {
+            const csrfToken = document.head.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            
             const res = await axios.put('/admin/api/settings/invoice', {
                 name: settings.name,
                 email: settings.email,
@@ -127,6 +129,10 @@ export default function InvoiceCustomization() {
                 currency_position: settings.currency_position,
                 qr_payment_link: settings.qr_payment_link,
                 primary_color: settings.primary_color,
+            }, {
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken || '',
+                }
             });
 
             setSettings(res.data.data);

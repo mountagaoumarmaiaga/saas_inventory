@@ -21,7 +21,7 @@
             border: 1.5px solid #ccc;
             margin: 20px;
             padding: 40px 45px 45px 45px;
-            min-height: 1050px;
+            
             position: relative;
         }
 

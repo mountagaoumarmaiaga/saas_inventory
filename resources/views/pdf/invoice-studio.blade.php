@@ -21,7 +21,6 @@
             border: 1.5px solid #ccc;
             margin: 20px;
             padding: 40px 45px 45px 45px;
-            min-height: 1050px;
             position: relative;
         }
 
@@ -221,6 +220,11 @@ $discount = $invoice->discount ?? 0;
                 <div>{!! nl2br(e($entrepriseRecord->phone ?? '')) !!}</div>
                 <div>{{ $entrepriseRecord->email ?? '' }}</div>
                 <div>{!! nl2br(e($entrepriseRecord->address ?? '')) !!}</div>
+                @if($entrepriseRecord->invoice_header)
+                    <div style="margin-top: 10px; font-style: italic; color: #555;">
+                        {!! nl2br(e($entrepriseRecord->invoice_header)) !!}
+                    </div>
+                @endif
             </td>
             <td class="addr-right">
                 <div class="addr-label">DESTINATAIRE :</div>
@@ -302,6 +306,17 @@ $discount = $invoice->discount ?? 0;
                     Arrêté la présente facture à la somme de :<br>
                     <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($invoice->total ?? 0)) }} {{ $currencySymbol }}</strong>
                 </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- SIGNATURE -->
+    <table style="width: 100%; margin-top: 40px;">
+        <tr>
+            <td style="width: 65%;"></td>
+            <td style="width: 35%; text-align: center;">
+                <div class="section-title">CACHET ET SIGNATURE</div>
+                <div style="height: 100px;"></div>
             </td>
         </tr>
     </table>

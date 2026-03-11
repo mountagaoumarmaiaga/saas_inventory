@@ -1,18 +1,29 @@
 import { FormEventHandler, useEffect } from 'react';
 import GuestLayout from '@/layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Honeypot } from '@/components/honeypot';
 
 export default function Register() {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { props } = usePage<any>();
+  const honeypot = props.honeypot;
+
+  const initialData: Record<string, string> = {
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
-  });
+  };
+
+  // Add honeypot fields strictly to initial state to prevent Inertia from stripping them
+  if (honeypot && honeypot.enabled) {
+    initialData[honeypot.nameFieldName] = '';
+    initialData[honeypot.validFromFieldName] = honeypot.encryptedValidFrom;
+  }
+
+  const { data, setData, post, processing, errors, reset } = useForm(initialData);
 
   useEffect(() => {
     return () => {

@@ -20,7 +20,6 @@ class CreateNewUser implements CreatesNewUsers
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-            'entreprise_name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
                 'string',
@@ -31,11 +30,6 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        $entreprise = \App\Models\Entreprise::create([
-            'name' => $input['entreprise_name'],
-            'email' => $input['email'],
-        ]);
-
         $user = new User();
         $user->fill([
             'name' => $input['name'],
@@ -44,12 +38,12 @@ class CreateNewUser implements CreatesNewUsers
         
         $user->forceFill([
             'password' => \Illuminate\Support\Facades\Hash::make($input['password']),
-            'entreprise_id' => $entreprise->id,
-            'role' => 'admin', // The first user of an enterprise is its admin
+            'entreprise_id' => null,
+            'role' => 'user', 
             'is_super_admin' => false,
         ])->save();
         
-        $user->assignRole('admin');
+        $user->assignRole('user');
         
         return $user;
     }

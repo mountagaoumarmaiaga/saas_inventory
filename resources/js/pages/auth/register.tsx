@@ -9,7 +9,6 @@ import { Honeypot } from '@/components/honeypot';
 export default function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
-    entreprise_name: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -54,21 +53,6 @@ export default function Register() {
               placeholder="John Doe"
             />
             {errors.name && <p className="text-sm text-destructive font-medium">{errors.name}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="entreprise_name">Nom de l'entreprise</Label>
-            <Input
-              id="entreprise_name"
-              name="entreprise_name"
-              value={data.entreprise_name}
-              className="mt-1 block w-full"
-              autoComplete="organization"
-              onChange={(e) => setData('entreprise_name', e.target.value)}
-              required
-              placeholder="Mon Entreprise"
-            />
-            {errors.entreprise_name && <p className="text-sm text-destructive font-medium">{errors.entreprise_name}</p>}
           </div>
 
           <div className="space-y-2">

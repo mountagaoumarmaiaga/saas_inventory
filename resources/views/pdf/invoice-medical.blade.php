@@ -158,9 +158,9 @@ $discount = $invoice->discount ?? 0;
         </table>
         
         <!-- BOTTOM SECTION -->
-        <table class="bottom-wrapper">
+        <table style="width:100%; border-collapse:collapse; margin-top:20px;">
             <tr>
-                <td style="width: 55%;">
+                <td style="width:55%; vertical-align:top; padding-right:20px;">
                     <div class="notes-box">
                         @if(!empty($invoice->notes))
                         <div class="notes-title">Notes et Règlements</div>
@@ -180,32 +180,42 @@ $discount = $invoice->discount ?? 0;
                         </div>
                     </div>
                 </td>
-                <td style="width: 45%;">
-                    <table class="totals-table">
+                <td style="width:45%; vertical-align:top; padding-left:20px;">
+                    <table style="width:100%; border-collapse:collapse;">
                         <tr>
-                            <td class="label">Sous-total HT</td>
-                            <td class="value">{{ $formatCurrency($invoice->subtotal ?? 0) }}</td>
+                            <td style="padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">Sous-total HT</td>
+                            <td style="text-align:right; padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">{{ $formatCurrency($invoice->subtotal ?? 0) }}</td>
                         </tr>
                         @if(($invoice->tva ?? 0) > 0)
                         <tr>
-                            <td class="label">TVA ({{ $invoice->tva }}%)</td>
-                            <td class="value">{{ $formatCurrency($tvaAmount) }}</td>
+                            <td style="padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">TVA ({{ $invoice->tva }}%)</td>
+                            <td style="text-align:right; padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">{{ $formatCurrency($tvaAmount) }}</td>
                         </tr>
                         @endif
                         @if($discount > 0)
                         <tr>
-                            <td class="label">Remise</td>
-                            <td class="value">-{{ $formatCurrency($discount) }}</td>
+                            <td style="padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">Remise</td>
+                            <td style="text-align:right; padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">-{{ $formatCurrency($discount) }}</td>
                         </tr>
                         @endif
-                        <tr class="grand-total">
-                            <td class="label">Total TTC</td>
-                            <td class="value">{{ $formatCurrency($invoice->total ?? 0) }}</td>
+                        <tr style="background-color:#f5f5f5;">
+                            <td style="padding:10px 12px; font-size:14px; font-weight:bold;">Total TTC</td>
+                            <td style="text-align:right; padding:10px 12px; font-size:14px; font-weight:bold;">{{ $formatCurrency($invoice->total ?? 0) }}</td>
+                        </tr>
+                    </table>
+                    <!-- SIGNATURE -->
+                    <table style="width:100%; margin-top:20px; border-collapse:collapse;">
+                        <tr>
+                            <td style="text-align:center; font-weight:bold; font-size:11px; text-transform:uppercase; padding:8px; border:1px solid #ccc;">CACHET ET SIGNATURE</td>
+                        </tr>
+                        <tr>
+                            <td style="height:80px; border:1px solid #ccc; border-top:none;"></td>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
     </div>
+
 </body>
 </html>

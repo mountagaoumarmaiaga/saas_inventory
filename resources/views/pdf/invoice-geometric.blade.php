@@ -138,12 +138,12 @@ $discount = $invoice->discount ?? 0;
             </tbody>
         </table>
         
-        <table class="bottom-wrapper">
+        <table style="width:100%; border-collapse:collapse; margin-top:20px;">
             <tr>
-                <td style="width: 50%; padding-right: 30px;">
+                <td style="width:50%; padding-right:30px; vertical-align:top;">
                     <div class="notes-box">
                         @if(!empty($invoice->notes))
-                        <div class="notes-title">Notes & Règlement</div>
+                        <div class="notes-title">Notes &amp; Règlement</div>
                         <div style="margin-bottom: 10px;">
                             {!! nl2br(e($invoice->notes)) !!}
                         </div>
@@ -161,32 +161,42 @@ $discount = $invoice->discount ?? 0;
                         </div>
                     @endif
                 </td>
-                <td style="width: 50%;">
-                    <table class="totals-table">
+                <td style="width:50%; vertical-align:top;">
+                    <table style="width:100%; border-collapse:collapse;">
                         <tr>
-                            <td class="label">Total HT</td>
-                            <td class="value">{{ $formatCurrency($invoice->subtotal ?? 0) }}</td>
+                            <td style="text-align:left; padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">Total HT</td>
+                            <td style="text-align:right; padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">{{ $formatCurrency($invoice->subtotal ?? 0) }}</td>
                         </tr>
                         @if(($invoice->tva ?? 0) > 0)
                         <tr>
-                            <td class="label">TVA ({{ $invoice->tva }}%)</td>
-                            <td class="value">{{ $formatCurrency($tvaAmount) }}</td>
+                            <td style="text-align:left; padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">TVA ({{ $invoice->tva }}%)</td>
+                            <td style="text-align:right; padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">{{ $formatCurrency($tvaAmount) }}</td>
                         </tr>
                         @endif
                         @if($discount > 0)
                         <tr>
-                            <td class="label">Remise</td>
-                            <td class="value">-{{ $formatCurrency($discount) }}</td>
+                            <td style="text-align:left; padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">Remise</td>
+                            <td style="text-align:right; padding:8px 12px; font-size:12px; font-weight:bold; border-bottom:1px solid #ddd;">-{{ $formatCurrency($discount) }}</td>
                         </tr>
                         @endif
-                        <tr class="grand-total">
-                            <td class="label">Total TTC</td>
-                            <td class="value">{{ $formatCurrency($invoice->total ?? 0) }}</td>
+                        <tr style="background-color:#f0f0f0;">
+                            <td style="text-align:left; padding:10px 12px; font-size:14px; font-weight:bold;">Total TTC</td>
+                            <td style="text-align:right; padding:10px 12px; font-size:14px; font-weight:bold;">{{ $formatCurrency($invoice->total ?? 0) }}</td>
+                        </tr>
+                    </table>
+                    <!-- SIGNATURE -->
+                    <table style="width:100%; margin-top:20px; border-collapse:collapse;">
+                        <tr>
+                            <td style="text-align:center; font-weight:bold; font-size:11px; text-transform:uppercase; padding:8px; border:1px solid #ccc;">CACHET ET SIGNATURE</td>
+                        </tr>
+                        <tr>
+                            <td style="height:80px; border:1px solid #ccc; border-top:none;"></td>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
+
         <div class="footer">
             @if($entrepriseRecord->invoice_footer)
                 {!! nl2br(e($entrepriseRecord->invoice_footer)) !!}

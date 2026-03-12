@@ -33,7 +33,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
         // Configuration CSRF (Exemptions si nécessaire)
+        // Les routes admin/api/* sont protegees par l'auth session, pas besoin du CSRF token separement
         $middleware->validateCsrfTokens(except: [
+            'admin/api/*',
             // 'stripe/*',
         ]);
 

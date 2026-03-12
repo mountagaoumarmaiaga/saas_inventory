@@ -19,7 +19,7 @@ $discount = $invoice->discount ?? 0;
     <style>
         @page { margin: 0px; }
         * { box-sizing: border-box; }
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; color: #333; margin: 0; padding: 0; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; color: {{ $primaryColor }}; margin: 0; padding: 0; }
         .page-container { padding: 40px; }
         
         /* Header table */

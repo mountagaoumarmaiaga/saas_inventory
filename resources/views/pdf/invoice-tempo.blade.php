@@ -13,7 +13,7 @@ $primaryColor = $entrepriseRecord->primary_color ?? '#1e3a8a';
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             font-size: 12px;
-            color: #222;
+            color: {{ $primaryColor }};
             margin: 0;
             padding: 0;
             line-height: 1.5;

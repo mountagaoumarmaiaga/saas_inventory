@@ -138,53 +138,58 @@ $discount = $invoice->discount ?? 0;
             </tbody>
         </table>
         
-        <table style="width:100%; border-collapse:collapse; margin-top:20px;">
+
+        <!-- NOTES + ARRÊTÉ -->
+        @if(!empty($invoice->notes) || !empty($qrCodeBase64))
+        <div style="margin-top: 20px;">
+            @if(!empty($invoice->notes))
+            <div class="notes-box" style="margin-bottom: 10px;">
+                <div class="notes-title">Notes &amp; Règlement</div>
+                <div>{!! nl2br(e($invoice->notes)) !!}</div>
+            </div>
+            @endif
+            @if(!empty($qrCodeBase64))
+                <img src="{{ $qrCodeBase64 }}" style="width: 70px; height: 70px;">
+            @endif
+        </div>
+        @endif
+
+        <div style="margin-top: 15px; font-style: italic; font-size: 11px; padding: 10px; border: 1px dashed #ccc; width: 48%;">
+            Arrêté la présente facture à la somme de :<br>
+            <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($invoice->total ?? 0)) }} {{ $currencySymbol }}</strong>
+        </div>
+
+        <!-- TOTALS TABLE (standalone, right-aligned) -->
+        <table style="width: 48%; margin-left: 52%; border-collapse: collapse; margin-top: -5px;">
             <tr>
-                <td style="width:50%; padding-right:30px; vertical-align:top;">
-                    <div class="notes-box">
-                        @if(!empty($invoice->notes))
-                        <div class="notes-title">Notes &amp; Règlement</div>
-                        <div style="margin-bottom: 10px;">
-                            {!! nl2br(e($invoice->notes)) !!}
-                        </div>
-                        @endif
-                    </div>
-                    <div style="margin-top: 15px; font-style: italic; font-size: 11px; padding: 10px; border: 1px dashed #ccc;">
-                        Arrêté la présente facture à la somme de :<br>
-                        <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($invoice->total ?? 0)) }} {{ $currencySymbol }}</strong>
-                    </div>
-                    @if(!empty($qrCodeBase64))
-                        <div style="margin-top: 15px;">
-                            <img src="{{ $qrCodeBase64 }}" style="width: 80px; height: 80px; border: 1px solid #ddd; padding: 5px; background: #fff;">
-                        </div>
-                    @endif
-                </td>
-                <td style="width:50%; vertical-align:top;">
-                    <!-- Totals as divs to avoid nested tables -->
-                    <div style="border-bottom:1px solid #ddd; padding:8px 12px; overflow:hidden;">
-                        <span style="float:left; font-size:12px; font-weight:bold;">Total HT</span>
-                        <span style="float:right; font-size:12px; font-weight:bold;">{{ $formatCurrency($invoice->subtotal ?? 0) }}</span>
-                    </div>
-                    @if(($invoice->tva ?? 0) > 0)
-                    <div style="border-bottom:1px solid #ddd; padding:8px 12px; overflow:hidden;">
-                        <span style="float:left; font-size:12px; font-weight:bold;">TVA ({{ $invoice->tva }}%)</span>
-                        <span style="float:right; font-size:12px; font-weight:bold;">{{ $formatCurrency($tvaAmount) }}</span>
-                    </div>
-                    @endif
-                    @if($discount > 0)
-                    <div style="border-bottom:1px solid #ddd; padding:8px 12px; overflow:hidden;">
-                        <span style="float:left; font-size:12px; font-weight:bold;">Remise</span>
-                        <span style="float:right; font-size:12px; font-weight:bold;">-{{ $formatCurrency($discount) }}</span>
-                    </div>
-                    @endif
-                    <div style="background-color:#f0f0f0; padding:10px 12px; overflow:hidden;">
-                        <span style="float:left; font-size:14px; font-weight:bold;">Total TTC</span>
-                        <span style="float:right; font-size:14px; font-weight:bold;">{{ $formatCurrency($invoice->total ?? 0) }}</span>
-                    </div>
-                    <!-- SIGNATURE -->
-                    <div style="margin-top:20px; border:1px solid #ccc; padding:8px; text-align:center; font-weight:bold; font-size:11px; text-transform:uppercase;">CACHET ET SIGNATURE</div>
-                    <div style="height:80px; border:1px solid #ccc; border-top:none;"></div>
-                </td>
+                <td style="padding: 8px 14px; font-size: 11px; font-weight: bold; text-transform: uppercase; color: #555; background-color: #fafafa; border: 1px solid #e8e8e8;">TOTAL HT</td>
+                <td style="padding: 8px 14px; font-size: 13px; font-weight: bold; text-align: right; color: #111; background-color: #fafafa; border: 1px solid #e8e8e8;">{{ $formatCurrency($invoice->subtotal ?? 0) }}</td>
+            </tr>
+            @if(($invoice->tva ?? 0) > 0)
+            <tr>
+                <td style="padding: 8px 14px; font-size: 11px; font-weight: bold; text-transform: uppercase; color: #555; background-color: #fafafa; border: 1px solid #e8e8e8; border-top: none;">TVA ({{ $invoice->tva }}%)</td>
+                <td style="padding: 8px 14px; font-size: 13px; font-weight: bold; text-align: right; color: #111; background-color: #fafafa; border: 1px solid #e8e8e8; border-top: none;">{{ $formatCurrency($tvaAmount) }}</td>
+            </tr>
+            @endif
+            @if($discount > 0)
+            <tr>
+                <td style="padding: 8px 14px; font-size: 11px; font-weight: bold; text-transform: uppercase; color: #555; background-color: #fafafa; border: 1px solid #e8e8e8; border-top: none;">REMISE</td>
+                <td style="padding: 8px 14px; font-size: 13px; font-weight: bold; text-align: right; color: #111; background-color: #fafafa; border: 1px solid #e8e8e8; border-top: none;">-{{ $formatCurrency($discount) }}</td>
+            </tr>
+            @endif
+            <tr>
+                <td style="padding: 10px 14px; font-size: 13px; font-weight: bold; text-transform: uppercase; color: #fff; background-color: {{ $primaryColor }}; border: 1px solid {{ $primaryColor }};">TOTAL TTC</td>
+                <td style="padding: 10px 14px; font-size: 15px; font-weight: bold; text-align: right; color: #fff; background-color: {{ $primaryColor }}; border: 1px solid {{ $primaryColor }};">{{ $formatCurrency($invoice->total ?? 0) }}</td>
+            </tr>
+        </table>
+
+        <!-- SIGNATURE (standalone table) -->
+        <table style="width: 40%; margin-left: 60%; border-collapse: collapse; margin-top: 25px;">
+            <tr>
+                <td style="text-align: center; font-weight: bold; font-size: 10px; text-transform: uppercase; padding: 8px; border: 1px solid {{ $primaryColor }}; color: {{ $primaryColor }}; background-color: #f8f8f8;">CACHET ET SIGNATURE</td>
+            </tr>
+            <tr>
+                <td style="height: 80px; border: 1px solid #ccc; border-top: none;"></td>
             </tr>
         </table>
 

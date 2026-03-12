@@ -52,8 +52,8 @@ Route::middleware('guest')->group(function () {
     // Surcharge de la route Fortify pour injecter le Honeypot
     $enableViews = config('fortify.views', true);
     if (Features::enabled(Features::registration())) {
-        Route::post('/register', [RegisteredUserController::class, 'store'])
-            ->middleware([\Spatie\Honeypot\ProtectAgainstSpam::class]);
+        Route::post('/register', [RegisteredUserController::class, 'store']);
+            // ->middleware([\Spatie\Honeypot\ProtectAgainstSpam::class]);
     }
 });
 

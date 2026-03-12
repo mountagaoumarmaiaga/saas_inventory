@@ -15,7 +15,7 @@ class Entreprise extends Model
         'invoice_header', 'invoice_footer', 'invoice_template',
         'delivery_note_template', 'purchase_template', 'quote_template',
         'currency', 'currency_symbol', 'currency_position', 'qr_payment_link',
-        'logo_url', 'rccm', 'niu'
+        'logo_url', 'rccm', 'niu', 'primary_color'
     ];
     public function users() { return $this->hasMany(User::class); }
     public function categories() { return $this->hasMany(Category::class); }

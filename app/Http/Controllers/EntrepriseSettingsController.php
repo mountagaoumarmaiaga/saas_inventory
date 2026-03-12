@@ -33,13 +33,14 @@ class EntrepriseSettingsController extends Controller
             'address' => 'nullable|string',
             'invoice_header' => 'nullable|string',
             'invoice_footer' => 'nullable|string',
-            'invoice_template' => 'sometimes|in:classic,modern,professional,executive,creative,elegant,industrial,minimalist,retail,bold',
-            'delivery_note_template' => 'sometimes|in:classic,modern,minimalist',
-            'purchase_template' => 'sometimes|in:classic,modern,minimalist,executive,creative',
+            'invoice_template' => 'sometimes|in:tempo,studio,geometric,medical,classic',
+            'delivery_note_template' => 'sometimes|in:tempo,studio,geometric,medical,classic',
+            'purchase_template' => 'sometimes|in:tempo,studio,geometric,medical,classic',
             'currency' => 'sometimes|string|max:10',
             'currency_symbol' => 'sometimes|string|max:10',
             'currency_position' => 'sometimes|in:left,right',
-            'qr_payment_link' => 'nullable|string|url'
+            'qr_payment_link' => 'nullable|string|url',
+            'primary_color' => 'nullable|string|max:7',
         ]);
 
         \Log::info('--- VALIDATED DATA ---');

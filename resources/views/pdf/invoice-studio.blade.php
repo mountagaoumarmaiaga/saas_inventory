@@ -262,59 +262,62 @@ $discount = $invoice->discount ?? 0;
         </tbody>
     </table>
 
-    <!-- TOTALS (right aligned) -->
-    <table style="width: 50%; margin-left: 50%;">
+    <!-- SEPARATOR LINE -->
+    <div style="border-top: 2px solid #111; margin-top: 30px; margin-bottom: 20px;"></div>
+
+    <!-- NOTES & RÈGLEMENT -->
+    @if(!empty($invoice->notes) || !empty($qrCodeBase64))
+    <div style="margin-bottom: 15px;">
+        @if(!empty($invoice->notes))
+        <div class="section-title">RÈGLEMENT :</div>
+        <div class="section-text">{!! nl2br(e($invoice->notes)) !!}</div>
+        @endif
+        @if(!empty($qrCodeBase64))
+            <div style="margin-top: 10px;"><img src="{{ $qrCodeBase64 }}" style="width:65px;height:65px;"></div>
+        @endif
+    </div>
+    @endif
+
+    <!-- ARRÊTÉ + TOTALS right-aligned -->
+    <div style="width: 48%; font-style: italic; font-size: 11px; padding: 10px; border: 1px dashed #ccc; margin-bottom: 15px;">
+        Arrêté la présente facture à la somme de :<br>
+        <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($invoice->total ?? 0)) }} {{ $currencySymbol }}</strong>
+    </div>
+
+    <!-- TOTALS TABLE (standalone, right-aligned) -->
+    <table style="width: 48%; margin-left: 52%; border-collapse: collapse;">
         <tr>
-            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px; text-transform:uppercase;">TOTAL HT :</td>
-            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px;">{{ $formatCurrency($invoice->subtotal ?? 0) }}</td>
+            <td style="padding: 8px 14px; font-weight: bold; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #ccc;">TOTAL HT :</td>
+            <td style="padding: 8px 14px; font-weight: bold; font-size: 13px; text-align: right; border-bottom: 1px solid #ccc;">{{ $formatCurrency($invoice->subtotal ?? 0) }}</td>
         </tr>
         @if(($invoice->tva ?? 0) > 0)
         <tr>
-            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px; text-transform:uppercase;">TVA :</td>
-            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px;">{{ $formatCurrency($tvaAmount) }}</td>
+            <td style="padding: 8px 14px; font-weight: bold; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #ccc;">TVA ({{ $invoice->tva }}%) :</td>
+            <td style="padding: 8px 14px; font-weight: bold; font-size: 13px; text-align: right; border-bottom: 1px solid #ccc;">{{ $formatCurrency($tvaAmount) }}</td>
         </tr>
         @endif
         @if($discount > 0)
         <tr>
-            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px; text-transform:uppercase;">REMISE :</td>
-            <td style="text-align:right; font-weight:bold; padding: 6px 8px; font-size:13px;">-{{ $formatCurrency($discount) }}</td>
+            <td style="padding: 8px 14px; font-weight: bold; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid #ccc;">REMISE :</td>
+            <td style="padding: 8px 14px; font-weight: bold; font-size: 13px; text-align: right; border-bottom: 1px solid #ccc;">-{{ $formatCurrency($discount) }}</td>
         </tr>
         @endif
         <tr>
-            <td style="text-align:right; font-weight:bold; padding: 10px 8px; font-size:15px; text-transform:uppercase; border-top: 2px solid #111;">TOTAL TTC :</td>
-            <td style="text-align:right; font-weight:bold; padding: 10px 8px; font-size:15px; border-top: 2px solid #111;">{{ $formatCurrency($invoice->total ?? 0) }}</td>
+            <td style="padding: 10px 14px; font-weight: bold; font-size: 14px; text-transform: uppercase; border-top: 2px solid #111;">TOTAL TTC :</td>
+            <td style="padding: 10px 14px; font-weight: bold; font-size: 16px; text-align: right; border-top: 2px solid #111;">{{ $formatCurrency($invoice->total ?? 0) }}</td>
         </tr>
     </table>
 
-    <!-- SEPARATOR LINE -->
-    <div style="border-top: 1px solid #ccc; margin-top: 30px; margin-bottom: 20px;"></div>
-
-    <!-- BOTTOM SECTION -->
-    <table style="width:100%; border-collapse:collapse;">
+    <!-- SIGNATURE (standalone table) -->
+    <table style="width: 40%; margin-left: 60%; border-collapse: collapse; margin-top: 25px;">
         <tr>
-            <td style="width:50%; vertical-align:top; padding-right:20px;">
-                @if(!empty($invoice->notes))
-                <div class="section-title">RÈGLEMENT :</div>
-                <div class="section-text">
-                    {!! nl2br(e($invoice->notes)) !!}
-                </div>
-                @endif
-                @if(!empty($qrCodeBase64))
-                    <div style="margin-top: 10px;"><img src="{{ $qrCodeBase64 }}" style="width:65px;height:65px;"></div>
-                @endif
-            </td>
-            <td style="width:50%; vertical-align:top; padding-left:20px;">
-                <div class="section-title">MONTANT DE LA FACTURE</div>
-                <div class="section-text" style="font-style: italic; padding: 15px; border: 1px dashed #ccc;">
-                    Arrêté la présente facture à la somme de :<br>
-                    <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($invoice->total ?? 0)) }} {{ $currencySymbol }}</strong>
-                </div>
-                <!-- SIGNATURE -->
-                <div style="margin-top:20px; border: 1px solid #ccc; padding: 8px; text-align:center; font-weight:bold; font-size:11px; text-transform:uppercase;">CACHET ET SIGNATURE</div>
-                <div style="height:80px; border:1px solid #ccc; border-top:none;"></div>
-            </td>
+            <td style="text-align: center; font-weight: bold; font-size: 10px; text-transform: uppercase; padding: 8px; border: 2px solid #111; background-color: #f8f8f8;">CACHET ET SIGNATURE</td>
+        </tr>
+        <tr>
+            <td style="height: 80px; border: 1px solid #ccc; border-top: none;"></td>
         </tr>
     </table>
+
 
 
 </div>

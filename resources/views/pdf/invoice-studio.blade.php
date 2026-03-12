@@ -1,3 +1,7 @@
+@php
+$entrepriseRecord = $invoice->entreprise ?? $entreprise;
+$primaryColor = $entrepriseRecord->primary_color ?? '#111111';
+@endphp
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,7 +62,7 @@
         .facture-title {
             font-size: 64px;
             font-weight: 900;
-            color: #111;
+            color: {{ $primaryColor }};
             text-transform: uppercase;
             letter-spacing: 1px;
             line-height: 1;
@@ -69,7 +73,7 @@
             text-align: right;
             margin-top: 8px;
             line-height: 1.9;
-            color: #111;
+            color: {{ $primaryColor }};
         }
 
         /* ── ADDRESSES ── */
@@ -83,7 +87,10 @@
             font-size: 11px;
             font-weight: bold;
             text-transform: uppercase;
+            color: {{ $primaryColor }};
+            border-bottom: 2px solid {{ $primaryColor }};
             margin-bottom: 6px;
+            padding-bottom: 4px;
         }
         .addr-right { text-align: right; }
         .addr-name { font-weight: bold; font-size: 13px; }
@@ -100,8 +107,8 @@
             font-weight: bold;
             text-transform: uppercase;
             text-align: left;
-            border-top: 2px solid #111;
-            border-bottom: 2px solid #111;
+            border-top: 2px solid {{ $primaryColor }};
+            border-bottom: 2px solid {{ $primaryColor }};
         }
         .items-table th.right { text-align: right; }
         .items-table th.center { text-align: center; }
@@ -176,7 +183,8 @@
 
 @php
 $entrepriseRecord = $invoice->entreprise ?? $entreprise;
-$primaryColor = $entrepriseRecord->primary_color ?? '#111111';
+
+// NOTE: $primaryColor already computed before <style> block above
 
 $formatCurrency = function($amount) use ($currencySymbol, $currencyPosition) {
     if (!is_numeric($amount)) return '-';

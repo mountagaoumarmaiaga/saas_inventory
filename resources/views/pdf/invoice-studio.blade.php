@@ -217,6 +217,7 @@ $discount = $invoice->discount ?? 0;
         <tr>
             <td>
                 <div class="addr-label">ÉMETTEUR :</div>
+                <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">{{ $entrepriseRecord->name ?? '' }}</div>
                 <div>{!! nl2br(e($entrepriseRecord->phone ?? '')) !!}</div>
                 <div>{{ $entrepriseRecord->email ?? '' }}</div>
                 <div>{!! nl2br(e($entrepriseRecord->address ?? '')) !!}</div>
@@ -226,6 +227,7 @@ $discount = $invoice->discount ?? 0;
                     </div>
                 @endif
             </td>
+
             <td class="addr-right">
                 <div class="addr-label">DESTINATAIRE :</div>
                 <div class="addr-name">{{ $invoice->client->name ?? '' }}</div>

@@ -286,10 +286,13 @@ $discount = $invoice->discount ?? 0;
         </tr>
     </table>
 
+    <!-- SEPARATOR LINE -->
+    <div style="border-top: 1px solid #ccc; margin-top: 30px; margin-bottom: 20px;"></div>
+
     <!-- BOTTOM SECTION -->
-    <table class="bottom-row">
+    <table style="width:100%; border-collapse:collapse;">
         <tr>
-            <td class="reglement-col">
+            <td style="width:50%; vertical-align:top; padding-right:20px;">
                 @if(!empty($invoice->notes))
                 <div class="section-title">RÈGLEMENT :</div>
                 <div class="section-text">
@@ -300,26 +303,19 @@ $discount = $invoice->discount ?? 0;
                     <div style="margin-top: 10px;"><img src="{{ $qrCodeBase64 }}" style="width:65px;height:65px;"></div>
                 @endif
             </td>
-            <td class="terms-col">
+            <td style="width:50%; vertical-align:top; padding-left:20px;">
                 <div class="section-title">MONTANT DE LA FACTURE</div>
                 <div class="section-text" style="font-style: italic; padding: 15px; border: 1px dashed #ccc;">
                     Arrêté la présente facture à la somme de :<br>
                     <strong>{{ ucfirst(\App\Helpers\NumberToWords::convert($invoice->total ?? 0)) }} {{ $currencySymbol }}</strong>
                 </div>
+                <!-- SIGNATURE -->
+                <div style="margin-top:20px; border: 1px solid #ccc; padding: 8px; text-align:center; font-weight:bold; font-size:11px; text-transform:uppercase;">CACHET ET SIGNATURE</div>
+                <div style="height:80px; border:1px solid #ccc; border-top:none;"></div>
             </td>
         </tr>
     </table>
 
-    <!-- SIGNATURE -->
-    <table style="width: 100%; margin-top: 40px;">
-        <tr>
-            <td style="width: 65%;"></td>
-            <td style="width: 35%; text-align: center;">
-                <div class="section-title">CACHET ET SIGNATURE</div>
-                <div style="height: 100px;"></div>
-            </td>
-        </tr>
-    </table>
 
 </div>
 

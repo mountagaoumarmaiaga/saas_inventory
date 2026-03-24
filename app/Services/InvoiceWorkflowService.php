@@ -17,10 +17,21 @@ class InvoiceWorkflowService
     public function recalcTotals(Invoice $invoice): void
     {
         $subtotal = $invoice->items()->sum('line_total');
-        $tva = (int)($invoice->tva ?? 20);
-        $total = $subtotal + ($subtotal * $tva / 100);
+
+        $discountAmount = 0;
+        if ($invoice->discount_type === 'fixed') {
+            $discountAmount = (float) $invoice->discount_value;
+        } elseif ($invoice->discount_type === 'percentage') {
+            $discountAmount = $subtotal * ((float) $invoice->discount_value / 100);
+        }
+
+        $subtotalAfterDiscount = max(0, $subtotal - $discountAmount);
+
+        $tva = (int)($invoice->tva ?? 0);
+        $total = $subtotalAfterDiscount + ($subtotalAfterDiscount * $tva / 100);
 
         $invoice->update([
+            'discount_amount' => $discountAmount,
             'subtotal' => $subtotal,
             'total' => $total,
         ]);

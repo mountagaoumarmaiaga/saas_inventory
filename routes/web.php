@@ -475,6 +475,7 @@ Route::middleware(['auth', 'verified'])
         Route::put('/purchases/{purchase}', [\App\Http\Controllers\PurchaseController::class, 'update'])->name('purchases.update');
         Route::delete('/purchases/{purchase}', [\App\Http\Controllers\PurchaseController::class, 'destroy'])->name('purchases.destroy');
         Route::post('/purchases/{purchase}/mark-ordered', [\App\Http\Controllers\PurchaseController::class, 'markAsOrdered'])->name('purchases.mark-ordered');
+        Route::post('/purchases/{purchase}/cancel', [\App\Http\Controllers\PurchaseController::class, 'cancel'])->name('purchases.cancel');
         Route::post('/purchases/{purchase}/receive', [\App\Http\Controllers\PurchaseController::class, 'receiveItems'])->name('purchases.receive');
         Route::post('/purchases/{purchase}/record-payment', [\App\Http\Controllers\PurchaseController::class, 'recordPayment'])->name('purchases.record-payment');
         Route::get('/purchases/{purchase}/pdf/view', [\App\Http\Controllers\PurchaseController::class, 'streamPdf'])->name('purchases.pdf.view');

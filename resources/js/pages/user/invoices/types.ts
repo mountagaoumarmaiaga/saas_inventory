@@ -35,6 +35,9 @@ export interface Invoice {
     created_at: string;
     updated_at: string;
     modification_requested_at?: string;
+    discount_type?: 'percentage' | 'fixed' | null;
+    discount_value?: number | null;
+    discount_amount?: number | null;
 }
 
 export interface InvoiceForm {
@@ -44,6 +47,8 @@ export interface InvoiceForm {
     date: string;
     notes?: string;
     items: InvoiceItem[];
+    discount_type?: 'percentage' | 'fixed' | null;
+    discount_value?: number | null;
 }
 
 export interface PaginationMeta {

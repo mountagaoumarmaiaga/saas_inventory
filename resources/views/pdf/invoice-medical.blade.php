@@ -8,8 +8,9 @@ $formatCurrency = function($amount) use ($currencySymbol, $currencyPosition) {
     return $currencyPosition === 'left' ? "{$currencySymbol} {$formatted}" : "{$formatted} {$currencySymbol}";
 };
 
-$tvaAmount = ($invoice->subtotal ?? 0) * ($invoice->tva ?? 0) / 100;
-$discount = $invoice->discount ?? 0;
+$discount = $invoice->discount_amount ?? 0;
+$subtotalAfterDiscount = max(0, ($invoice->subtotal ?? 0) - $discount);
+$tvaAmount = $subtotalAfterDiscount * ($invoice->tva ?? 0) / 100;
 @endphp
 <!DOCTYPE html>
 <html>

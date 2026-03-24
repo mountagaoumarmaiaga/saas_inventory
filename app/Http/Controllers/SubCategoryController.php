@@ -6,6 +6,8 @@ use App\Models\SubCategory;
 use App\Models\Category;
 use App\Repositories\Contracts\SubCategoryRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Database\UniqueConstraintViolationException;
+use Illuminate\Validation\Rule;
 
 class SubCategoryController extends Controller
 {
@@ -36,7 +38,13 @@ class SubCategoryController extends Controller
 
         $data = $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
+            'name' => [
+                'required', 'string', 'max:255',
+                Rule::unique('sub_categories')->where(fn ($q) => $q
+                    ->where('entreprise_id', $eid)
+                    ->where('category_id', $request->category_id)
+                ),
+            ],
             'slug' => 'nullable|string|max:255',
         ]);
 
@@ -46,7 +54,11 @@ class SubCategoryController extends Controller
         $data['created_by'] = $request->user()->id;
         $data['updated_by'] = null;
 
-        $sub = $this->subs->create($eid, $data);
+        try {
+            $sub = $this->subs->create($eid, $data);
+        } catch (UniqueConstraintViolationException) {
+            return response()->json(['message' => 'Cette sous-catégorie existe déjà dans cette catégorie.'], 422);
+        }
 
         return response()->json(['data' => $sub->load('category')], 201);
     }
@@ -59,7 +71,13 @@ class SubCategoryController extends Controller
 
         $data = $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
+            'name' => [
+                'required', 'string', 'max:255',
+                Rule::unique('sub_categories')->where(fn ($q) => $q
+                    ->where('entreprise_id', $eid)
+                    ->where('category_id', $request->category_id)
+                )->ignore($sub->id),
+            ],
             'slug' => 'nullable|string|max:255',
         ]);
 
@@ -67,7 +85,11 @@ class SubCategoryController extends Controller
 
         $data['updated_by'] = $request->user()->id;
 
-        $sub = $this->subs->update($sub, $data);
+        try {
+            $sub = $this->subs->update($sub, $data);
+        } catch (UniqueConstraintViolationException) {
+            return response()->json(['message' => 'Cette sous-catégorie existe déjà dans cette catégorie.'], 422);
+        }
 
         return response()->json(['data' => $sub->load('category')]);
     }

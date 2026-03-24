@@ -66,6 +66,8 @@ export default function EditInvoice({ id }: { id: string }) {
                     type: inv.type as 'invoice' | 'proforma',
                     client_id: inv.client_id,
                     tva: inv.tva,
+                    discount_type: inv.discount_type || null,
+                    discount_value: inv.discount_value || null,
                     date: inv.date.split('T')[0], // ensure YYYY-MM-DD
                     notes: inv.notes ?? "",
                     items: inv.items.map(i => ({
@@ -129,7 +131,15 @@ export default function EditInvoice({ id }: { id: string }) {
     }
 
     const subtotal = form.items.reduce((acc, item) => acc + item.line_total, 0);
-    const total = subtotal * (1 + (form.tva || 0) / 100);
+    const discountAmount = form.discount_type === 'fixed' 
+        ? Number(form.discount_value || 0) 
+        : form.discount_type === 'percentage' 
+            ? subtotal * (Number(form.discount_value || 0) / 100) 
+            : 0;
+            
+    const subtotalAfterDiscount = Math.max(0, subtotal - discountAmount);
+    const tvaAmount = subtotalAfterDiscount * ((form.tva || 0) / 100);
+    const total = subtotalAfterDiscount + tvaAmount;
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -259,6 +269,38 @@ export default function EditInvoice({ id }: { id: string }) {
                             </div>
 
                             <div className="space-y-2">
+                                <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Remise</Label>
+                                <div className="flex gap-2 h-10">
+                                    <Select
+                                        disabled={isLocked}
+                                        value={form.discount_type || "none"}
+                                        onValueChange={(v) => setForm({ ...form, discount_type: v === 'none' ? null : v as any, discount_value: v === 'none' ? null : form.discount_value || 0 })}
+                                    >
+                                        <SelectTrigger className="rounded-md border border-input bg-background/50 px-3 py-2 text-sm flex-1">
+                                            <SelectValue placeholder="Aucune" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="none">Aucune</SelectItem>
+                                            <SelectItem value="percentage">Pourcentage (%)</SelectItem>
+                                            <SelectItem value="fixed">Montant fixe</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    {form.discount_type && (
+                                        <Input
+                                            disabled={isLocked}
+                                            type="number"
+                                            min="0"
+                                            step={form.discount_type === 'percentage' ? "0.1" : "1"}
+                                            value={form.discount_value || ""}
+                                            onChange={(e) => setForm({ ...form, discount_value: parseFloat(e.target.value) || 0 })}
+                                            className="w-24 h-10 rounded-md border border-input bg-background/50"
+                                            placeholder={form.discount_type === 'percentage' ? "%" : "Montant"}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
                                 <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">TVA</Label>
                                 <div className="flex items-center space-x-3 h-10 rounded-md border border-input bg-background/50 px-3">
                                     <Checkbox
@@ -384,9 +426,15 @@ export default function EditInvoice({ id }: { id: string }) {
                                         <span className="text-muted-foreground">Sous-total:</span>
                                         <span className="font-medium">{subtotal.toFixed(0)} FCFA</span>
                                     </div>
+                                    {discountAmount > 0 && (
+                                        <div className="flex justify-between text-sm text-orange-600">
+                                            <span className="font-medium">Remise:</span>
+                                            <span className="font-medium">-{discountAmount.toFixed(0)} FCFA</span>
+                                        </div>
+                                    )}
                                     <div className="flex justify-between text-sm">
-                                        <span className="text-muted-foreground">TVA ({form.tva}%):</span>
-                                        <span className="font-medium">{(total - subtotal).toFixed(0)} FCFA</span>
+                                        <span className="text-muted-foreground">TVA ({form.tva || 0}%):</span>
+                                        <span className="font-medium">{tvaAmount.toFixed(0)} FCFA</span>
                                     </div>
                                     <div className="flex justify-between font-semibold text-base border-t border-border/40 pt-3 text-foreground">
                                         <span>Total:</span>

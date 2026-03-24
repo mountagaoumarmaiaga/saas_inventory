@@ -17,7 +17,8 @@ class Invoice extends Model
         'created_by', 'updated_by', 'approved_by', 'approved_at',
         'paid_by', 'paid_at', 'stock_deducted_at', 'rejection_reason',
         'public_uuid', 'modification_requested_at', 'uuid', 'viewed_at',
-        'currency_symbol', 'currency_position', 'exchange_rate'
+        'currency_symbol', 'currency_position', 'exchange_rate',
+        'discount_type', 'discount_value', 'discount_amount'
     ];
 
     protected $casts = [

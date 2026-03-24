@@ -37,6 +37,9 @@ export interface Invoice {
     client_id: number;
     client?: Client;
     tva: number;
+    discount_type?: 'percentage' | 'fixed' | null;
+    discount_value?: number | null;
+    discount_amount?: number;
     date: string;
     notes?: string;
     subtotal: number;
@@ -62,6 +65,8 @@ export interface InvoiceForm {
     type: 'invoice' | 'proforma';
     client_id: number;
     tva: number;
+    discount_type?: 'percentage' | 'fixed' | null;
+    discount_value?: number | null;
     date: string;
     notes?: string;
     items: InvoiceItem[];

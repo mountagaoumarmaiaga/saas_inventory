@@ -118,6 +118,10 @@ function formToFD(form: InvoiceForm, method?: string) {
     fd.append("client_id", String(form.client_id));
     fd.append("tva", String(form.tva));
     fd.append("date", form.date);
+    if (form.discount_type) {
+        fd.append("discount_type", form.discount_type);
+        fd.append("discount_value", String(form.discount_value || 0));
+    }
     if (form.notes) fd.append("notes", form.notes);
 
     // Items array handling

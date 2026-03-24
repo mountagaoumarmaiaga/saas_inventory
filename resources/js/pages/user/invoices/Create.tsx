@@ -91,6 +91,8 @@ export default function CreateInvoice() {
         client_id: 0,
         tva: 0,
         date: new Date().toISOString().split('T')[0],
+        discount_type: null,
+        discount_value: null,
         notes: "",
         items: [
             { _tempId: 'init-1', description: "", unit_price: 0, quantity: 1, line_total: 0 }
@@ -179,8 +181,15 @@ export default function CreateInvoice() {
     }
 
     const subtotal = form.items.reduce((acc, item) => acc + item.line_total, 0);
-    const tvaAmount = subtotal * (form.tva / 100);
-    const total = subtotal + tvaAmount;
+    const discountAmount = form.discount_type === 'fixed' 
+        ? Number(form.discount_value || 0) 
+        : form.discount_type === 'percentage' 
+            ? subtotal * (Number(form.discount_value || 0) / 100) 
+            : 0;
+            
+    const subtotalAfterDiscount = Math.max(0, subtotal - discountAmount);
+    const tvaAmount = subtotalAfterDiscount * (form.tva / 100);
+    const total = subtotalAfterDiscount + tvaAmount;
 
     function validateStock(): { valid: boolean; errors: string[] } {
         const errors: string[] = [];
@@ -322,12 +331,18 @@ export default function CreateInvoice() {
                                         <div className="w-64 space-y-2">
                                             <div className="flex justify-between">
                                                 <span>Sous-total:</span>
-                                                <span>{subtotal} FCFA</span>
+                                                <span>{typeof subtotal === 'number' ? subtotal.toFixed(2) : subtotal} FCFA</span>
                                             </div>
+                                            {discountAmount > 0 && (
+                                                <div className="flex justify-between text-orange-600">
+                                                    <span>Remise:</span>
+                                                    <span>-{typeof discountAmount === 'number' ? discountAmount.toFixed(2) : discountAmount} FCFA</span>
+                                                </div>
+                                            )}
                                             {form.tva > 0 && (
                                                 <div className="flex justify-between">
                                                     <span>TVA ({form.tva}%):</span>
-                                                    <span>{tvaAmount} FCFA</span>
+                                                    <span>{typeof tvaAmount === 'number' ? tvaAmount.toFixed(2) : tvaAmount} FCFA</span>
                                                 </div>
                                             )}
                                             <div className="flex justify-between font-bold text-lg border-t border-white/10 pt-2">
@@ -512,6 +527,35 @@ export default function CreateInvoice() {
                                 <div className="space-y-2">
                                     <Label className="text-sm font-medium flex items-center gap-2">
                                         <Percent className="h-4 w-4 text-muted-foreground" />
+                                        Remise
+                                    </Label>
+                                    <div className="flex gap-2">
+                                        <select
+                                            className="h-11 rounded-xl border-2 border-white/10 bg-background/50 px-3 text-sm flex-1 hover:border-orange-500/30 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                                            value={form.discount_type || ""}
+                                            onChange={(e) => setForm({ ...form, discount_type: e.target.value as any || null, discount_value: e.target.value ? form.discount_value || 0 : null })}
+                                        >
+                                            <option value="">Aucune</option>
+                                            <option value="percentage">Pourcentage (%)</option>
+                                            <option value="fixed">Montant fixe</option>
+                                        </select>
+                                        {form.discount_type && (
+                                            <Input
+                                                type="number"
+                                                min="0"
+                                                step={form.discount_type === 'percentage' ? "0.1" : "1"}
+                                                value={form.discount_value || ""}
+                                                onChange={(e) => setForm({ ...form, discount_value: parseFloat(e.target.value) || 0 })}
+                                                className="h-11 w-24 rounded-xl border-2 border-white/10 bg-background/50 hover:border-orange-500/30 transition-all"
+                                                placeholder={form.discount_type === 'percentage' ? "%" : "Montant"}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label className="text-sm font-medium flex items-center gap-2">
+                                        <Percent className="h-4 w-4 text-muted-foreground" />
                                         TVA
                                     </Label>
                                     <div className="flex items-center h-11 px-4 rounded-xl border-2 border-white/10 bg-background/50 hover:border-orange-500/30 transition-all">
@@ -641,6 +685,12 @@ export default function CreateInvoice() {
                                         <span className="text-muted-foreground">Sous-total</span>
                                         <span className="font-medium">{subtotal.toFixed(2)} FCFA</span>
                                     </div>
+                                    {discountAmount > 0 && (
+                                        <div className="flex justify-between text-sm text-orange-600">
+                                            <span>Remise</span>
+                                            <span className="font-medium">-{discountAmount.toFixed(2)} FCFA</span>
+                                        </div>
+                                    )}
                                     {form.tva > 0 && (
                                         <div className="flex justify-between text-sm">
                                             <span className="text-muted-foreground">TVA ({form.tva}%)</span>

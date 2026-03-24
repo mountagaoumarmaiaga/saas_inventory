@@ -59,6 +59,8 @@ class InvoiceController extends Controller
             'items.*.description' => 'required|string|max:255',
             'items.*.unit_price' => 'required|numeric|min:0',
             'items.*.quantity' => 'required|integer|min:1',
+            'discount_type' => 'nullable|in:percentage,fixed',
+            'discount_value' => 'nullable|numeric|min:0',
         ]);
 
         // client doit appartenir à l'entreprise
@@ -81,6 +83,8 @@ class InvoiceController extends Controller
                 'tva' => $data['tva'] ?? 20,
                 'date' => $data['date'] ?? now()->toDateString(),
                 'notes' => $data['notes'] ?? null,
+                'discount_type' => $data['discount_type'] ?? null,
+                'discount_value' => isset($data['discount_value']) ? $data['discount_value'] : null,
                 'subtotal' => 0,
                 'total' => 0,
                 'created_by' => $request->user()->id,
@@ -130,6 +134,8 @@ class InvoiceController extends Controller
             'items.*.description' => 'required|string|max:255',
             'items.*.unit_price' => 'required|numeric|min:0',
             'items.*.quantity' => 'required|integer|min:1',
+            'discount_type' => 'nullable|in:percentage,fixed',
+            'discount_value' => 'nullable|numeric|min:0',
         ]);
 
         abort_unless(Client::where('entreprise_id',$eid)->where('id',$data['client_id'])->exists(), 403);
@@ -146,6 +152,8 @@ class InvoiceController extends Controller
                 'tva' => $data['tva'] ?? $invoice->tva,
                 'date' => $data['date'] ?? $invoice->date,
                 'notes' => $data['notes'] ?? null,
+                'discount_type' => $data['discount_type'] ?? null,
+                'discount_value' => isset($data['discount_value']) ? $data['discount_value'] : null,
                 'updated_by' => $request->user()->id,
             ]);
 

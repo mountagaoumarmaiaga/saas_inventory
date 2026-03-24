@@ -106,10 +106,18 @@ export default function ShowPurchase({ id }: Props) {
     };
 
     const confirmCancel = async () => {
-        // Bloquer l'annulation directement côté frontend pour éviter l'erreur 404 en console
-        // puisque la route backend n'est de toute façon pas autorisée pour les utilisateurs normaux.
-        toast.error("Sur les bons de commande, l'utilisateur n'a pas ce droit.");
-        setCancelDialogOpen(false);
+        try {
+            setLoading(true);
+            await cancelPurchase(id);
+            toast.success("Le bon de commande a été annulé.");
+            setCancelDialogOpen(false);
+            loadPurchase();
+        } catch (e: any) {
+            toast.error(e?.response?.data?.message || "Erreur lors de l'annulation");
+        } finally {
+            setLoading(false);
+            setCancelDialogOpen(false);
+        }
     };
 
     const openReceiveModal = () => {
@@ -235,18 +243,18 @@ export default function ShowPurchase({ id }: Props) {
             <Head title={`Bon de Commande ${purchase.number}`} />
 
             <div className="p-6 space-y-6 max-w-5xl mx-auto">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                     <div>
                         <Button variant="ghost" onClick={() => router.visit('/user/purchases')} className="pl-0 hover:bg-transparent hover:text-emerald-600 transition-colors">
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             Retour à la liste
                         </Button>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent mt-2">
+                        <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 bg-clip-text text-transparent mt-2">
                             Bon de Commande {purchase.number}
                         </h1>
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap gap-2 md:gap-3 w-full md:w-auto">
                         {canEdit && (
                             <Button variant="outline" onClick={() => router.visit(`/user/purchases/${purchase.id}/edit`)} className="border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700">
                                 <Edit className="mr-2 h-4 w-4" />
@@ -254,8 +262,8 @@ export default function ShowPurchase({ id }: Props) {
                             </Button>
                         )}
 
-                        {purchase.status === 'DRAFT' && (
-                            <Button onClick={handleMarkAsOrdered} disabled={loading} className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-500/20">
+                        {purchase.status === 'DRAFT' && page.props.auth?.user?.role === 'admin' && (
+                            <Button onClick={handleMarkAsOrdered} disabled={loading} className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-500/20 flex-1 md:flex-none">
                                 <CheckCircle2 className="mr-2 h-4 w-4" /> Commander
                             </Button>
                         )}
@@ -358,8 +366,8 @@ export default function ShowPurchase({ id }: Props) {
                         {/* Items Table */}
                         <div className="space-y-4">
                             <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Articles Commandés</h3>
-                            <div className="rounded-xl border border-white/10 overflow-hidden shadow-sm bg-background/40">
-                                <table className="w-full text-sm">
+                            <div className="rounded-xl border border-white/10 overflow-hidden shadow-sm bg-background/40 overflow-x-auto">
+                                <table className="w-full text-sm min-w-[600px]">
                                     <thead className="bg-muted/40 border-b border-white/10">
                                         <tr>
                                             <th className="p-4 text-left font-semibold text-muted-foreground">Produit</th>

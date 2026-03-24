@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { FileText, TrendingUp, Users, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { Badge } from '@/components/ui/badge';
 
 interface ReportMetrics {
     period: string;
@@ -16,6 +18,8 @@ interface ReportMetrics {
     net_profit: number;
     new_clients: number;
     new_invoices_count: number;
+    top_products?: { product?: { name: string }, total_quantity: string | number, total_revenue: string | number }[];
+    sales_evolution?: { date_label: string, revenue: string | number }[];
 }
 
 export default function ReportsIndex({ metrics }: { metrics: { weekly: ReportMetrics, monthly: ReportMetrics, yearly: ReportMetrics } }) {
@@ -75,6 +79,77 @@ export default function ReportsIndex({ metrics }: { metrics: { weekly: ReportMet
                     </p>
                 </CardContent>
             </Card>
+
+            {/* Evolution Chart & Top Products */}
+            <div className="grid gap-6 md:grid-cols-3 mt-6 md:col-span-2 lg:col-span-4">
+                <Card className="md:col-span-2 overflow-hidden hover:border-primary/50 transition-colors">
+                    <CardHeader>
+                        <CardTitle className="text-base font-semibold">Évolution des Ventes</CardTitle>
+                    </CardHeader>
+                    <CardContent className="h-[300px] w-full pt-4">
+                        {data.sales_evolution && data.sales_evolution.length > 0 ? (
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={data.sales_evolution.map(d => ({ ...d, revenue: Number(d.revenue) }))}>
+                                    <defs>
+                                        <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                                            <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.2} />
+                                    <XAxis dataKey="date_label" tick={{ fontSize: 12 }} opacity={0.6} tickMargin={10} />
+                                    <YAxis 
+                                        tickFormatter={(value) => new Intl.NumberFormat('fr-FR', { notation: "compact", compactDisplay: "short" }).format(value)}
+                                        tick={{ fontSize: 12 }} 
+                                        opacity={0.6}
+                                        tickMargin={10}
+                                        width={60}
+                                    />
+                                    <RechartsTooltip 
+                                        formatter={(value: number) => [new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', maximumFractionDigits: 0 }).format(value), "Revenu"]}
+                                        labelFormatter={(label) => `Date: ${label}`}
+                                        contentStyle={{ borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', backgroundColor: 'var(--background)' }}
+                                    />
+                                    <Area type="monotone" dataKey="revenue" stroke="#10b981" fillOpacity={1} fill="url(#colorRevenue)" strokeWidth={3} />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        ) : (
+                            <div className="flex h-full items-center justify-center text-muted-foreground text-sm">
+                                Aucune donnée de vente pour cette période.
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+
+                <Card className="hover:border-primary/50 transition-colors flex flex-col">
+                    <CardHeader>
+                        <CardTitle className="text-base font-semibold">Produits les plus vendus</CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex-1 overflow-auto">
+                        {data.top_products && data.top_products.length > 0 ? (
+                            <div className="space-y-4">
+                                {data.top_products.map((item, idx) => (
+                                    <div key={idx} className="flex justify-between items-center bg-muted/40 p-3 rounded-lg border border-border/50">
+                                        <div className="flex-1 min-w-0 pr-4">
+                                            <p className="text-sm font-medium truncate">{item.product?.name || 'Produit inconnu'}</p>
+                                            <p className="text-xs text-muted-foreground mt-0.5">{Number(item.total_quantity)} unités vendues</p>
+                                        </div>
+                                        <div className="text-right whitespace-nowrap">
+                                            <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20">
+                                                {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', maximumFractionDigits: 0 }).format(Number(item.total_revenue))}
+                                            </Badge>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex h-[200px] items-center justify-center text-muted-foreground text-sm">
+                                Aucune vente enregistrée.
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     );
 

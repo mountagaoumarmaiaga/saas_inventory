@@ -8,6 +8,7 @@ import { Mail, Phone, LogOut, CheckCircle, Send, Building2, UserCircle } from 'l
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // --- Dancing Mascot ---
 const DancingMascot = () => {
@@ -89,6 +90,7 @@ export default function PendingApproval() {
     const { auth } = usePage().props as any;
 
     const [requestSent, setRequestSent] = useState(false);
+    const isMobile = useIsMobile();
 
     // Inertia form helper
     const { data, setData, post, processing, errors } = useForm({
@@ -244,31 +246,90 @@ export default function PendingApproval() {
                             </span>
                         </div>
 
-                        {/* Conteneur 3D Canvas robuste */}
-                        <div className="w-full h-[500px] lg:h-full lg:absolute lg:inset-0">
-                            <Canvas camera={{ position: [0, 1.5, 7], fov: 50 }} className="w-full h-full cursor-grab active:cursor-grabbing">
-                                <ambientLight intensity={0.6} />
-                                <directionalLight position={[10, 10, 5]} intensity={1.5} color="#fff" />
-                                <pointLight position={[-10, -10, -10]} intensity={0.5} />
+                        {/* Illustration Section - 3D Mascot for Desktop, Static for Mobile */}
+                        <div className="w-full h-[500px] lg:h-full lg:absolute lg:inset-0 flex items-center justify-center">
+                            {!isMobile ? (
+                                <Canvas camera={{ position: [0, 1.5, 7], fov: 50 }} className="w-full h-full cursor-grab active:cursor-grabbing">
+                                    <ambientLight intensity={0.6} />
+                                    <directionalLight position={[10, 10, 5]} intensity={1.5} color="#fff" />
+                                    <pointLight position={[-10, -10, -10]} intensity={0.5} />
 
-                                <Environment preset="city" />
+                                    <Environment preset="city" />
 
-                                <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
-                                    <DancingMascot />
-                                </Float>
+                                    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
+                                        <DancingMascot />
+                                    </Float>
 
-                                {/* Ombre de contact */}
-                                <ContactShadows position={[0, -1.8, 0]} opacity={0.6} scale={10} blur={2.5} far={4} color="#000" />
+                                    {/* Ombre de contact */}
+                                    <ContactShadows position={[0, -1.8, 0]} opacity={0.6} scale={10} blur={2.5} far={4} color="#000" />
 
-                                <OrbitControls
-                                    enableZoom={false}
-                                    enablePan={false}
-                                    autoRotate
-                                    autoRotateSpeed={1}
-                                    maxPolarAngle={Math.PI / 2 + 0.1}
-                                    minPolarAngle={Math.PI / 3}
-                                />
-                            </Canvas>
+                                    <OrbitControls
+                                        enableZoom={false}
+                                        enablePan={false}
+                                        autoRotate
+                                        autoRotateSpeed={1}
+                                        maxPolarAngle={Math.PI / 2 + 0.1}
+                                        minPolarAngle={Math.PI / 3}
+                                    />
+                                </Canvas>
+                            ) : (
+                                <div className="relative w-full h-full flex flex-col items-center justify-center p-8 text-center">
+                                    <motion.div
+                                        initial={{ scale: 0.5, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        transition={{ 
+                                            type: "spring",
+                                            stiffness: 260,
+                                            damping: 20,
+                                            delay: 0.1 
+                                        }}
+                                        className="relative"
+                                    >
+                                        <div className="w-48 h-48 bg-indigo-600/20 rounded-3xl flex items-center justify-center border-2 border-indigo-500/30 shadow-2xl relative z-10 overflow-hidden">
+                                            <motion.div
+                                                animate={{ 
+                                                    y: [0, -10, 0],
+                                                    rotate: [0, 5, -5, 0]
+                                                }}
+                                                transition={{ 
+                                                    repeat: Infinity, 
+                                                    duration: 4,
+                                                    ease: "easeInOut"
+                                                }}
+                                            >
+                                                <Building2 className="w-24 h-24 text-indigo-400" />
+                                            </motion.div>
+                                            
+                                            {/* Subtle light effect */}
+                                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
+                                        </div>
+
+                                        {/* Floating decorative elements */}
+                                        <motion.div 
+                                            animate={{ y: [0, -15, 0], x: [0, 5, 0] }}
+                                            transition={{ repeat: Infinity, duration: 3, delay: 0.5 }}
+                                            className="absolute -top-4 -right-4 w-12 h-12 bg-purple-500/30 rounded-xl flex items-center justify-center blur-sm"
+                                        />
+                                        <motion.div 
+                                            animate={{ y: [0, 10, 0], x: [0, -8, 0] }}
+                                            transition={{ repeat: Infinity, duration: 4, delay: 1 }}
+                                            className="absolute -bottom-6 -left-6 w-16 h-16 bg-indigo-500/20 rounded-full blur-md"
+                                        />
+                                    </motion.div>
+
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.4 }}
+                                        className="mt-8 space-y-2"
+                                    >
+                                        <h3 className="text-xl font-bold text-white">Installation de votre espace</h3>
+                                        <p className="text-indigo-200/70 text-sm max-w-xs mx-auto">
+                                            Nous préparons votre environnement de gestion de stock haute performance.
+                                        </p>
+                                    </motion.div>
+                                </div>
+                            )}
                         </div>
 
                         <div className="absolute bottom-6 w-full text-center z-10">

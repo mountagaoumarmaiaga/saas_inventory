@@ -13,7 +13,7 @@ class PublicInvoiceController extends Controller
         $invoice = Invoice::with([
             'client:id,name,address', // Exclude email, phone if sensitive, but address needed for PDF
             'items', 
-            'entreprise:id,name,logo_url,address,city,country,email,phone,invoice_header,invoice_footer', 
+            'entreprise:id,name,logo_url,address,email,phone,invoice_header,invoice_footer', 
             'payments:id,invoice_id,amount,date,payment_method,reference'
         ])->where('uuid', $uuid)->firstOrFail();
 

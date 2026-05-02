@@ -13,7 +13,7 @@ class PublicQuoteController extends Controller
         $quote = Quote::with([
             'client:id,name,address',
             'items', 
-            'entreprise:id,name,logo_url,address,city,country,email,phone,invoice_header,invoice_footer'
+            'entreprise:id,name,logo_url,address,email,phone,invoice_header,invoice_footer'
         ])->where('uuid', $uuid)->firstOrFail();
 
         return Inertia::render('public/Quote', [

@@ -524,12 +524,12 @@ export default function SaasInvoiceModels() {
                                 <div className="flex justify-between items-start mb-16 relative">
 
                                     {/* Decorative background circle */}
-                                    <div className="absolute -top-16 -right-16 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl -z-10"></div>
+                                    <div className="absolute -top-16 -right-16 w-64 h-64 bg-primary/50/5 rounded-full blur-3xl -z-10"></div>
 
                                     {/* Left: Invoice Meta */}
                                     <div className="w-[55%] z-10">
                                         <h1 className="text-7xl font-black text-slate-900 tracking-tighter mb-6 relative">
-                                            FACTURE<span className="text-orange-500">.</span>
+                                            FACTURE<span className="text-primary">.</span>
                                         </h1>
                                         <div className="flex items-center gap-6 mb-8">
                                             <div className="bg-slate-900 text-white px-5 py-2.5 rounded-full shadow-lg">
@@ -549,21 +549,21 @@ export default function SaasInvoiceModels() {
                                             </div>
                                         </div>
 
-                                        <div className="pr-12 border-l-4 border-orange-500 pl-6 py-2">
+                                        <div className="pr-12 border-l-4 border-primary pl-6 py-2">
                                             <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Destinataire du projet</p>
                                             <p className="text-2xl font-black text-slate-900 leading-none mb-3">{MOCK_INVOICE.client.name}</p>
                                             <p className="text-slate-600 text-sm leading-relaxed font-medium">
                                                 À l'attention de {MOCK_INVOICE.client.contact}<br />
                                                 {MOCK_INVOICE.client.address}, {MOCK_INVOICE.client.city}<br />
-                                                <span className="text-orange-500 font-semibold">{MOCK_INVOICE.client.email}</span>
+                                                <span className="text-primary font-semibold">{MOCK_INVOICE.client.email}</span>
                                             </p>
                                         </div>
                                     </div>
 
                                     {/* Right: Agency Brand (Vertically aligned) */}
                                     <div className="w-1/3 text-right z-10 flex flex-col items-end">
-                                        <div className="mb-8 p-4 bg-white rounded-2xl shadow-xl shadow-orange-500/10 border border-slate-100 flex items-center justify-center -mr-4">
-                                            <Building2 className="text-orange-500 h-10 w-10" />
+                                        <div className="mb-8 p-4 bg-white rounded-2xl shadow-xl shadow-primary/10 border border-slate-100 flex items-center justify-center -mr-4">
+                                            <Building2 className="text-primary h-10 w-10" />
                                         </div>
                                         <h2 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">{MOCK_INVOICE.company.name}</h2>
                                         <p className="text-sm text-slate-500 leading-relaxed font-medium">
@@ -592,7 +592,7 @@ export default function SaasInvoiceModels() {
                                             {MOCK_INVOICE.items.map((item) => (
                                                 <div key={item.id} className="grid grid-cols-12 gap-4 items-center group">
                                                     <div className="col-span-6">
-                                                        <p className="text-base font-bold text-slate-900 group-hover:text-orange-500 transition-colors">{item.description}</p>
+                                                        <p className="text-base font-bold text-slate-900 group-hover:text-primary transition-colors">{item.description}</p>
                                                     </div>
                                                     <div className="col-span-2">
                                                         <div className="mx-auto w-10 text-center py-1 bg-slate-100 rounded-lg text-sm font-bold text-slate-600">{item.quantity}</div>
@@ -618,7 +618,7 @@ export default function SaasInvoiceModels() {
                                         </div>
                                         <div className="flex justify-between items-center mt-6 bg-slate-900 text-white p-6 rounded-2xl shadow-xl">
                                             <div>
-                                                <p className="text-xs font-black text-orange-500 uppercase tracking-widest">Montant Total TTC</p>
+                                                <p className="text-xs font-black text-primary uppercase tracking-widest">Montant Total TTC</p>
                                             </div>
                                             <span className="text-3xl font-black tracking-tighter font-mono">
                                                 {formatCurrency(total)}

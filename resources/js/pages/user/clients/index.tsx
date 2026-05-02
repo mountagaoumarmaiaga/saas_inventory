@@ -125,7 +125,7 @@ export default function UserClientsIndex() {
             <div className="p-6 space-y-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                             Mes Clients
                         </h1>
                         <p className="text-muted-foreground mt-1">
@@ -133,7 +133,7 @@ export default function UserClientsIndex() {
                         </p>
                     </div>
                     <Link href="/user/clients/create">
-                        <Button className="h-12 px-6 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white shadow-lg shadow-orange-500/20 transition-all hover:scale-[1.02]">
+                        <Button className="h-12 px-6 rounded-xl bg-gradient-to-r from-primary to-primary/60 hover:from-primary/90 hover:to-primary/80 text-white shadow-lg shadow-primary/20 transition-all hover:scale-[1.02]">
                             <Plus className="mr-2 h-5 w-5" />
                             Nouveau Client
                         </Button>
@@ -146,7 +146,7 @@ export default function UserClientsIndex() {
                         <Input
                             type="search"
                             placeholder="Rechercher par nom, email..."
-                            className="pl-10 h-12 w-full rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500 transition-all font-medium"
+                            className="pl-10 h-12 w-full rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary transition-all font-medium"
                             value={q}
                             onChange={(e) => {
                                 setPage(1);
@@ -160,23 +160,23 @@ export default function UserClientsIndex() {
                     {loading ? (
                         <div className="flex items-center justify-center p-12">
                             <div className="flex flex-col items-center justify-center space-y-4">
-                                <div className="h-12 w-12 rounded-full border-4 border-orange-500/30 border-t-orange-600 animate-spin" />
+                                <div className="h-12 w-12 rounded-full border-4 border-primary/30 border-t-primary animate-spin" />
                                 <span className="text-muted-foreground font-medium animate-pulse">Chargement des clients...</span>
                             </div>
                         </div>
                     ) : items.length === 0 ? (
                         <div className="flex flex-col items-center justify-center p-12 text-center">
-                            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center mb-4">
-                                <Users className="h-8 w-8 text-orange-600" />
+                            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/60/10 flex items-center justify-center mb-4">
+                                <Users className="h-8 w-8 text-primary" />
                             </div>
-                            <h3 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Aucun client</h3>
+                            <h3 className="text-lg font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Aucun client</h3>
                             <p className="text-sm text-muted-foreground mt-1">Commencez par ajouter un client.</p>
                         </div>
                     ) : (
                         <div className="relative w-full overflow-auto">
                             <table className="w-full caption-bottom text-sm">
                                 <thead>
-                                    <tr className="border-b border-white/10 bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-transparent">
+                                    <tr className="border-b border-white/10 bg-gradient-to-r from-primary/10 via-primary/80/5 to-transparent">
                                         <th className="h-12 px-6 text-left align-middle font-bold text-muted-foreground/80 uppercase text-[11px] tracking-wider">Nom</th>
                                         <th className="h-12 px-6 text-left align-middle font-bold text-muted-foreground/80 uppercase text-[11px] tracking-wider">Email</th>
                                         <th className="h-12 px-6 text-left align-middle font-bold text-muted-foreground/80 uppercase text-[11px] tracking-wider">Téléphone</th>
@@ -186,13 +186,13 @@ export default function UserClientsIndex() {
                                 </thead>
                                 <tbody className="[&_tr:last-child]:border-0">
                                     {items.map((client) => (
-                                        <tr key={client.id} className="border-b border-white/5 transition-all hover:bg-orange-500/5 group">
+                                        <tr key={client.id} className="border-b border-white/5 transition-all hover:bg-primary/50/5 group">
                                             <td className="p-6 align-middle font-medium">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center text-orange-700 font-bold text-xs ring-2 ring-white/10">
+                                                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary/20 to-primary/60/20 flex items-center justify-center text-primary/90 font-bold text-xs ring-2 ring-white/10">
                                                         {client.name.substring(0, 2).toUpperCase()}
                                                     </div>
-                                                    <span className="group-hover:text-orange-600 transition-colors">{client.name}</span>
+                                                    <span className="group-hover:text-primary transition-colors">{client.name}</span>
                                                 </div>
                                             </td>
                                             <td className="p-6 align-middle">{client.email || <span className="text-muted-foreground/50">-</span>}</td>
@@ -205,7 +205,7 @@ export default function UserClientsIndex() {
                                                             variant="ghost"
                                                             size="icon"
                                                             asChild
-                                                            className="h-8 w-8 hover:bg-orange-500/10 hover:text-orange-600 transition-colors"
+                                                            className="h-8 w-8 hover:bg-primary/50/10 hover:text-primary transition-colors"
                                                             title="Modifier"
                                                         >
                                                             <Link href={`/user/clients/${client.id}/edit`}>

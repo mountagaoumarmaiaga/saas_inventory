@@ -27,10 +27,11 @@ class InvoicePolicy
         return $user->isAdmin() || $invoice->created_by === $user->id;
     }
 
-    // actions workflow
     public function submit(User $user, Invoice $invoice): bool
     {
-        return $this->update($user, $invoice) && $invoice->type === 'invoice' && $invoice->status === 'DRAFT';
+        return $user->entreprise_id === $invoice->entreprise_id 
+            && $invoice->type === 'invoice' 
+            && $invoice->status === 'DRAFT';
     }
 
     public function approve(User $user, Invoice $invoice): bool
@@ -59,9 +60,16 @@ class InvoicePolicy
 
     public function validateProforma(User $user, Invoice $invoice): bool
     {
-        return $this->update($user, $invoice)
+        return $user->entreprise_id === $invoice->entreprise_id
             && $invoice->type === 'proforma'
             && $invoice->status === 'DRAFT';
+    }
+
+    public function convertProforma(User $user, Invoice $invoice): bool
+    {
+        return $user->entreprise_id === $invoice->entreprise_id
+            && $invoice->type === 'proforma'
+            && $invoice->status === 'SENT';
     }
 
     public function requestModification(User $user, Invoice $invoice): bool

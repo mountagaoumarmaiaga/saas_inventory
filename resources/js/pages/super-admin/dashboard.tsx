@@ -15,7 +15,7 @@ export default function SuperAdminDashboard() {
 
       <div className="p-6 space-y-6">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
             Vue d'ensemble
           </h1>
           <p className="text-muted-foreground">
@@ -25,10 +25,10 @@ export default function SuperAdminDashboard() {
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card className="relative overflow-hidden border-orange-100 dark:border-orange-900/20 shadow-lg group hover:shadow-xl transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-amber-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/60/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Entreprises</CardTitle>
-              <Building2 className="h-4 w-4 text-orange-600" />
+              <Building2 className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">--</div>

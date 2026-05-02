@@ -9,7 +9,7 @@ export default function GuestLayout({ children }: PropsWithChildren) {
       {/* Left Column - Branding & Testimonials (Fixed) */}
       <div className="hidden lg:flex flex-col justify-between bg-zinc-950 relative overflow-hidden p-12 text-white border-r border-white/5">
         {/* Background Patterns - Orange/Black Theme */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-orange-600/20 via-zinc-950 to-zinc-950 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-zinc-950 to-zinc-950 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-2/3 h-2/3 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-green-600/10 via-zinc-950 to-zinc-950 pointer-events-none" />
 
         {/* 3D-like Grid Overlay */}
@@ -23,7 +23,7 @@ export default function GuestLayout({ children }: PropsWithChildren) {
 
         <div className="relative z-10 max-w-lg space-y-8">
           <div className="space-y-4">
-            <div className="flex gap-1 text-orange-500">
+            <div className="flex gap-1 text-primary">
               {[1, 2, 3, 4, 5].map((i) => (
                 <Star key={i} className="size-5 fill-current" />
               ))}
@@ -54,7 +54,7 @@ export default function GuestLayout({ children }: PropsWithChildren) {
             <span>Données sécurisées (SSL)</span>
           </div>
           <div className="flex items-center gap-2">
-            <Activity className="size-4 text-orange-500" />
+            <Activity className="size-4 text-primary" />
             <span>99.9% Uptime</span>
           </div>
           <span>© {new Date().getFullYear()} NextGenStock</span>

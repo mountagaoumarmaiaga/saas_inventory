@@ -64,7 +64,7 @@ export default function ExpensesIndex({ stats }: ExpensesIndexProps) {
             <div className="p-6 max-w-7xl mx-auto space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                             Gestion des Dépenses
                         </h1>
                         <p className="text-muted-foreground mt-1">Gérez vos coûts opérationnels et achats fournisseurs.</p>
@@ -76,7 +76,7 @@ export default function ExpensesIndex({ stats }: ExpensesIndexProps) {
                             </Button>
                         </Link>
                         <Link href="/admin/expenses/create">
-                            <Button className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white shadow-lg shadow-primary/20">
+                            <Button className="bg-gradient-to-r from-primary to-primary/60 hover:from-primary/90 hover:to-primary/80 text-white shadow-lg shadow-primary/20">
                                 <Plus className="mr-2 h-4 w-4" /> Nouvelle Dépense
                             </Button>
                         </Link>

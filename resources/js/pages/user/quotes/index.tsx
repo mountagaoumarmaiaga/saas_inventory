@@ -5,7 +5,7 @@ import { Head, Link } from "@inertiajs/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
-import { Search, Plus, Pencil, Trash2, FileText, CheckCircle, XCircle, Send, FileDown, Lock, Unlock } from "lucide-react";
+import { Search, Plus, Pencil, Trash2, FileText, CheckCircle, XCircle, Send, FileDown, Lock, Unlock, MessageCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 import type { Quote, PaginationMeta } from "./types";
@@ -246,8 +246,28 @@ export default function AdminQuotesIndex() {
                                                             </Button>
                                                         )}
 
-                                                        {/* View Button */}
-                                                        <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-muted-foreground hover:text-primary" title="Voir">
+                                                        {quote.uuid && quote.status !== 'DRAFT' && (
+                                                            <Button variant="ghost" size="icon" asChild title="Envoyer par WhatsApp" className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50">
+                                                                <a href={`https://wa.me/?text=${encodeURIComponent(`Bonjour, voici votre devis ${quote.number}. Vous pouvez le consulter et le télécharger à cette adresse : ${window.location.origin}/q/${quote.uuid}`)}`} target="_blank" rel="noreferrer">
+                                                                    <MessageCircle className="h-4 w-4" />
+                                                                </a>
+                                                            </Button>
+                                                        )}
+
+                                                        {/* PDF Buttons */}
+                                                        <Button variant="ghost" size="icon" asChild title="Voir PDF" className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50">
+                                                            <a href={`/user/api/quotes/${quote.id}/pdf/view`} target="_blank">
+                                                                <FileText className="h-4 w-4" />
+                                                            </a>
+                                                        </Button>
+                                                        <Button variant="ghost" size="icon" asChild title="Télécharger PDF" className="h-8 w-8 text-indigo-500 hover:text-indigo-600 hover:bg-indigo-50">
+                                                            <a href={`/user/api/quotes/${quote.id}/pdf/download`} target="_blank">
+                                                                <FileDown className="h-4 w-4" />
+                                                            </a>
+                                                        </Button>
+
+                                                        {/* View Details Button */}
+                                                        <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-muted-foreground hover:text-primary" title="Détails">
                                                             <Link href={`/user/quotes/${quote.id}`}>
                                                                 <FileText className="h-4 w-4" />
                                                             </Link>

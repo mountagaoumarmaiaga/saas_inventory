@@ -52,7 +52,7 @@ export default function DeliveryNotesIndex() {
             <div className="p-6 space-y-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                             Bons de Livraison
                         </h1>
                         <p className="text-muted-foreground mt-1">
@@ -65,7 +65,7 @@ export default function DeliveryNotesIndex() {
                             placeholder="Rechercher par référence, client..."
                             value={q}
                             onChange={e => setQ(e.target.value)}
-                            className="pl-10 h-10 w-[300px] rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500 transition-all font-medium"
+                            className="pl-10 h-10 w-[300px] rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary transition-all font-medium"
                         />
                     </div>
                 </div>
@@ -73,7 +73,7 @@ export default function DeliveryNotesIndex() {
                 <div className="rounded-2xl border-2 border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">
                     <table className="w-full text-sm caption-bottom">
                         <thead>
-                            <tr className="border-b border-white/10 bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-transparent">
+                            <tr className="border-b border-white/10 bg-gradient-to-r from-primary/10 via-primary/80/5 to-transparent">
                                 <th className="h-12 px-4 text-left align-middle font-bold text-muted-foreground/80 uppercase text-[11px] tracking-wider">Référence</th>
                                 <th className="h-12 px-4 text-left align-middle font-bold text-muted-foreground/80 uppercase text-[11px] tracking-wider">Date</th>
                                 <th className="h-12 px-4 text-left align-middle font-bold text-muted-foreground/80 uppercase text-[11px] tracking-wider">Client</th>
@@ -86,7 +86,7 @@ export default function DeliveryNotesIndex() {
                                 <tr>
                                     <td colSpan={5} className="p-12 text-center">
                                         <div className="flex flex-col items-center justify-center space-y-4">
-                                            <div className="h-12 w-12 rounded-full border-4 border-orange-500/30 border-t-orange-600 animate-spin" />
+                                            <div className="h-12 w-12 rounded-full border-4 border-primary/30 border-t-primary animate-spin" />
                                             <span className="text-muted-foreground font-medium animate-pulse">Chargement des données...</span>
                                         </div>
                                     </td>
@@ -95,11 +95,11 @@ export default function DeliveryNotesIndex() {
                                 <tr>
                                     <td colSpan={5} className="p-12 text-center">
                                         <div className="flex flex-col items-center justify-center space-y-4">
-                                            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center">
-                                                <FileText className="h-8 w-8 text-orange-600" />
+                                            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/60/10 flex items-center justify-center">
+                                                <FileText className="h-8 w-8 text-primary" />
                                             </div>
                                             <div>
-                                                <h3 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Aucun bon de livraison</h3>
+                                                <h3 className="text-lg font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Aucun bon de livraison</h3>
                                                 <p className="text-sm text-muted-foreground mt-1">
                                                     Aucun document trouvé pour le moment.
                                                 </p>
@@ -113,14 +113,14 @@ export default function DeliveryNotesIndex() {
 
                                     return grouped.flatMap(group => [
                                         <tr key={`header-${group.label}`} className="bg-muted/50 border-b border-white/5">
-                                            <td colSpan={5} className="p-2 px-4 font-bold text-xs uppercase text-orange-600/80 tracking-wider">
+                                            <td colSpan={5} className="p-2 px-4 font-bold text-xs uppercase text-primary/80 tracking-wider">
                                                 {group.label}
                                             </td>
                                         </tr>,
                                         ...group.items.map(item => (
-                                            <tr key={item.id} className="border-b border-white/5 transition-all hover:bg-orange-500/5 group">
+                                            <tr key={item.id} className="border-b border-white/5 transition-all hover:bg-primary/50/5 group">
                                                 <td className="p-4 align-middle font-medium">
-                                                    <span className="group-hover:text-orange-600 transition-colors">{item.reference}</span>
+                                                    <span className="group-hover:text-primary transition-colors">{item.reference}</span>
                                                 </td>
                                                 <td className="p-4 align-middle">{new Date(item.delivery_date).toLocaleDateString()}</td>
                                                 <td className="p-4 align-middle">{item.client?.name || "-"}</td>
@@ -139,7 +139,7 @@ export default function DeliveryNotesIndex() {
                                                                 size="icon"
                                                                 asChild
                                                                 title="Modifier"
-                                                                className="h-8 w-8 hover:bg-orange-500/10 hover:text-orange-600 transition-colors"
+                                                                className="h-8 w-8 hover:bg-primary/50/10 hover:text-primary transition-colors"
                                                             >
                                                                 <Link href={`/user/delivery-notes/${item.id}/edit`}>
                                                                     <Pencil className="h-4 w-4" />

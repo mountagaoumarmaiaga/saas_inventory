@@ -74,19 +74,19 @@ export default function ExpensesIndex({ stats }: ExpensesIndexProps) {
             <div className="p-6 max-w-7xl mx-auto space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                             Gestion des Dépenses
                         </h1>
                         <p className="text-muted-foreground mt-1">Gérez vos coûts opérationnels et achats fournisseurs.</p>
                     </div>
                     <div className="flex gap-2">
                         <Link href="/user/expense-categories">
-                            <Button variant="outline" className="border-orange-200 text-orange-700 hover:bg-orange-50 dark:border-orange-900 dark:text-orange-400 dark:hover:bg-orange-900/20">
+                            <Button variant="outline" className="border-primary/20 text-primary/90 hover:bg-primary/5 dark:border-orange-900 dark:text-orange-400 dark:hover:bg-orange-900/20">
                                 <FileText className="mr-2 h-4 w-4" /> Catégories
                             </Button>
                         </Link>
                         <Link href="/user/expenses/create">
-                            <Button className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white shadow-lg shadow-orange-500/20">
+                            <Button className="bg-gradient-to-r from-primary to-primary/60 hover:from-primary/90 hover:to-primary/80 text-white shadow-lg shadow-primary/20">
                                 <Plus className="mr-2 h-4 w-4" /> Nouvelle Dépense
                             </Button>
                         </Link>
@@ -174,7 +174,7 @@ export default function ExpensesIndex({ stats }: ExpensesIndexProps) {
                                                 <td className="px-6 py-4 text-muted-foreground">
                                                     {expense.reference || '-'}
                                                 </td>
-                                                <td className="px-6 py-4 text-right font-bold text-orange-600 dark:text-orange-400">
+                                                <td className="px-6 py-4 text-right font-bold text-primary dark:text-orange-400">
                                                     {Number(expense.amount).toLocaleString('fr-FR')}
                                                 </td>
                                                 <td className="px-6 py-4 text-center">

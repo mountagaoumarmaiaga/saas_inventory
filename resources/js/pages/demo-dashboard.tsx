@@ -72,20 +72,20 @@ export default function Dashboard() {
         <>
             <Head title="Tableau de bord - NextGenStock" />
 
-            <div className="h-screen w-full flex bg-[#0A0A0A] text-white font-sans overflow-hidden selection:bg-orange-500/30 selection:text-white">
+            <div className="h-screen w-full flex bg-[#0A0A0A] text-white font-sans overflow-hidden selection:bg-primary/50/30 selection:text-white">
 
                 {/* SIDEBAR */}
                 <aside className="w-64 bg-[#121212] flex flex-col border-r border-[#2A2A2A] shrink-0">
                     <div className="h-16 flex items-center px-6 border-b border-[#2A2A2A]">
                         <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded-sm bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.4)]"></div>
+                            <div className="w-4 h-4 rounded-sm bg-primary/50 shadow-[0_0_10px_rgba(249,115,22,0.4)]"></div>
                             <span className="font-bold tracking-tight text-white text-lg">NextGenStock</span>
                         </div>
                     </div>
 
                     <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
                         <Link href="#" className="flex items-center gap-3 px-3 py-2 rounded-md bg-[#2A2A2A]/30 text-white border border-[#2A2A2A]/50 transition-colors duration-200">
-                            <LayoutDashboard size={18} className="text-orange-500" />
+                            <LayoutDashboard size={18} className="text-primary" />
                             <span className="text-sm font-medium">Tableau de bord</span>
                         </Link>
 
@@ -127,12 +127,12 @@ export default function Dashboard() {
                         <div className="flex items-center gap-5">
                             <button className="relative p-2 text-zinc-400 hover:text-white transition-colors duration-200 rounded-full hover:bg-[#2A2A2A]/50">
                                 <Bell size={18} />
-                                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-orange-500 border border-[#0A0A0A]"></span>
+                                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary/50 border border-[#0A0A0A]"></span>
                             </button>
                             <div className="h-6 w-px bg-[#2A2A2A]"></div>
                             <div className="flex items-center gap-3 cursor-pointer group">
                                 <div className="text-right hidden sm:block">
-                                    <p className="text-sm font-medium text-white group-hover:text-orange-500 transition-colors">Admin User</p>
+                                    <p className="text-sm font-medium text-white group-hover:text-primary transition-colors">Admin User</p>
                                     <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Super Admin</p>
                                 </div>
                                 <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-500 border border-[#2A2A2A] overflow-hidden">
@@ -166,7 +166,7 @@ export default function Dashboard() {
                                 <div className="bg-[#18181B] border border-[#2A2A2A] rounded-xl p-5 shadow-sm hover:border-[#3A3A3A] transition-colors group">
                                     <div className="flex justify-between items-start mb-4">
                                         <p className="text-sm font-medium text-zinc-400">Chiffre d'Affaires</p>
-                                        <div className="p-2 bg-[#2A2A2A]/50 rounded-lg text-white group-hover:text-orange-500 transition-colors">
+                                        <div className="p-2 bg-[#2A2A2A]/50 rounded-lg text-white group-hover:text-primary transition-colors">
                                             <TrendingUp size={18} />
                                         </div>
                                     </div>
@@ -185,7 +185,7 @@ export default function Dashboard() {
                                 <div className="bg-[#18181B] border border-[#2A2A2A] rounded-xl p-5 shadow-sm hover:border-[#3A3A3A] transition-colors group">
                                     <div className="flex justify-between items-start mb-4">
                                         <p className="text-sm font-medium text-zinc-400">Clients Actifs</p>
-                                        <div className="p-2 bg-[#2A2A2A]/50 rounded-lg text-white group-hover:text-orange-500 transition-colors">
+                                        <div className="p-2 bg-[#2A2A2A]/50 rounded-lg text-white group-hover:text-primary transition-colors">
                                             <Users size={18} />
                                         </div>
                                     </div>
@@ -204,7 +204,7 @@ export default function Dashboard() {
                                 <div className="bg-[#18181B] border border-[#2A2A2A] rounded-xl p-5 shadow-sm hover:border-[#3A3A3A] transition-colors group">
                                     <div className="flex justify-between items-start mb-4">
                                         <p className="text-sm font-medium text-zinc-400">Commandes en cours</p>
-                                        <div className="p-2 bg-[#2A2A2A]/50 rounded-lg text-white group-hover:text-orange-500 transition-colors">
+                                        <div className="p-2 bg-[#2A2A2A]/50 rounded-lg text-white group-hover:text-primary transition-colors">
                                             <Clock size={18} />
                                         </div>
                                     </div>
@@ -223,7 +223,7 @@ export default function Dashboard() {
                                 <div className="bg-[#18181B] border border-[#2A2A2A] rounded-xl p-5 shadow-sm hover:border-[#3A3A3A] transition-colors group">
                                     <div className="flex justify-between items-start mb-4">
                                         <p className="text-sm font-medium text-zinc-400">Alertes Stock</p>
-                                        <div className="p-2 bg-orange-500/10 border border-orange-500/20 rounded-lg text-orange-500">
+                                        <div className="p-2 bg-primary/50/10 border border-primary/20 rounded-lg text-primary">
                                             <AlertTriangle size={18} />
                                         </div>
                                     </div>
@@ -292,7 +292,7 @@ export default function Dashboard() {
                                 <div className="bg-[#18181B] border border-[#2A2A2A] rounded-xl shadow-sm flex flex-col">
                                     <div className="p-5 border-b border-[#2A2A2A] flex justify-between items-center">
                                         <h2 className="text-base font-semibold text-white">Activité Récente</h2>
-                                        <Link href="#" className="text-xs font-medium text-orange-500 hover:text-orange-400 transition-colors">
+                                        <Link href="#" className="text-xs font-medium text-primary hover:text-orange-400 transition-colors">
                                             Voir tout
                                         </Link>
                                     </div>
@@ -303,7 +303,7 @@ export default function Dashboard() {
                                                     <div className={`mt-0.5 p-2 rounded-lg shrink-0 ${item.type === 'order' ? 'bg-blue-500/10 text-blue-400' :
                                                             item.type === 'stock' ? 'bg-red-500/10 text-red-400' :
                                                                 item.type === 'payment' ? 'bg-emerald-500/10 text-emerald-400' :
-                                                                    'bg-orange-500/10 text-orange-400'
+                                                                    'bg-primary/50/10 text-orange-400'
                                                         }`}>
                                                         {item.type === 'order' && <ShoppingCart size={14} />}
                                                         {item.type === 'stock' && <AlertTriangle size={14} />}
@@ -318,7 +318,7 @@ export default function Dashboard() {
 
                                                     <div className="text-right shrink-0">
                                                         <p className="text-sm font-medium text-white font-mono">{item.amount}</p>
-                                                        <span className={`inline-block mt-1 text-[10px] font-semibold px-1.5 py-0.5 rounded ${item.status === 'En attente' ? 'bg-orange-500/10 text-orange-400' :
+                                                        <span className={`inline-block mt-1 text-[10px] font-semibold px-1.5 py-0.5 rounded ${item.status === 'En attente' ? 'bg-primary/50/10 text-orange-400' :
                                                                 item.status === 'Rupture' ? 'bg-red-500/10 text-red-400' :
                                                                     item.status === 'Validé' ? 'bg-emerald-500/10 text-emerald-400' :
                                                                         item.status === 'Nouveau' ? 'bg-blue-500/10 text-blue-400' :

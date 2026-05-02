@@ -427,7 +427,7 @@ export default function EditInvoice({ id }: { id: string }) {
                                         <span className="font-medium">{subtotal.toFixed(0)} FCFA</span>
                                     </div>
                                     {discountAmount > 0 && (
-                                        <div className="flex justify-between text-sm text-orange-600">
+                                        <div className="flex justify-between text-sm text-primary">
                                             <span className="font-medium">Remise:</span>
                                             <span className="font-medium">-{discountAmount.toFixed(0)} FCFA</span>
                                         </div>

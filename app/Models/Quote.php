@@ -11,7 +11,17 @@ class Quote extends Model
 {
     use HasFactory, BelongsToTenant, HasActivityLogs;
 
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) \Illuminate\Support\Str::uuid();
+            }
+        });
+    }
+
     protected $fillable = [
+        'uuid',
         'entreprise_id',
         'number',
         'status',

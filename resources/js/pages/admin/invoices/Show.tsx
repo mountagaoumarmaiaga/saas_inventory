@@ -19,7 +19,8 @@ import {
     markPaidInvoiceApi,
     markUnpaidInvoiceApi,
     validateProformaApi,
-    requestModificationApi
+    requestModificationApi,
+    convertProformaApi
 } from "./api";
 
 interface ShowInvoiceProps {
@@ -237,6 +238,13 @@ export default function ShowInvoice({ id }: ShowInvoiceProps) {
                             <Button variant="default" onClick={() => handleWorkflowAction(validateProformaApi, "Proforma validée")} disabled={actionLoading} className="bg-primary hover:bg-primary/90 text-white">
                                 <CheckCircle className="mr-2 h-4 w-4" />
                                 Valider Proforma
+                            </Button>
+                        )}
+
+                        {invoice.status === 'SENT' && invoice.type === 'proforma' && (
+                            <Button variant="default" onClick={() => handleWorkflowAction(convertProformaApi, "Proforma convertie en facture")} disabled={actionLoading} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                <ArrowUpCircle className="mr-2 h-4 w-4" />
+                                Convertir en Facture
                             </Button>
                         )}
 

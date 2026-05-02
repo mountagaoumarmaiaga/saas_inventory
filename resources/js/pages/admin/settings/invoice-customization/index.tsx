@@ -183,7 +183,7 @@ export default function InvoiceCustomization() {
 
             <div className="p-6 space-y-6 max-w-4xl">
                 <div>
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                         Personnalisation des Factures
                     </h1>
                     <p className="text-muted-foreground mt-1">
@@ -193,9 +193,9 @@ export default function InvoiceCustomization() {
 
                 {/* Company Info */}
                 <Card className="relative border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
                     <CardHeader className="relative border-b border-white/10">
-                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                             Informations Entreprise
                         </CardTitle>
                         <CardDescription>Ces informations apparaîtront sur vos factures</CardDescription>
@@ -208,7 +208,7 @@ export default function InvoiceCustomization() {
                                     id="name"
                                     value={settings.name}
                                     onChange={(e) => setSettings({ ...settings, name: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
+                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                                 />
                             </div>
                             <div className="space-y-3">
@@ -218,7 +218,7 @@ export default function InvoiceCustomization() {
                                     type="email"
                                     value={settings.email}
                                     onChange={(e) => setSettings({ ...settings, email: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
+                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                                 />
                             </div>
                         </div>
@@ -229,7 +229,7 @@ export default function InvoiceCustomization() {
                                     id="phone"
                                     value={settings.phone || ''}
                                     onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
+                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                                     placeholder="+223 XX XXX XX XX"
                                 />
                             </div>
@@ -239,7 +239,7 @@ export default function InvoiceCustomization() {
                                     id="address"
                                     value={settings.address || ''}
                                     onChange={(e) => setSettings({ ...settings, address: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
+                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                                 />
                             </div>
                         </div>
@@ -248,9 +248,9 @@ export default function InvoiceCustomization() {
 
                 {/* Logo Upload */}
                 <Card className="relative border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
                     <CardHeader className="relative border-b border-white/10">
-                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                             Logo
                         </CardTitle>
                         <CardDescription>Uploadez le logo de votre entreprise (max 2MB)</CardDescription>
@@ -271,7 +271,7 @@ export default function InvoiceCustomization() {
                             <Button
                                 onClick={handleUploadLogo}
                                 disabled={!logoFile || uploadingLogo}
-                                className="h-12 px-6 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105 rounded-xl disabled:opacity-50"
+                                className="h-12 px-6 bg-gradient-to-r from-primary via-primary/80 to-primary hover:from-primary/90 hover:via-amber-700 hover:to-primary/90 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105 rounded-xl disabled:opacity-50"
                             >
                                 <Upload className="mr-2 h-5 w-5" />
                                 {uploadingLogo ? "Upload..." : "Upload"}
@@ -364,9 +364,9 @@ export default function InvoiceCustomization() {
 
                 {/* Payment & Currency */}
                 <Card className="relative border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
                     <CardHeader className="relative border-b border-white/10">
-                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                             Paiement et Devise
                         </CardTitle>
                         <CardDescription>Configurez la devise et les liens de paiement par QR Code</CardDescription>
@@ -379,7 +379,7 @@ export default function InvoiceCustomization() {
                                     id="currency"
                                     value={settings.currency || ''}
                                     onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 transition-all duration-300 shadow-lg"
+                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary transition-all duration-300 shadow-lg"
                                 />
                             </div>
                             <div className="space-y-3">
@@ -388,7 +388,7 @@ export default function InvoiceCustomization() {
                                     id="currency_symbol"
                                     value={settings.currency_symbol || ''}
                                     onChange={(e) => setSettings({ ...settings, currency_symbol: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 transition-all duration-300 shadow-lg"
+                                    className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary transition-all duration-300 shadow-lg"
                                 />
                             </div>
                             <div className="space-y-3">
@@ -417,7 +417,7 @@ export default function InvoiceCustomization() {
                                 value={settings.qr_payment_link || ''}
                                 onChange={(e) => setSettings({ ...settings, qr_payment_link: e.target.value })}
                                 placeholder="ex: https://pay.wave.com/m/mon-entreprise"
-                                className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 transition-all duration-300 shadow-lg"
+                                className="h-12 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary transition-all duration-300 shadow-lg"
                             />
                             <p className="text-xs text-muted-foreground">Si renseigné, un QR code sera automatiquement généré et affiché sur les factures pour faciliter le paiement de vos clients.</p>
                         </div>
@@ -426,9 +426,9 @@ export default function InvoiceCustomization() {
 
                 {/* Header & Footer */}
                 <Card className="relative border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
                     <CardHeader className="relative border-b border-white/10">
-                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                             En-tête et Pied de page
                         </CardTitle>
                         <CardDescription>Texte personnalisé pour vos factures</CardDescription>
@@ -442,7 +442,7 @@ export default function InvoiceCustomization() {
                                 value={settings.invoice_header || ''}
                                 onChange={(e) => setSettings({ ...settings, invoice_header: e.target.value })}
                                 rows={3}
-                                className="rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
+                                className="rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                             />
                         </div>
                         <div className="space-y-3">
@@ -453,7 +453,7 @@ export default function InvoiceCustomization() {
                                 value={settings.invoice_footer || ''}
                                 onChange={(e) => setSettings({ ...settings, invoice_footer: e.target.value })}
                                 rows={3}
-                                className="rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
+                                className="rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                             />
                         </div>
                     </CardContent>
@@ -461,9 +461,9 @@ export default function InvoiceCustomization() {
 
                 {/* Template Selection */}
                 <Card className="relative border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
                     <CardHeader className="relative border-b border-white/10">
-                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                        <CardTitle className="text-lg font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                             Modèle de Facture
                         </CardTitle>
                         <CardDescription>Choisissez le design de vos factures</CardDescription>
@@ -475,7 +475,7 @@ export default function InvoiceCustomization() {
                         >
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {TEMPLATES.map((tpl) => (
-                                    <div key={tpl.id} className="flex items-start space-x-3 border-2 border-white/20 rounded-xl p-5 cursor-pointer hover:bg-gradient-to-br hover:from-orange-500/10 hover:to-amber-500/10 hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
+                                    <div key={tpl.id} className="flex items-start space-x-3 border-2 border-white/20 rounded-xl p-5 cursor-pointer hover:bg-gradient-to-br hover:from-primary/10 hover:to-primary/60/10 hover:border-primary/50 transition-all duration-300 hover:shadow-lg">
                                         <RadioGroupItem value={tpl.id} id={tpl.id} className="mt-0.5" />
                                         <Label htmlFor={tpl.id} className="cursor-pointer flex-1">
                                             <div className="font-bold text-foreground">{tpl.name}</div>
@@ -558,7 +558,7 @@ export default function InvoiceCustomization() {
                     <Button
                         onClick={handleSave}
                         disabled={saving}
-                        className="h-12 px-8 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105 rounded-xl disabled:opacity-50"
+                        className="h-12 px-8 bg-gradient-to-r from-primary via-primary/80 to-primary hover:from-primary/90 hover:via-amber-700 hover:to-primary/90 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105 rounded-xl disabled:opacity-50"
                     >
                         <Save className="mr-2 h-5 w-5" />
                         {saving ? "Sauvegarde..." : "Sauvegarder"}

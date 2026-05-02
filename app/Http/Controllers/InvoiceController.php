@@ -185,7 +185,16 @@ class InvoiceController extends Controller
     {
         $eid = $request->user()->entreprise_id;
         $invoice = $this->invoices->findForEntreprise($eid, $id);
-        $this->authorize('submit', $invoice);
+        
+        try {
+            $this->authorize('submit', $invoice);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => "Action réservée à l'administrateur ou au créateur du document.",
+                'requires_admin' => true,
+            ], 403);
+        }
 
         $this->workflow->submitInvoice($invoice);
 
@@ -235,9 +244,38 @@ class InvoiceController extends Controller
     {
         $eid = $request->user()->entreprise_id;
         $invoice = $this->invoices->findForEntreprise($eid, $id);
-        $this->authorize('validateProforma', $invoice);
+        
+        try {
+            $this->authorize('validateProforma', $invoice);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => "Action réservée à l'administrateur ou au créateur du document.",
+                'requires_admin' => true,
+            ], 403);
+        }
 
         $this->workflow->validateProforma($invoice);
+
+        return response()->json(['data' => $invoice->refresh()]);
+    }
+
+    public function convertProforma(Request $request, int $id)
+    {
+        $eid = $request->user()->entreprise_id;
+        $invoice = $this->invoices->findForEntreprise($eid, $id);
+        
+        try {
+            $this->authorize('convertProforma', $invoice);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => "Action réservée à l'administrateur ou au créateur du document.",
+                'requires_admin' => true,
+            ], 403);
+        }
+
+        $this->workflow->convertProformaToInvoice($invoice, $this->numbers);
 
         return response()->json(['data' => $invoice->refresh()]);
     }

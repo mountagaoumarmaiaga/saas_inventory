@@ -21,7 +21,7 @@ export default function PasswordStrengthMeter({ password }: PasswordStrengthMete
     const getStrengthColor = (s: number) => {
         if (s === 0) return "bg-border";
         if (s <= 1) return "bg-red-500";
-        if (s <= 2) return "bg-orange-500";
+        if (s <= 2) return "bg-primary/50";
         if (s === 3) return "bg-yellow-500";
         return "bg-green-500";
     };
@@ -53,7 +53,7 @@ export default function PasswordStrengthMeter({ password }: PasswordStrengthMete
                 <span className="text-muted-foreground">Force du mot de passe</span>
                 <span className={cn("font-medium", {
                     "text-red-500": strength <= 1 && strength > 0,
-                    "text-orange-500": strength === 2,
+                    "text-primary": strength === 2,
                     "text-yellow-500": strength === 3,
                     "text-green-500": strength === 4,
                 })}>

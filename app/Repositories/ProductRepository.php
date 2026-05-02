@@ -12,8 +12,8 @@ class ProductRepository implements ProductRepositoryInterface
     {
         $q = Product::where('entreprise_id', $entrepriseId)->with(['category','subCategory']);
 
-        if (!empty($filters['search'])) {
-            $s = $filters['search'];
+        $s = $filters['search'] ?? $filters['q'] ?? null;
+        if (!empty($s)) {
             $q->where(fn($qq) => $qq->where('name','like',"%$s%")->orWhere('sku','like',"%$s%"));
         }
         if (!empty($filters['category_id'])) $q->where('category_id', $filters['category_id']);

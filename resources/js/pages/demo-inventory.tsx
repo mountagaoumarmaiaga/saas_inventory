@@ -80,7 +80,7 @@ export default function ProductInventory() {
                 <aside className="w-64 bg-[#121212] flex flex-col border-r border-[#2A2A2A] shrink-0">
                     <div className="h-16 flex items-center px-6 border-b border-[#2A2A2A]">
                         <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded-sm bg-orange-500"></div>
+                            <div className="w-4 h-4 rounded-sm bg-primary/50"></div>
                             <span className="font-bold tracking-tight text-white">NextGenStock</span>
                         </div>
                     </div>
@@ -96,7 +96,7 @@ export default function ProductInventory() {
                         </div>
 
                         <Link href="#" className="flex items-center gap-3 px-3 py-2 rounded-md bg-[#2A2A2A]/30 text-white border border-[#2A2A2A]/50 transition-colors duration-200">
-                            <Package size={18} className="text-orange-500" />
+                            <Package size={18} className="text-primary" />
                             <span className="text-sm font-medium">Produits</span>
                         </Link>
                         <Link href="#" className="flex items-center gap-3 px-3 py-2 rounded-md text-zinc-400 hover:text-white hover:bg-[#2A2A2A]/50 transition-colors duration-200">
@@ -125,7 +125,7 @@ export default function ProductInventory() {
                         <div className="flex items-center gap-4">
                             <button className="relative p-2 text-zinc-400 hover:text-white transition-colors duration-200 rounded-full hover:bg-[#2A2A2A]/50">
                                 <Bell size={18} />
-                                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-orange-500 border border-[#0A0A0A]"></span>
+                                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary/50 border border-[#0A0A0A]"></span>
                             </button>
                             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-500 border border-[#2A2A2A]"></div>
                         </div>
@@ -142,11 +142,11 @@ export default function ProductInventory() {
                                 <div className="flex items-center gap-3 w-full sm:w-auto">
                                     {/* Search */}
                                     <div className="relative group">
-                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 size-4 group-focus-within:text-orange-500 transition-colors" />
+                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 size-4 group-focus-within:text-primary transition-colors" />
                                         <input
                                             type="text"
                                             placeholder="Search products, SKU..."
-                                            className="h-10 w-full sm:w-64 pl-10 pr-4 rounded-md bg-[#121212] border border-[#2A2A2A] text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all duration-200"
+                                            className="h-10 w-full sm:w-64 pl-10 pr-4 rounded-md bg-[#121212] border border-[#2A2A2A] text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-200"
                                         />
                                     </div>
 
@@ -161,7 +161,7 @@ export default function ProductInventory() {
                                     </button>
 
                                     {/* CTA */}
-                                    <button className="h-10 px-4 flex items-center gap-2 rounded-md bg-orange-500 text-white text-sm font-medium hover:bg-orange-600 transition-colors duration-200 shadow-[0_0_15px_rgba(249,115,22,0.15)] ml-auto sm:ml-0">
+                                    <button className="h-10 px-4 flex items-center gap-2 rounded-md bg-primary/50 text-white text-sm font-medium hover:bg-primary transition-colors duration-200 shadow-[0_0_15px_rgba(249,115,22,0.15)] ml-auto sm:ml-0">
                                         <Plus size={16} />
                                         Nouveau Produit
                                     </button>
@@ -175,7 +175,7 @@ export default function ProductInventory() {
                                         <thead>
                                             <tr className="border-b border-[#2A2A2A]">
                                                 <th className="px-6 py-4 w-12 text-center">
-                                                    <input type="checkbox" className="rounded-sm border-[#2A2A2A] bg-[#121212] checked:bg-orange-500 checked:border-orange-500 focus:ring-orange-500 focus:ring-offset-[#18181B]" />
+                                                    <input type="checkbox" className="rounded-sm border-[#2A2A2A] bg-[#121212] checked:bg-primary/50 checked:border-primary focus:ring-primary focus:ring-offset-[#18181B]" />
                                                 </th>
                                                 <th className="px-6 py-4 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Produit</th>
                                                 <th className="px-6 py-4 text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Catégorie</th>
@@ -188,12 +188,12 @@ export default function ProductInventory() {
                                         <tbody className="divide-y divide-[#2A2A2A]">
                                             {INVENTORY_DATA.map((product) => {
                                                 const stockRatio = product.stock / product.maxStock;
-                                                const barColor = stockRatio > 0.5 ? 'bg-emerald-500' : stockRatio > 0 ? 'bg-orange-500' : 'bg-red-500';
+                                                const barColor = stockRatio > 0.5 ? 'bg-emerald-500' : stockRatio > 0 ? 'bg-primary/50' : 'bg-red-500';
 
                                                 return (
                                                     <tr key={product.id} className="group hover:bg-[#2A2A2A]/30 transition-colors duration-200 cursor-pointer">
                                                         <td className="px-6 py-4 align-middle text-center">
-                                                            <input type="checkbox" className="rounded-sm border-[#2A2A2A] bg-[#121212] checked:bg-orange-500 checked:border-orange-500 opacity-50 group-hover:opacity-100 transition-opacity focus:ring-orange-500 focus:ring-offset-[#18181B]" />
+                                                            <input type="checkbox" className="rounded-sm border-[#2A2A2A] bg-[#121212] checked:bg-primary/50 checked:border-primary opacity-50 group-hover:opacity-100 transition-opacity focus:ring-primary focus:ring-offset-[#18181B]" />
                                                         </td>
                                                         <td className="px-6 py-4 align-middle">
                                                             <div className="flex items-center gap-3">
@@ -227,7 +227,7 @@ export default function ProductInventory() {
                                                             <span className={cn(
                                                                 "inline-flex items-center px-2 py-1 rounded-md text-[11px] font-semibold tracking-wide",
                                                                 product.status === 'En Stock' && "bg-emerald-500/10 text-emerald-400",
-                                                                product.status === 'Stock Faible' && "bg-orange-500/10 text-orange-400",
+                                                                product.status === 'Stock Faible' && "bg-primary/50/10 text-orange-400",
                                                                 product.status === 'Rupture' && "bg-red-500/10 text-red-400",
                                                             )}>
                                                                 {product.status}

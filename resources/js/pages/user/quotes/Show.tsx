@@ -107,18 +107,18 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
             <div className="p-6 space-y-6 max-w-5xl mx-auto">
                 <div className="flex items-center justify-between">
                     <div>
-                        <Button variant="ghost" onClick={() => router.visit('/user/quotes')} className="pl-0 hover:bg-transparent hover:text-orange-600 transition-colors">
+                        <Button variant="ghost" onClick={() => router.visit('/user/quotes')} className="pl-0 hover:bg-transparent hover:text-primary transition-colors">
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             Retour à la liste
                         </Button>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent mt-2">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent mt-2">
                             Devis {quote.number}
                         </h1>
                     </div>
 
                     <div className="flex gap-3">
                         {canEdit && (
-                            <Button variant="outline" onClick={handleEdit} className="border-orange-200 hover:bg-orange-50 hover:text-orange-700">
+                            <Button variant="outline" onClick={handleEdit} className="border-primary/20 hover:bg-primary/5 hover:text-primary/90">
                                 <Edit className="mr-2 h-4 w-4" />
                                 Modifier
                             </Button>
@@ -127,7 +127,7 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
                             <Printer className="mr-2 h-4 w-4" />
                             Imprimer
                         </Button>
-                        <Button onClick={handleDownloadPdf} className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white shadow-lg shadow-orange-500/20">
+                        <Button onClick={handleDownloadPdf} className="bg-gradient-to-r from-primary to-primary/60 hover:from-primary/90 hover:to-primary/80 text-white shadow-lg shadow-primary/20">
                             <Download className="mr-2 h-4 w-4" />
                             Télécharger PDF
                         </Button>
@@ -135,7 +135,7 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
                 </div>
 
                 <Card className="relative border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
 
                     <CardHeader className="relative border-b border-white/10 pb-6">
                         <div className="flex items-center justify-between">
@@ -182,7 +182,7 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
                                     <div className="h-px bg-border flex-grow ml-4"></div>
                                 </h3>
                                 <div className="text-right space-y-1 pt-2">
-                                    <p className="font-bold text-lg text-foreground bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">{page.props.auth?.user?.entreprise?.name || "Entreprise"}</p>
+                                    <p className="font-bold text-lg text-foreground bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">{page.props.auth?.user?.entreprise?.name || "Entreprise"}</p>
                                     <p className="text-sm text-foreground/80">{page.props.auth?.user?.entreprise?.address || "Adresse non définie"}</p>
                                     <p className="text-sm text-foreground/80">{page.props.auth?.user?.entreprise?.phone ? `Tél: ${page.props.auth.user.entreprise.phone}` : ""}</p>
                                     <p className="text-sm text-muted-foreground">{page.props.auth?.user?.entreprise?.email || "Email non défini"}</p>
@@ -221,7 +221,7 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
 
                         {/* Totals Section */}
                         <div className="flex justify-end pt-4">
-                            <div className="w-80 space-y-4 p-6 rounded-xl bg-gradient-to-br from-orange-500/5 to-amber-500/5 border border-orange-500/10">
+                            <div className="w-80 space-y-4 p-6 rounded-xl bg-gradient-to-br from-primary/5 to-primary/60/5 border border-primary/10">
                                 <div className="space-y-2">
                                     <div className="flex justify-between text-sm">
                                         <span className="text-muted-foreground">Total HT</span>
@@ -234,10 +234,10 @@ export default function ShowQuote({ id }: ShowQuoteProps) {
                                         </div>
                                     )}
                                 </div>
-                                <Separator className="bg-orange-500/10" />
+                                <Separator className="bg-primary/50/10" />
                                 <div className="flex justify-between items-end">
                                     <span className="text-sm font-bold text-orange-900 dark:text-orange-100 uppercase tracking-wide">Total TTC</span>
-                                    <span className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                                    <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                                         {quote.total.toLocaleString('fr-FR')} <span className="text-sm text-muted-foreground font-normal">FCFA</span>
                                     </span>
                                 </div>

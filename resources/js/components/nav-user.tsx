@@ -28,12 +28,12 @@ export function NavUser() {
                     <DropdownMenuTrigger asChild>
                         <SidebarMenuButton
                             size="lg"
-                            className="group/user rounded-xl hover:bg-gradient-to-r hover:from-orange-500/10 hover:to-amber-500/10 hover:scale-[1.02] data-[state=open]:bg-gradient-to-r data-[state=open]:from-orange-500/10 data-[state=open]:to-amber-500/10 transition-all duration-300"
+                            className="group/user rounded-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/60/10 hover:scale-[1.02] data-[state=open]:bg-gradient-to-r data-[state=open]:from-primary/10 data-[state=open]:to-primary/60/10 transition-all duration-300"
                             data-test="sidebar-menu-button"
                         >
                             <div className="relative">
-                                <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-500 rounded-lg blur-md opacity-0 group-hover/user:opacity-40 transition-opacity duration-300" />
-                                <div className="relative flex aspect-square size-9 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500/20 to-amber-500/20 border border-orange-500/30 text-orange-500">
+                                <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/60 rounded-lg blur-md opacity-0 group-hover/user:opacity-40 transition-opacity duration-300" />
+                                <div className="relative flex aspect-square size-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/60/20 border border-primary/30 text-primary">
                                     <UserRound className="size-4" />
                                 </div>
                             </div>
@@ -41,7 +41,7 @@ export function NavUser() {
                                 <span className="truncate font-semibold text-foreground">{auth.user.name}</span>
                                 <span className="truncate text-xs text-muted-foreground">{auth.user.email}</span>
                             </div>
-                            <ChevronsUpDown className="ml-auto size-4 text-muted-foreground group-hover/user:text-orange-500 transition-colors duration-300" />
+                            <ChevronsUpDown className="ml-auto size-4 text-muted-foreground group-hover/user:text-primary transition-colors duration-300" />
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent

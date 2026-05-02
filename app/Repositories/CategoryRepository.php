@@ -12,8 +12,8 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $q = Category::where('entreprise_id', $entrepriseId);
 
-        if (!empty($filters['search'])) {
-            $s = $filters['search'];
+        $s = $filters['search'] ?? $filters['q'] ?? null;
+        if (!empty($s)) {
             $q->where('name', 'like', "%$s%");
         }
 

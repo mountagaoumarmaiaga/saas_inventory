@@ -13,7 +13,8 @@ class DeliveryNoteRepository implements DeliveryNoteRepositoryInterface
         $q = DeliveryNote::where('entreprise_id', $entrepriseId)->with(['client','invoice','entreprise'])->latest();
 
         if (!empty($filters['status'])) $q->where('status', $filters['status']);
-        if (!empty($filters['search'])) $q->where('number', 'like', '%'.$filters['search'].'%');
+        $s = $filters['search'] ?? $filters['q'] ?? null;
+        if (!empty($s)) $q->where('number', 'like', '%'.$s.'%');
 
         return $q->paginate($perPage);
     }

@@ -5,11 +5,11 @@ import { Head, Link } from "@inertiajs/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
-import { Search, Plus, Pencil, Trash2, FileText, CheckCircle, XCircle, Send, FileDown, Lock, Unlock } from "lucide-react";
+import { Search, Plus, Pencil, Trash2, FileText, CheckCircle, XCircle, Send, FileDown, Lock, Unlock, ArrowUpCircle, MessageCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 import type { Invoice, PaginationMeta } from "./types";
-import { fetchInvoices, deleteInvoiceApi, submitInvoiceApi, approveInvoiceApi, markPaidInvoiceApi, markUnpaidInvoiceApi, validateProformaApi, requestModificationApi, approveModificationApi } from "./api"; // Updated imports
+import { fetchInvoices, deleteInvoiceApi, submitInvoiceApi, approveInvoiceApi, markPaidInvoiceApi, markUnpaidInvoiceApi, validateProformaApi, requestModificationApi, approveModificationApi, convertProformaApi } from "./api"; // Updated imports
 import { groupItemsByDate } from "@/lib/date-utils";
 
 import DeleteInvoiceModal from "./delete-modal";
@@ -82,7 +82,7 @@ export default function AdminInvoicesIndex() {
         }
     }
 
-    async function handleStatusChange(invoice: Invoice, action: 'submit' | 'approve' | 'pay' | 'unpay' | 'validate' | 'request-modification' | 'approve-modification') {
+    async function handleStatusChange(invoice: Invoice, action: 'submit' | 'approve' | 'pay' | 'unpay' | 'validate' | 'request-modification' | 'approve-modification' | 'convert-proforma') {
         try {
             setLoading(true);
             if (action === 'submit') await submitInvoiceApi(invoice.id);
@@ -92,6 +92,7 @@ export default function AdminInvoicesIndex() {
             if (action === 'validate') await validateProformaApi(invoice.id);
             if (action === 'request-modification') await requestModificationApi(invoice.id);
             if (action === 'approve-modification') await approveModificationApi(invoice.id);
+            if (action === 'convert-proforma') await convertProformaApi(invoice.id);
 
             toast.success("Statut mis à jour !");
 
@@ -110,6 +111,9 @@ export default function AdminInvoicesIndex() {
                     if (action === 'approve-modification') {
                         newStatus = 'PENDING';
                         modReq = undefined;
+                    }
+                    if (action === 'convert-proforma') {
+                        newStatus = 'PENDING';
                     }
 
                     return { ...item, status: newStatus, modification_requested_at: modReq };
@@ -298,6 +302,11 @@ export default function AdminInvoicesIndex() {
                                                                 <CheckCircle className="h-4 w-4" />
                                                             </Button>
                                                         )}
+                                                        {invoice.status === 'SENT' && invoice.type === 'proforma' && (
+                                                            <Button variant="ghost" size="icon" onClick={() => handleStatusChange(invoice, 'convert-proforma')} title="Convertir en Facture" className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50">
+                                                                <ArrowUpCircle className="h-4 w-4" />
+                                                            </Button>
+                                                        )}
                                                         {invoice.status === 'PENDING' && (
                                                             <Button variant="ghost" size="icon" onClick={() => handleStatusChange(invoice, 'approve')} title="Approuver" className="h-8 w-8 text-green-500 hover:text-green-600 hover:bg-green-50">
                                                                 <CheckCircle className="h-4 w-4" />
@@ -372,6 +381,14 @@ export default function AdminInvoicesIndex() {
                                                         )}
 
                                                         {/* View Button */}
+                                                        {invoice.uuid && invoice.status !== 'DRAFT' && (
+                                                            <Button variant="ghost" size="icon" asChild title="Envoyer par WhatsApp" className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50">
+                                                                <a href={`https://wa.me/?text=${encodeURIComponent(`Bonjour, voici votre ${invoice.type === 'proforma' ? 'proforma' : 'facture'} ${invoice.number}. Vous pouvez la consulter et la télécharger à cette adresse : ${window.location.origin}/i/${invoice.uuid}`)}`} target="_blank" rel="noreferrer">
+                                                                    <MessageCircle className="h-4 w-4" />
+                                                                </a>
+                                                            </Button>
+                                                        )}
+
                                                         <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-muted-foreground hover:text-primary" title="Voir">
                                                             <Link href={`/admin/invoices/${invoice.id}`}>
                                                                 <FileText className="h-4 w-4" />

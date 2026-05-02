@@ -14,8 +14,8 @@ class InvoiceRepository implements InvoiceRepositoryInterface
 
         if (!empty($filters['type'])) $q->where('type', $filters['type']);
         if (!empty($filters['status'])) $q->where('status', $filters['status']);
-        if (!empty($filters['search'])) {
-            $s = $filters['search'];
+        $s = $filters['search'] ?? $filters['q'] ?? null;
+        if (!empty($s)) {
             $q->where('number','like',"%$s%");
         }
 

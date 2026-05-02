@@ -5,11 +5,11 @@ import { Head, Link, usePage } from "@inertiajs/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
-import { Search, Plus, Pencil, Trash2, FileText, CheckCircle, XCircle, Send, FileDown, Lock, FilePlus } from "lucide-react";
+import { Search, Plus, Pencil, Trash2, FileText, CheckCircle, XCircle, Send, FileDown, Lock, FilePlus, ArrowUpCircle, MessageCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 import type { Invoice, PaginationMeta } from "./types";
-import { fetchInvoices, deleteInvoiceApi, submitInvoiceApi, validateProformaApi, requestModificationApi } from "./api";
+import { fetchInvoices, deleteInvoiceApi, submitInvoiceApi, validateProformaApi, requestModificationApi, convertProformaApi } from "./api";
 import { groupItemsByDate } from "@/lib/date-utils";
 
 import DeleteInvoiceModal from "./delete-modal";
@@ -116,6 +116,20 @@ export default function UserInvoicesIndex() {
         }
     }
 
+    async function handleConvertProforma(invoice: Invoice) {
+        if (!confirm("Voulez-vous vraiment convertir ce proforma en facture ?")) return;
+        try {
+            setLoading(true);
+            await convertProformaApi(invoice.id);
+            toast.success("Proforma convertie avec succès !");
+            await load();
+        } catch (e: any) {
+            toast.error(e.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     async function handleCreateBL(invoice: Invoice) {
         if (!confirm("Voulez-vous générer un Bon de Livraison pour cette facture ?")) return;
         try {
@@ -203,14 +217,14 @@ export default function UserInvoicesIndex() {
             <div className="p-6 space-y-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                             Factures
                         </h1>
                         <p className="text-muted-foreground mt-1">
                             Gérez vos factures et proformas avec élégance.
                         </p>
                     </div>
-                    <Button asChild className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white border-0 shadow-lg shadow-orange-500/20 transition-all duration-300 hover:scale-[1.02]">
+                    <Button asChild className="bg-gradient-to-r from-primary to-primary/60 hover:from-primary/90 hover:to-primary/80 text-white border-0 shadow-lg shadow-primary/20 transition-all duration-300 hover:scale-[1.02]">
                         <Link href="/user/invoices/create">
                             <Plus className="mr-2 h-4 w-4" />
                             Nouvelle Facture
@@ -224,7 +238,7 @@ export default function UserInvoicesIndex() {
                         <Input
                             type="search"
                             placeholder="Rechercher par numéro, client..."
-                            className="pl-10 h-10 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500 transition-all font-medium"
+                            className="pl-10 h-10 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary transition-all font-medium"
                             value={q}
                             onChange={(e) => {
                                 setPage(1);
@@ -244,22 +258,22 @@ export default function UserInvoicesIndex() {
                     {loading ? (
                         <div className="flex flex-col items-center justify-center p-12 space-y-4">
                             <div className="relative">
-                                <div className="h-12 w-12 rounded-full border-4 border-orange-500/30 border-t-orange-600 animate-spin" />
+                                <div className="h-12 w-12 rounded-full border-4 border-primary/30 border-t-primary animate-spin" />
                             </div>
                             <span className="text-muted-foreground font-medium animate-pulse">Chargement des données...</span>
                         </div>
                     ) : items.length === 0 ? (
                         <div className="flex flex-col items-center justify-center p-12 text-center space-y-4">
-                            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center">
-                                <FileText className="h-8 w-8 text-orange-600" />
+                            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/60/10 flex items-center justify-center">
+                                <FileText className="h-8 w-8 text-primary" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Aucune facture trouvée</h3>
+                                <h3 className="text-lg font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Aucune facture trouvée</h3>
                                 <p className="text-sm text-muted-foreground mt-1 max-w-xs mx-auto">
                                     Commencez par créer votre première facture pour voir apparaître vos données ici.
                                 </p>
                             </div>
-                            <Button asChild variant="outline" className="mt-4 border-orange-200 hover:bg-orange-50 text-orange-700">
+                            <Button asChild variant="outline" className="mt-4 border-primary/20 hover:bg-primary/5 text-primary/90">
                                 <Link href="/user/invoices/create">
                                     <Plus className="mr-2 h-4 w-4" />
                                     Créer une facture
@@ -270,7 +284,7 @@ export default function UserInvoicesIndex() {
                         <div className="relative w-full overflow-auto">
                             <table className="w-full caption-bottom text-sm">
                                 <thead>
-                                    <tr className="border-b border-white/10 bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-transparent">
+                                    <tr className="border-b border-white/10 bg-gradient-to-r from-primary/10 via-primary/80/5 to-transparent">
                                         <th className="h-12 px-4 text-left align-middle font-bold text-muted-foreground/80 uppercase text-[11px] tracking-wider">Numéro</th>
                                         <th className="h-12 px-4 text-left align-middle font-bold text-muted-foreground/80 uppercase text-[11px] tracking-wider">Client</th>
                                         <th className="h-12 px-4 text-left align-middle font-bold text-muted-foreground/80 uppercase text-[11px] tracking-wider">Date</th>
@@ -282,15 +296,15 @@ export default function UserInvoicesIndex() {
                                 <tbody className="[&_tr:last-child]:border-0">
                                     {groupItemsByDate(items, (i: Invoice) => i.created_at || i.date).flatMap(group => [
                                         <tr key={`header-${group.label}`} className="bg-muted/50 border-b border-white/5">
-                                            <td colSpan={6} className="p-2 px-4 font-bold text-xs uppercase text-orange-600/80 tracking-wider">
+                                            <td colSpan={6} className="p-2 px-4 font-bold text-xs uppercase text-primary/80 tracking-wider">
                                                 {group.label}
                                             </td>
                                         </tr>,
                                         ...group.items.map((invoice) => (
-                                            <tr key={invoice.id} className="border-b border-white/5 transition-all hover:bg-orange-500/5 group">
+                                            <tr key={invoice.id} className="border-b border-white/5 transition-all hover:bg-primary/50/5 group">
                                                 <td className="p-4 align-middle font-medium">
                                                     <div className="flex flex-col">
-                                                        <span className="group-hover:text-orange-600 transition-colors">{invoice.number}</span>
+                                                        <span className="group-hover:text-primary transition-colors">{invoice.number}</span>
                                                         <span className="text-xs text-muted-foreground uppercase">{invoice.type}</span>
                                                     </div>
                                                 </td>
@@ -322,6 +336,11 @@ export default function UserInvoicesIndex() {
                                                                 <CheckCircle className="h-4 w-4 mr-1" /> Valider
                                                             </Button>
                                                         )}
+                                                        {invoice.status === 'SENT' && invoice.type === 'proforma' && (
+                                                            <Button variant="outline" size="sm" onClick={() => handleConvertProforma(invoice)}>
+                                                                <ArrowUpCircle className="h-4 w-4 mr-1" /> Convertir
+                                                            </Button>
+                                                        )}
                                                         {(invoice.status === 'APPROVED' || invoice.status === 'PAID') && invoice.type === 'invoice' && (
                                                             <Button variant="outline" size="sm" onClick={() => handleCreateBL(invoice)}>
                                                                 <FilePlus className="h-4 w-4 mr-1" /> Générer BL
@@ -350,6 +369,14 @@ export default function UserInvoicesIndex() {
                                                                 <FileDown className="h-4 w-4 text-green-500 mr-1" /> Télécharger
                                                             </a>
                                                         </Button>
+
+                                                        {invoice.uuid && invoice.status !== 'DRAFT' && (
+                                                            <Button variant="outline" size="sm" asChild title="Envoyer par WhatsApp" className="text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200">
+                                                                <a href={`https://wa.me/?text=${encodeURIComponent(`Bonjour, voici votre ${invoice.type === 'proforma' ? 'proforma' : 'facture'} ${invoice.number}. Vous pouvez la consulter et la télécharger à cette adresse : ${window.location.origin}/i/${invoice.uuid}`)}`} target="_blank" rel="noreferrer">
+                                                                    <MessageCircle className="h-4 w-4 mr-1" /> WhatsApp
+                                                                </a>
+                                                            </Button>
+                                                        )}
 
                                                         {['APPROVED', 'PAID'].includes(invoice.status) ? (
                                                             <Button variant="ghost" size="icon" disabled title="Facture verrouillée. Demandez une modification pour éditer.">
@@ -395,7 +422,7 @@ export default function UserInvoicesIndex() {
                                 size="sm"
                                 onClick={() => setPage(p => Math.max(1, p - 1))}
                                 disabled={loading || currentPage <= 1}
-                                className="h-9 w-9 p-0 rounded-lg hover:bg-orange-500/10 hover:text-orange-600 hover:border-orange-200 transition-all"
+                                className="h-9 w-9 p-0 rounded-lg hover:bg-primary/50/10 hover:text-primary hover:border-primary/20 transition-all"
                             >
                                 <span className="sr-only">Précédent</span>
                                 <span>&lt;</span>
@@ -405,7 +432,7 @@ export default function UserInvoicesIndex() {
                                 size="sm"
                                 onClick={() => setPage(p => p + 1)}
                                 disabled={loading || currentPage >= lastPage}
-                                className="h-9 w-9 p-0 rounded-lg hover:bg-orange-500/10 hover:text-orange-600 hover:border-orange-200 transition-all"
+                                className="h-9 w-9 p-0 rounded-lg hover:bg-primary/50/10 hover:text-primary hover:border-primary/20 transition-all"
                             >
                                 <span className="sr-only">Suivant</span>
                                 <span>&gt;</span>

@@ -37,7 +37,7 @@ export default function ReportsIndex({ metrics }: { metrics: { weekly: ReportMet
                     <div className="text-2xl font-bold font-heading">
                         {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', maximumFractionDigits: 0 }).format(data.revenue)}
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1 text-orange-500">
+                    <p className="text-xs text-muted-foreground mt-1 text-primary">
                         + {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', maximumFractionDigits: 0 }).format(data.pending_revenue)} en attente
                     </p>
                 </CardContent>

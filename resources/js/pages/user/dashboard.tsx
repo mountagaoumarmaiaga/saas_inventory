@@ -39,7 +39,7 @@ export default function UserDashboard({ stats, recentInvoices, dailyRevenue }: D
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-0">
           <div className="space-y-1">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
               Mon Dashboard
             </h1>
             <p className="text-muted-foreground mt-1">
@@ -106,20 +106,20 @@ export default function UserDashboard({ stats, recentInvoices, dailyRevenue }: D
           {/* Recent Invoices */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Mes Factures Récentes</h2>
-              <Button variant="ghost" size="sm" asChild className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 group">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Mes Factures Récentes</h2>
+              <Button variant="ghost" size="sm" asChild className="text-primary hover:text-primary/90 hover:bg-primary/5 group">
                 <Link href="/user/invoices" className="flex items-center">
                   Voir tout <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
             </div>
-            <div className="relative rounded-2xl border border-white/10 dark:border-zinc-800/50 backdrop-blur-xl bg-background/60 shadow-2xl shadow-orange-500/5 overflow-hidden">
+            <div className="relative rounded-2xl border border-white/10 dark:border-zinc-800/50 backdrop-blur-xl bg-background/60 shadow-2xl shadow-primary/5 overflow-hidden">
               {/* Glossy Reflection Effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
 
               <div className="relative overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border-b-2 border-orange-500/20">
+                  <thead className="bg-gradient-to-r from-primary/10 via-primary/80/10 to-primary/10 border-b-2 border-primary/20">
                     <tr>
                       <th className="h-14 px-6 text-left align-middle font-bold text-foreground/90">Réf</th>
                       <th className="h-14 px-6 text-left align-middle font-bold text-foreground/90">Date</th>
@@ -129,7 +129,7 @@ export default function UserDashboard({ stats, recentInvoices, dailyRevenue }: D
                   </thead>
                   <tbody className="divide-y divide-white/5">
                     {recentInvoices.map((inv) => (
-                      <tr key={inv.id} className="group hover:bg-gradient-to-r hover:from-orange-500/5 hover:to-amber-500/5 transition-all duration-300">
+                      <tr key={inv.id} className="group hover:bg-gradient-to-r hover:from-primary/5 hover:to-primary/60/5 transition-all duration-300">
                         <td className="p-6 align-middle font-medium">{inv.reference}</td>
                         <td className="p-6 align-middle text-muted-foreground">{new Date(inv.date).toLocaleDateString('fr-FR')}</td>
                         <td className="p-6 align-middle text-right font-bold font-mono">{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', maximumFractionDigits: 0 }).format(inv.total)}</td>
@@ -163,11 +163,11 @@ export default function UserDashboard({ stats, recentInvoices, dailyRevenue }: D
         {/* Daily Revenue Chart */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Évolution de Mes Revenus</h2>
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Évolution de Mes Revenus</h2>
             <p className="text-sm font-medium text-muted-foreground">7 derniers jours</p>
           </div>
-          <div className="relative rounded-2xl border border-white/10 dark:border-zinc-800/50 backdrop-blur-xl bg-background/60 shadow-2xl shadow-orange-500/5 overflow-hidden p-6 scale-on-hover">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+          <div className="relative rounded-2xl border border-white/10 dark:border-zinc-800/50 backdrop-blur-xl bg-background/60 shadow-2xl shadow-primary/5 overflow-hidden p-6 scale-on-hover">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
             <div className="relative h-[400px]">
               {dailyRevenue && dailyRevenue.length > 0 ? (
                 <RevenueChart data={dailyRevenue} />

@@ -37,7 +37,9 @@ if (app()->environment('local')) {
 | Public Invoice Access (FinTech feature)
 |--------------------------------------------------------------------------
 */
+// Public Invoice and Quote views
 Route::get('/i/{uuid}', [\App\Http\Controllers\PublicInvoiceController::class, 'show'])->name('public.invoice.show');
+Route::get('/q/{uuid}', [\App\Http\Controllers\PublicQuoteController::class, 'show'])->name('public.quote.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -330,6 +332,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])
             Route::post('/invoices/{id}/request-modification', [\App\Http\Controllers\InvoiceController::class, 'requestModification'])->name('api.invoices.request-modification');
             Route::post('/invoices/{id}/approve-modification', [\App\Http\Controllers\InvoiceController::class, 'approveModification'])->name('api.invoices.approve-modification');
             Route::post('/invoices/{id}/validate-proforma', [\App\Http\Controllers\InvoiceController::class, 'validateProforma'])->name('api.invoices.validate-proforma');
+            Route::post('/invoices/{id}/convert-proforma', [\App\Http\Controllers\InvoiceController::class, 'convertProforma'])->name('api.invoices.convert-proforma');
 
             // Payments
             Route::post('/payments', [\App\Http\Controllers\PaymentController::class, 'store'])->name('api.payments.store');
@@ -440,6 +443,7 @@ Route::middleware(['auth', 'verified'])
         Route::post('/invoices/{id}/submit', [\App\Http\Controllers\InvoiceController::class, 'submit'])->name('invoices.submit');
         Route::post('/invoices/{id}/request-modification', [\App\Http\Controllers\InvoiceController::class, 'requestModification'])->name('invoices.request-modification');
         Route::post('/invoices/{id}/validate-proforma', [\App\Http\Controllers\InvoiceController::class, 'validateProforma'])->name('invoices.validate-proforma');
+        Route::post('/invoices/{id}/convert-proforma', [\App\Http\Controllers\InvoiceController::class, 'convertProforma'])->name('invoices.convert-proforma');
 
         // PDF for User
         Route::get('/invoices/{id}/pdf/view', [\App\Http\Controllers\InvoiceController::class, 'pdfView'])->name('invoices.pdf.view');

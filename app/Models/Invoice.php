@@ -11,6 +11,15 @@ class Invoice extends Model
 {
     use HasFactory, HasActivityLogs, BelongsToTenant;
 
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) \Illuminate\Support\Str::uuid();
+            }
+        });
+    }
+
     protected $fillable = [
         'entreprise_id', 'client_id', 'number', 'type', 'status',
         'subtotal', 'tva', 'total', 'date', 'due_date', 'notes',

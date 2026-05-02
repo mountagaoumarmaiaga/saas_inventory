@@ -51,7 +51,7 @@ export default function CreateClientUser() {
 
             <div className="p-6 max-w-2xl mx-auto space-y-8">
                 <div>
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                         Nouveau Client
                     </h1>
                     <p className="text-muted-foreground mt-1">
@@ -62,19 +62,19 @@ export default function CreateClientUser() {
                 <form onSubmit={handleSubmit} className="space-y-8">
                     <div className="rounded-2xl border-2 border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">
                         <div className="relative p-6 border-b border-white/10">
-                            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
-                            <h2 className="relative text-xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Informations Client</h2>
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
+                            <h2 className="relative text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Informations Client</h2>
                         </div>
 
                         <div className="p-6 space-y-6 relative">
                             <div className="space-y-2">
-                                <Label className="font-bold">Nom du Client <span className="text-orange-600">*</span></Label>
+                                <Label className="font-bold">Nom du Client <span className="text-primary">*</span></Label>
                                 <Input
                                     value={form.name}
                                     onChange={e => setForm({ ...form, name: e.target.value })}
                                     required
                                     placeholder="Ex: Entreprise SARL"
-                                    className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500"
+                                    className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary"
                                 />
                                 {errors.name && <p className="text-xs text-destructive font-medium">{errors.name}</p>}
                             </div>
@@ -87,7 +87,7 @@ export default function CreateClientUser() {
                                         value={form.email}
                                         onChange={e => setForm({ ...form, email: e.target.value })}
                                         placeholder="contact@exemple.com"
-                                        className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500"
+                                        className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary"
                                     />
                                     {errors.email && <p className="text-xs text-destructive font-medium">{errors.email}</p>}
                                 </div>
@@ -98,7 +98,7 @@ export default function CreateClientUser() {
                                         value={form.phone}
                                         onChange={e => setForm({ ...form, phone: e.target.value })}
                                         placeholder="+33 6 12 34 56 78"
-                                        className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500"
+                                        className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary"
                                     />
                                     {errors.phone && <p className="text-xs text-destructive font-medium">{errors.phone}</p>}
                                 </div>
@@ -110,7 +110,7 @@ export default function CreateClientUser() {
                                     value={form.address}
                                     onChange={e => setForm({ ...form, address: e.target.value })}
                                     placeholder="123 Rue de Exemple, 75000 Paris"
-                                    className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500"
+                                    className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary"
                                 />
                                 {errors.address && <p className="text-xs text-destructive font-medium">{errors.address}</p>}
                             </div>
@@ -129,7 +129,7 @@ export default function CreateClientUser() {
                         <Button
                             type="submit"
                             disabled={loading}
-                            className="h-12 px-8 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white shadow-lg shadow-orange-500/20"
+                            className="h-12 px-8 rounded-xl bg-gradient-to-r from-primary to-primary/60 hover:from-primary/90 hover:to-primary/80 text-white shadow-lg shadow-primary/20"
                         >
                             {loading ? "Création..." : "Créer le client"}
                         </Button>

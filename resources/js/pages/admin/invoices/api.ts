@@ -260,6 +260,16 @@ export async function validateProformaApi(id: number) {
     return { ok: true as const, data: await res.json() };
 }
 
+export async function convertProformaApi(id: number) {
+    const res = await fetch(`/admin/api/invoices/${id}/convert-proforma`, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: getHeaders(),
+    });
+    if (!res.ok) await handleResponseError(res);
+    return { ok: true as const, data: await res.json() };
+}
+
 export async function requestModificationApi(id: number) {
     const res = await fetch(`/admin/api/invoices/${id}/request-modification`, {
         method: "POST",

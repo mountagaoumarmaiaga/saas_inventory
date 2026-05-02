@@ -68,7 +68,7 @@ export default function ChartContainer({
                             className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-[1px] z-10"
                         >
                             <div className="flex flex-col items-center gap-2 text-muted-foreground/70">
-                                <Loader2 className="h-6 w-6 animate-spin text-orange-500" />
+                                <Loader2 className="h-6 w-6 animate-spin text-primary" />
                             </div>
                         </motion.div>
                     )}

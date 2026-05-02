@@ -94,6 +94,17 @@ class InvoiceWorkflowService
         $invoice->update(['status' => 'SENT']);
     }
     
+    public function convertProformaToInvoice(Invoice $invoice, NumberService $numberService): void
+    {
+        abort_unless($invoice->type === 'proforma' && $invoice->status === 'SENT', 422, 'La proforma doit être envoyée pour pouvoir être convertie.');
+        
+        $invoice->update([
+            'type' => 'invoice',
+            'number' => $numberService->nextInvoiceNumber($invoice->entreprise_id, 'invoice'),
+            'status' => 'PENDING',
+        ]);
+    }
+    
     public function markUnpaid(Invoice $invoice, int $adminId, StockService $stockService): void
     {
         abort_unless($invoice->type === 'invoice' && $invoice->status === 'PAID', 422);

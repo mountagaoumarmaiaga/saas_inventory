@@ -74,7 +74,7 @@ export default function DeliveryNoteEdit({ id }: { id: number }) {
             <div className="p-6 max-w-5xl mx-auto space-y-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                             Modifier {dn.reference}
                         </h1>
                         <p className="text-muted-foreground mt-1">
@@ -85,14 +85,14 @@ export default function DeliveryNoteEdit({ id }: { id: number }) {
                         <Button
                             variant="outline"
                             onClick={() => router.visit(`/user/delivery-notes/${id}`)}
-                            className="h-12 rounded-xl border-white/10 slide-in-from-right-2 hover:bg-orange-500/10 hover:text-orange-600 hover:border-orange-200"
+                            className="h-12 rounded-xl border-white/10 slide-in-from-right-2 hover:bg-primary/50/10 hover:text-primary hover:border-primary/20"
                         >
                             Annuler
                         </Button>
                         <Button
                             onClick={handleSave}
                             disabled={saving}
-                            className="h-12 px-8 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white shadow-lg shadow-orange-500/20"
+                            className="h-12 px-8 rounded-xl bg-gradient-to-r from-primary to-primary/60 hover:from-primary/90 hover:to-primary/80 text-white shadow-lg shadow-primary/20"
                         >
                             <Save className="h-5 w-5 mr-2" />
                             {saving ? "Enregistrement..." : "Enregistrer"}
@@ -102,8 +102,8 @@ export default function DeliveryNoteEdit({ id }: { id: number }) {
 
                 <div className="rounded-2xl border-2 border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">
                     <div className="relative p-6 border-b border-white/10">
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
-                        <h2 className="relative text-xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Informations Générales</h2>
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
+                        <h2 className="relative text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Informations Générales</h2>
                     </div>
                     <div className="p-6 grid md:grid-cols-2 gap-6 relative">
                         <div className="space-y-2">
@@ -112,7 +112,7 @@ export default function DeliveryNoteEdit({ id }: { id: number }) {
                                 type="date"
                                 value={deliveryDate}
                                 onChange={e => setDeliveryDate(e.target.value)}
-                                className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500"
+                                className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary"
                             />
                         </div>
                         <div className="space-y-2">
@@ -127,7 +127,7 @@ export default function DeliveryNoteEdit({ id }: { id: number }) {
                                 placeholder="Nom du livreur"
                                 value={dn.delivery_person || ""}
                                 onChange={e => setDn({ ...dn, delivery_person: e.target.value })}
-                                className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500"
+                                className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary"
                             />
                         </div>
                     </div>

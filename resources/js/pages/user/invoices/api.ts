@@ -170,7 +170,12 @@ export async function submitInvoiceApi(id: number) {
         credentials: "same-origin",
         headers: getHeaders(),
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) {
+        const text = await res.text();
+        let msg = text;
+        try { msg = JSON.parse(text).message || text; } catch {}
+        throw new Error(msg);
+    }
     return { ok: true as const, data: await res.json() };
 }
 
@@ -180,7 +185,27 @@ export async function validateProformaApi(id: number) {
         credentials: "same-origin",
         headers: getHeaders(),
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) {
+        const text = await res.text();
+        let msg = text;
+        try { msg = JSON.parse(text).message || text; } catch {}
+        throw new Error(msg);
+    }
+    return { ok: true as const, data: await res.json() };
+}
+
+export async function convertProformaApi(id: number) {
+    const res = await fetch(`/user/api/invoices/${id}/convert-proforma`, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: getHeaders(),
+    });
+    if (!res.ok) {
+        const text = await res.text();
+        let msg = text;
+        try { msg = JSON.parse(text).message || text; } catch {}
+        throw new Error(msg);
+    }
     return { ok: true as const, data: await res.json() };
 }
 

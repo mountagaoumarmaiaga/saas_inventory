@@ -276,7 +276,7 @@ export default function CreateInvoice() {
                         onClick={e => e.stopPropagation()}
                     >
                         <div className="sticky top-0 bg-background border-b border-white/10 p-4 flex justify-between items-center">
-                            <h3 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                            <h3 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                                 Aperçu de la facture
                             </h3>
                             <Button variant="ghost" size="sm" onClick={() => setPreviewMode(false)}>
@@ -295,7 +295,7 @@ export default function CreateInvoice() {
                                             <p className="text-muted-foreground">{settings.address}</p>
                                         </div>
                                         <div className="text-right">
-                                            <span className="text-3xl font-bold text-orange-600">
+                                            <span className="text-3xl font-bold text-primary">
                                                 #{'INV-' + new Date().getTime().toString().slice(-6)}
                                             </span>
                                             <p className="text-muted-foreground mt-2">Date: {form.date}</p>
@@ -334,7 +334,7 @@ export default function CreateInvoice() {
                                                 <span>{typeof subtotal === 'number' ? subtotal.toFixed(2) : subtotal} FCFA</span>
                                             </div>
                                             {discountAmount > 0 && (
-                                                <div className="flex justify-between text-orange-600">
+                                                <div className="flex justify-between text-primary">
                                                     <span>Remise:</span>
                                                     <span>-{typeof discountAmount === 'number' ? discountAmount.toFixed(2) : discountAmount} FCFA</span>
                                                 </div>
@@ -347,7 +347,7 @@ export default function CreateInvoice() {
                                             )}
                                             <div className="flex justify-between font-bold text-lg border-t border-white/10 pt-2">
                                                 <span>Total:</span>
-                                                <span className="text-orange-600">{total} FCFA</span>
+                                                <span className="text-primary">{total} FCFA</span>
                                             </div>
                                         </div>
                                     </div>
@@ -366,12 +366,12 @@ export default function CreateInvoice() {
                             variant="ghost"
                             size="icon"
                             onClick={() => router.visit('/user/invoices')}
-                            className="h-10 w-10 rounded-full hover:bg-orange-500/10 hover:text-orange-600 transition-all"
+                            className="h-10 w-10 rounded-full hover:bg-primary/50/10 hover:text-primary transition-all"
                         >
                             <ArrowLeft className="h-5 w-5" />
                         </Button>
                         <div>
-                            <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+                            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                                 Nouvelle Facture
                             </h1>
                             <p className="text-sm text-muted-foreground mt-1">
@@ -384,14 +384,14 @@ export default function CreateInvoice() {
                         <Button
                             variant="outline"
                             onClick={() => setPreviewMode(true)}
-                            className="h-11 rounded-xl gap-2 hover:border-orange-500/50 hover:text-orange-600 transition-all"
+                            className="h-11 rounded-xl gap-2 hover:border-primary/50 hover:text-primary transition-all"
                         >
                             <Eye className="h-4 w-4" />
                             Aperçu
                         </Button>
                         <Button
                             variant="outline"
-                            className="h-11 rounded-xl gap-2 hover:border-amber-500/50 hover:text-amber-600 transition-all"
+                            className="h-11 rounded-xl gap-2 hover:border-amber-500/50 hover:text-primary/80 transition-all"
                         >
                             <Download className="h-4 w-4" />
                             Brouillon
@@ -402,10 +402,10 @@ export default function CreateInvoice() {
                 {/* En-tête entreprise avec design amélioré */}
                 {settings && (
                     <div
-                        className="relative rounded-2xl border-2 border-white/10 backdrop-blur-xl bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 p-6 overflow-hidden hover-lift animate-slide-in"
+                        className="relative rounded-2xl border-2 border-white/10 backdrop-blur-xl bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 p-6 overflow-hidden hover-lift animate-slide-in"
                         style={{ animationDelay: '0.1s' }}
                     >
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl -translate-y-32 translate-x-32 animate-pulse-slow" />
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/50/10 rounded-full blur-3xl -translate-y-32 translate-x-32 animate-pulse-slow" />
 
                         <div className="relative flex flex-col md:flex-row justify-between items-start gap-6">
                             <div className="flex items-start gap-4">
@@ -418,8 +418,8 @@ export default function CreateInvoice() {
                                         />
                                     </div>
                                 ) : (
-                                    <div className="h-20 w-20 rounded-xl border-2 border-white/10 bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center">
-                                        <Building2 className="h-8 w-8 text-orange-500/50" />
+                                    <div className="h-20 w-20 rounded-xl border-2 border-white/10 bg-gradient-to-br from-primary/10 to-primary/60/10 flex items-center justify-center">
+                                        <Building2 className="h-8 w-8 text-primary/50" />
                                     </div>
                                 )}
 
@@ -449,7 +449,7 @@ export default function CreateInvoice() {
                             </div>
 
                             <div className="flex flex-col items-end gap-2">
-                                <span className="px-4 py-1.5 rounded-full bg-orange-500/10 text-orange-600 text-sm font-bold border border-orange-200/20">
+                                <span className="px-4 py-1.5 rounded-full bg-primary/50/10 text-primary text-sm font-bold border border-primary/20/20">
                                     {form.type === 'proforma' ? 'PROFORMA' : 'FACTURE'}
                                 </span>
                                 <span className="text-2xl font-mono font-bold">
@@ -468,11 +468,11 @@ export default function CreateInvoice() {
                         onMouseEnter={() => setActiveSection('info')}
                         onMouseLeave={() => setActiveSection(null)}
                     >
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5" />
 
-                        <div className={`relative p-6 border-b border-white/10 transition-colors ${activeSection === 'info' ? 'bg-orange-500/5' : ''}`}>
+                        <div className={`relative p-6 border-b border-white/10 transition-colors ${activeSection === 'info' ? 'bg-primary/50/5' : ''}`}>
                             <h2 className="text-lg font-semibold flex items-center gap-2">
-                                <FileSignature className={`h-5 w-5 transition-colors ${activeSection === 'info' ? 'text-orange-500' : 'text-orange-500/70'}`} />
+                                <FileSignature className={`h-5 w-5 transition-colors ${activeSection === 'info' ? 'text-primary' : 'text-primary/70'}`} />
                                 Informations générales
                             </h2>
                         </div>
@@ -485,7 +485,7 @@ export default function CreateInvoice() {
                                         Type
                                     </Label>
                                     <select
-                                        className="flex h-11 w-full rounded-xl border-2 border-white/10 bg-background/50 px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 transition-all hover:border-orange-500/30"
+                                        className="flex h-11 w-full rounded-xl border-2 border-white/10 bg-background/50 px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-all hover:border-primary/30"
                                         value={form.type}
                                         onChange={(e) => setForm({ ...form, type: e.target.value as any })}
                                     >
@@ -500,7 +500,7 @@ export default function CreateInvoice() {
                                         Client
                                     </Label>
                                     <select
-                                        className="flex h-11 w-full rounded-xl border-2 border-white/10 bg-background/50 px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 transition-all hover:border-orange-500/30"
+                                        className="flex h-11 w-full rounded-xl border-2 border-white/10 bg-background/50 px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-all hover:border-primary/30"
                                         value={form.client_id || ""}
                                         onChange={(e) => setForm({ ...form, client_id: Number(e.target.value) })}
                                     >
@@ -520,7 +520,7 @@ export default function CreateInvoice() {
                                         type="date"
                                         value={form.date}
                                         onChange={e => setForm({ ...form, date: e.target.value })}
-                                        className="h-11 rounded-xl border-2 border-white/10 bg-background/50 hover:border-orange-500/30 transition-all"
+                                        className="h-11 rounded-xl border-2 border-white/10 bg-background/50 hover:border-primary/30 transition-all"
                                     />
                                 </div>
 
@@ -531,7 +531,7 @@ export default function CreateInvoice() {
                                     </Label>
                                     <div className="flex gap-2">
                                         <select
-                                            className="h-11 rounded-xl border-2 border-white/10 bg-background/50 px-3 text-sm flex-1 hover:border-orange-500/30 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                                            className="h-11 rounded-xl border-2 border-white/10 bg-background/50 px-3 text-sm flex-1 hover:border-primary/30 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                                             value={form.discount_type || ""}
                                             onChange={(e) => setForm({ ...form, discount_type: e.target.value as any || null, discount_value: e.target.value ? form.discount_value || 0 : null })}
                                         >
@@ -546,7 +546,7 @@ export default function CreateInvoice() {
                                                 step={form.discount_type === 'percentage' ? "0.1" : "1"}
                                                 value={form.discount_value || ""}
                                                 onChange={(e) => setForm({ ...form, discount_value: parseFloat(e.target.value) || 0 })}
-                                                className="h-11 w-24 rounded-xl border-2 border-white/10 bg-background/50 hover:border-orange-500/30 transition-all"
+                                                className="h-11 w-24 rounded-xl border-2 border-white/10 bg-background/50 hover:border-primary/30 transition-all"
                                                 placeholder={form.discount_type === 'percentage' ? "%" : "Montant"}
                                             />
                                         )}
@@ -558,14 +558,14 @@ export default function CreateInvoice() {
                                         <Percent className="h-4 w-4 text-muted-foreground" />
                                         TVA
                                     </Label>
-                                    <div className="flex items-center h-11 px-4 rounded-xl border-2 border-white/10 bg-background/50 hover:border-orange-500/30 transition-all">
+                                    <div className="flex items-center h-11 px-4 rounded-xl border-2 border-white/10 bg-background/50 hover:border-primary/30 transition-all">
                                         <Checkbox
                                             id="tva"
                                             checked={form.tva > 0}
                                             onCheckedChange={(checked) => {
                                                 setForm({ ...form, tva: checked ? 18 : 0 });
                                             }}
-                                            className="mr-3 data-[state=checked]:bg-orange-500 data-[state=checked]:border-orange-500"
+                                            className="mr-3 data-[state=checked]:bg-primary/50 data-[state=checked]:border-primary"
                                         />
                                         <Label htmlFor="tva" className="text-sm cursor-pointer">
                                             Appliquer TVA 18%
@@ -686,7 +686,7 @@ export default function CreateInvoice() {
                                         <span className="font-medium">{subtotal.toFixed(2)} FCFA</span>
                                     </div>
                                     {discountAmount > 0 && (
-                                        <div className="flex justify-between text-sm text-orange-600">
+                                        <div className="flex justify-between text-sm text-primary">
                                             <span>Remise</span>
                                             <span className="font-medium">-{discountAmount.toFixed(2)} FCFA</span>
                                         </div>
@@ -699,7 +699,7 @@ export default function CreateInvoice() {
                                     )}
                                     <div className="flex justify-between text-lg font-bold pt-3 border-t border-white/10">
                                         <span>Total</span>
-                                        <span className="bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+                                        <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                                             {total.toFixed(2)} FCFA
                                         </span>
                                     </div>
@@ -747,7 +747,7 @@ export default function CreateInvoice() {
                         <Button
                             type="submit"
                             disabled={loading}
-                            className="h-11 rounded-xl px-8 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 gap-2 transition-all hover:scale-105 disabled:hover:scale-100"
+                            className="h-11 rounded-xl px-8 bg-gradient-to-r from-primary to-primary/60 hover:from-primary/90 hover:to-primary/80 gap-2 transition-all hover:scale-105 disabled:hover:scale-100"
                         >
                             {loading ? (
                                 <>

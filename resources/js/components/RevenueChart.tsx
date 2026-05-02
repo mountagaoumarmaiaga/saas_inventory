@@ -54,7 +54,7 @@ export default function RevenueChart({ data }: RevenueChartProps) {
                     <p className="text-sm font-medium text-muted-foreground mb-1">
                         {payload[0].payload.label} - {payload[0].payload.fullDate}
                     </p>
-                    <p className="text-2xl font-bold text-orange-500">
+                    <p className="text-2xl font-bold text-primary">
                         {formatCurrency(payload[0].value)}
                     </p>
                 </div>

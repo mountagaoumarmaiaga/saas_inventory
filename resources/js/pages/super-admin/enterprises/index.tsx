@@ -100,14 +100,14 @@ Lien de connexion: ${window.location.origin}/login
             <div className="p-6 space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                             Entreprises
                         </h1>
                         <p className="text-muted-foreground">
                             Gérer les entreprises et leurs accès.
                         </p>
                     </div>
-                    <Button onClick={() => setCreateOpen(true)} className="bg-orange-600 hover:bg-orange-700 text-white">
+                    <Button onClick={() => setCreateOpen(true)} className="bg-primary hover:bg-orange-700 text-white">
                         <Plus className="mr-2 h-4 w-4" />
                         Nouvelle Entreprise
                     </Button>
@@ -152,7 +152,7 @@ Lien de connexion: ${window.location.origin}/login
                                                 }
                                             }}
                                         >
-                                            <div className="h-4 w-4 text-orange-500">
+                                            <div className="h-4 w-4 text-primary">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                                             </div>
                                         </Button>
@@ -208,7 +208,7 @@ Lien de connexion: ${window.location.origin}/login
                             <Button type="button" variant="outline" onClick={() => setCreateOpen(false)}>
                                 Annuler
                             </Button>
-                            <Button type="submit" disabled={processing} className="bg-orange-600 hover:bg-orange-700">
+                            <Button type="submit" disabled={processing} className="bg-primary hover:bg-orange-700">
                                 {processing ? "Création..." : "Créer l'entreprise"}
                             </Button>
                         </DialogFooter>

@@ -81,7 +81,7 @@ export default function AdminClientsIndex() {
             <div className="p-6 space-y-6">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                             Clients
                             {!loading && meta.total > 0 && (
                                 <span className="ml-3 text-lg font-semibold text-muted-foreground">
@@ -92,7 +92,7 @@ export default function AdminClientsIndex() {
                         <p className="text-muted-foreground mt-1">Gestion des clients de l'entreprise.</p>
                     </div>
                     <Link href="/admin/clients/create">
-                        <Button className="h-12 px-6 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 hover:from-orange-700 hover:via-amber-700 hover:to-orange-700 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105 rounded-xl">
+                        <Button className="h-12 px-6 bg-gradient-to-r from-primary via-primary/80 to-primary hover:from-primary/90 hover:via-amber-700 hover:to-primary/90 text-white shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105 rounded-xl">
                             <Plus className="mr-2 h-5 w-5" />
                             Nouveau Client
                         </Button>
@@ -101,11 +101,11 @@ export default function AdminClientsIndex() {
 
                 <div className="flex items-center space-x-2">
                     <div className="relative flex-1 md:max-w-md group">
-                        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground/60 group-hover:text-orange-500 transition-colors duration-300" />
+                        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground/60 group-hover:text-primary transition-colors duration-300" />
                         <Input
                             type="search"
                             placeholder="Rechercher..."
-                            className="h-12 pl-11 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
+                            className="h-12 pl-11 rounded-xl border-2 border-white/20 bg-background/50 backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300 shadow-lg"
                             value={q}
                             onChange={(e) => {
                                 setPage(1);
@@ -115,9 +115,9 @@ export default function AdminClientsIndex() {
                     </div>
                 </div>
 
-                <div className="relative rounded-2xl border border-white/10 backdrop-blur-xl bg-background/60 shadow-2xl shadow-orange-500/5 overflow-hidden">
+                <div className="relative rounded-2xl border border-white/10 backdrop-blur-xl bg-background/60 shadow-2xl shadow-primary/5 overflow-hidden">
                     {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
 
                     {loading ? (
                         <div className="relative flex flex-col items-center justify-center p-12">
@@ -126,8 +126,8 @@ export default function AdminClientsIndex() {
                         </div>
                     ) : items.length === 0 ? (
                         <div className="relative flex flex-col items-center justify-center p-12 text-center">
-                            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-orange-500/10 to-amber-500/10 flex items-center justify-center border-2 border-primary/20">
-                                <Users className="h-8 w-8 text-orange-500/60" />
+                            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary/10 to-primary/60/10 flex items-center justify-center border-2 border-primary/20">
+                                <Users className="h-8 w-8 text-primary/60" />
                             </div>
                             <h3 className="mt-4 font-semibold text-foreground">Aucun client</h3>
                             <p className="text-sm text-muted-foreground mt-1">
@@ -137,7 +137,7 @@ export default function AdminClientsIndex() {
                     ) : (
                         <div className="relative w-full overflow-auto">
                             <table className="w-full caption-bottom text-sm">
-                                <thead className="bg-gradient-to-r from-orange-500/10 via-amber-500/10 to-orange-500/10 border-b-2 border-primary/20">
+                                <thead className="bg-gradient-to-r from-primary/10 via-primary/80/10 to-primary/10 border-b-2 border-primary/20">
                                     <tr>
                                         <th className="h-14 px-4 text-left align-middle font-bold text-sm text-foreground/90">Nom</th>
                                         <th className="h-14 px-4 text-left align-middle font-bold text-sm text-foreground/90">Email</th>
@@ -148,7 +148,7 @@ export default function AdminClientsIndex() {
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
                                     {items.map((client) => (
-                                        <tr key={client.id} className="group hover:bg-gradient-to-r hover:from-orange-500/5 hover:to-amber-500/5 transition-all duration-300">
+                                        <tr key={client.id} className="group hover:bg-gradient-to-r hover:from-primary/5 hover:to-primary/60/5 transition-all duration-300">
                                             <td className="p-4 align-middle font-medium">{client.name}</td>
                                             <td className="p-4 align-middle text-muted-foreground">{client.email || "-"}</td>
                                             <td className="p-4 align-middle text-muted-foreground">{client.phone || "-"}</td>

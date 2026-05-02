@@ -16,7 +16,13 @@ class CustomCspPolicy implements Preset
         // so that 'unsafe-inline' works for React and Vite UI Components.
         $policy
             ->add(Directive::BASE, Keyword::SELF)
-            ->add(Directive::CONNECT, [Keyword::SELF, 'https://*.supabase.co', 'http://localhost:*', 'ws://localhost:*'])
+            ->add(Directive::CONNECT, [
+                Keyword::SELF, 
+                'https://*.supabase.co', 
+                'https://raw.githack.com', 
+                'http://localhost:*', 
+                'ws://localhost:*'
+            ])
             ->add(Directive::DEFAULT, Keyword::SELF)
             ->add(Directive::FORM_ACTION, Keyword::SELF)
             ->add(Directive::IMG, [

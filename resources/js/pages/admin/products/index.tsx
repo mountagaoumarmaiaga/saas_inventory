@@ -209,7 +209,7 @@ export default function AdminProductsIndex() {
                                                         statusColor = "bg-red-500/10 text-red-600 border-red-500/20";
                                                         statusLabel = "Rupture";
                                                     } else if (q <= min) {
-                                                        statusColor = "bg-amber-500/10 text-amber-600 border-amber-500/20";
+                                                        statusColor = "bg-primary/80/10 text-primary/80 border-amber-500/20";
                                                         statusLabel = "Faible";
                                                     }
 

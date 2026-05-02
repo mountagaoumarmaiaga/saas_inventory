@@ -181,7 +181,7 @@ export default function SaasDashboard() {
                         </div>
 
                         <div className="flex items-center gap-4 justify-end">
-                            <Button variant="outline" size="sm" className="hidden sm:flex text-orange-500 border-orange-500/20 hover:bg-orange-500/10 hover:text-orange-600 gap-2">
+                            <Button variant="outline" size="sm" className="hidden sm:flex text-primary border-primary/20 hover:bg-primary/50/10 hover:text-primary gap-2">
                                 Nouveau Produit
                             </Button>
 
@@ -320,10 +320,10 @@ export default function SaasDashboard() {
                                     </CardContent>
                                 </Card>
 
-                                <Card className="shadow-sm hover:shadow-md transition-shadow duration-200 border-orange-500/20">
+                                <Card className="shadow-sm hover:shadow-md transition-shadow duration-200 border-primary/20">
                                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                                         <CardTitle className="text-sm font-medium text-muted-foreground">Alertes de Stock</CardTitle>
-                                        <div className="p-1.5 bg-orange-500/10 text-orange-500 rounded-md">
+                                        <div className="p-1.5 bg-primary/50/10 text-primary rounded-md">
                                             <AlertTriangle className="h-4 w-4" />
                                         </div>
                                     </CardHeader>
@@ -337,7 +337,7 @@ export default function SaasDashboard() {
                                             <>
                                                 <div className="text-2xl font-bold tracking-tight text-foreground">8</div>
                                                 <div className="flex items-center text-xs mt-1 text-muted-foreground">
-                                                    <span className="text-orange-500 font-medium mr-1">3 articles</span> en rupture totale
+                                                    <span className="text-primary font-medium mr-1">3 articles</span> en rupture totale
                                                 </div>
                                             </>
                                         )}
@@ -433,7 +433,7 @@ export default function SaasDashboard() {
                                                             item.type === 'order' && "bg-blue-500/10 text-blue-500 dark:text-blue-400",
                                                             item.type === 'stock' && "bg-destructive/10 text-destructive",
                                                             item.type === 'payment' && "bg-emerald-500/10 text-emerald-500 dark:text-emerald-400",
-                                                            item.type === 'user' && "bg-orange-500/10 text-orange-500 dark:text-orange-400"
+                                                            item.type === 'user' && "bg-primary/50/10 text-primary dark:text-orange-400"
                                                         )}>
                                                             {item.type === 'order' && <ShoppingCart size={14} />}
                                                             {item.type === 'stock' && <AlertTriangle size={14} />}
@@ -450,7 +450,7 @@ export default function SaasDashboard() {
                                                             <p className="text-sm font-medium text-foreground font-mono">{item.amount}</p>
                                                             <span className={cn(
                                                                 "inline-block mt-1 text-[10px] font-semibold px-1.5 py-0.5 rounded",
-                                                                item.status === 'En attente' && 'bg-orange-500/10 text-orange-500 dark:text-orange-400',
+                                                                item.status === 'En attente' && 'bg-primary/50/10 text-primary dark:text-orange-400',
                                                                 item.status === 'Rupture' && 'bg-destructive/10 text-destructive',
                                                                 item.status === 'Validé' && 'bg-emerald-500/10 text-emerald-500 dark:text-emerald-400',
                                                                 item.status === 'Nouveau' && 'bg-blue-500/10 text-blue-500 dark:text-blue-400',

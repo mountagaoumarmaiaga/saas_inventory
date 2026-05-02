@@ -188,11 +188,11 @@ export default function EditInvoice({ id }: { id: string }) {
 
             <div className="p-6 space-y-8 max-w-5xl mx-auto">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
                         Éditer Facture
                     </h1>
                     {isLocked && (
-                        <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border-2 border-amber-500/30 text-amber-800 dark:text-amber-200 px-6 py-3 rounded-xl font-bold text-sm flex items-center shadow-lg">
+                        <div className="bg-gradient-to-r from-amber-500/20 to-primary/20 border-2 border-amber-500/30 text-amber-800 dark:text-amber-200 px-6 py-3 rounded-xl font-bold text-sm flex items-center shadow-lg">
                             <Lock className="h-5 w-5 mr-2" />
                             Lecture seule (Approuvée/Payée)
                         </div>
@@ -201,15 +201,15 @@ export default function EditInvoice({ id }: { id: string }) {
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     <div className="relative rounded-2xl border-2 border-white/10 backdrop-blur-xl bg-background/60 shadow-xl overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/60/5 pointer-events-none" />
                         <div className="relative p-6 border-b border-white/10">
-                            <h2 className="text-xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Informations Générales</h2>
+                            <h2 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Informations Générales</h2>
                         </div>
                         <div className="relative p-6 grid md:grid-cols-2 gap-6">
                             <div className="space-y-2">
                                 <Label className="font-bold">Type</Label>
                                 <Select disabled={isLocked} value={form.type} onValueChange={(v: any) => setForm({ ...form, type: v })}>
-                                    <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus:ring-orange-500">
+                                    <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus:ring-primary">
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -226,7 +226,7 @@ export default function EditInvoice({ id }: { id: string }) {
                                     value={String(form.client_id || "")}
                                     onValueChange={(v) => setForm({ ...form, client_id: Number(v) })}
                                 >
-                                    <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus:ring-orange-500">
+                                    <SelectTrigger className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus:ring-primary">
                                         <SelectValue placeholder="Sélectionner un client" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -245,7 +245,7 @@ export default function EditInvoice({ id }: { id: string }) {
                                     type="date"
                                     value={form.date}
                                     onChange={e => setForm({ ...form, date: e.target.value })}
-                                    className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500"
+                                    className="h-12 rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary"
                                 />
                             </div>
 
@@ -257,7 +257,7 @@ export default function EditInvoice({ id }: { id: string }) {
                                         value={form.discount_type || "none"}
                                         onValueChange={(v) => setForm({ ...form, discount_type: v === 'none' ? null : v as any, discount_value: v === 'none' ? null : form.discount_value || 0 })}
                                     >
-                                        <SelectTrigger className="rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus:ring-orange-500 flex-1">
+                                        <SelectTrigger className="rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus:ring-primary flex-1">
                                             <SelectValue placeholder="Aucune" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -274,7 +274,7 @@ export default function EditInvoice({ id }: { id: string }) {
                                             step={form.discount_type === 'percentage' ? "0.1" : "1"}
                                             value={form.discount_value || ""}
                                             onChange={(e) => setForm({ ...form, discount_value: parseFloat(e.target.value) || 0 })}
-                                            className="w-24 h-full rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-orange-500"
+                                            className="w-24 h-full rounded-xl border-2 border-white/10 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-sm focus-visible:ring-primary"
                                             placeholder={form.discount_type === 'percentage' ? "%" : "Montant"}
                                         />
                                     )}
@@ -391,13 +391,13 @@ export default function EditInvoice({ id }: { id: string }) {
                             ))}
 
                             <div className="flex justify-end pt-6">
-                                <div className="w-72 rounded-xl border-2 border-white/10 bg-gradient-to-br from-orange-500/10 to-amber-500/10 p-6 space-y-3">
+                                <div className="w-72 rounded-xl border-2 border-white/10 bg-gradient-to-br from-primary/10 to-primary/60/10 p-6 space-y-3">
                                     <div className="flex justify-between text-sm">
                                         <span className="font-medium">Sous-total:</span>
                                         <span className="font-bold">{subtotal.toFixed(2)} FCFA</span>
                                     </div>
                                     {discountAmount > 0 && (
-                                        <div className="flex justify-between text-sm text-orange-600">
+                                        <div className="flex justify-between text-sm text-primary">
                                             <span className="font-medium">Remise:</span>
                                             <span className="font-bold">-{discountAmount.toFixed(2)} FCFA</span>
                                         </div>
@@ -408,7 +408,7 @@ export default function EditInvoice({ id }: { id: string }) {
                                     </div>
                                     <div className="flex justify-between text-lg border-t-2 border-white/20 pt-3">
                                         <span className="font-bold">Total:</span>
-                                        <span className="font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">{total.toFixed(2)} FCFA</span>
+                                        <span className="font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">{total.toFixed(2)} FCFA</span>
                                     </div>
                                 </div>
                             </div>
@@ -435,7 +435,7 @@ export default function EditInvoice({ id }: { id: string }) {
                         <Button type="button" variant="outline" onClick={() => window.location.href = '/user/invoices'} className="h-12 rounded-xl px-6">
                             Annuler
                         </Button>
-                        <Button type="submit" disabled={saving || isLocked} className="h-12 rounded-xl px-8 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 disabled:opacity-50">
+                        <Button type="submit" disabled={saving || isLocked} className="h-12 rounded-xl px-8 bg-gradient-to-r from-primary to-primary/60 hover:from-primary/90 hover:to-primary/80 disabled:opacity-50">
                             {saving ? "Sauvegarde..." : "Enregistrer les modifications"}
                         </Button>
                     </div>

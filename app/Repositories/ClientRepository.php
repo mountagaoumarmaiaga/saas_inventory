@@ -12,11 +12,11 @@ class ClientRepository implements ClientRepositoryInterface
     {
         $q = Client::where('entreprise_id', $entrepriseId);
 
-        if (!empty($filters['search'])) {
-            $s = $filters['search'];
-            $q->where('name','like',"%$s%")
+        $s = $filters['search'] ?? $filters['q'] ?? null;
+        if (!empty($s)) {
+            $q->where(fn($qq) => $qq->where('name','like',"%$s%")
               ->orWhere('email','like',"%$s%")
-              ->orWhere('phone','like',"%$s%");
+              ->orWhere('phone','like',"%$s%"));
         }
 
         return $q->latest()->paginate($perPage);

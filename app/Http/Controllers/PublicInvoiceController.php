@@ -14,7 +14,6 @@ class PublicInvoiceController extends Controller
             'client:id,name,address', // Exclude email, phone if sensitive, but address needed for PDF
             'items', 
             'entreprise:id,name,logo_url,address,email,phone,invoice_header,invoice_footer', 
-            'payments:id,invoice_id,amount,date,payment_method,reference'
         ])->where('uuid', $uuid)->firstOrFail();
 
         // Si c'est la première fois qu'elle est vue, ou la mettre à jour l'heure de vue

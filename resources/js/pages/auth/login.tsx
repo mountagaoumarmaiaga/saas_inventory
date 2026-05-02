@@ -1,9 +1,10 @@
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 import GuestLayout from '@/layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Eye, EyeOff } from 'lucide-react';
 
 
 export default function Login() {
@@ -12,6 +13,7 @@ export default function Login() {
     password: '',
     remember: false,
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -68,15 +70,24 @@ export default function Login() {
                 Oublié ?
               </Link>
             </div>
-            <Input
-              id="password"
-              type="password"
-              value={data.password}
-              onChange={(e) => setData('password', e.target.value)}
-              required
-              placeholder="••••••••"
-              autoComplete="current-password"
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={data.password}
+                onChange={(e) => setData('password', e.target.value)}
+                required
+                placeholder="••••••••"
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
             {errors.password && <p className="text-sm text-destructive font-medium">{errors.password}</p>}
           </div>
 

@@ -43,20 +43,24 @@ class ImageService
 
         $disk = $this->getDisk();
         
-        // If it's a URL, extract the path
+        // Extract path from URL or absolute path
         $path = $pathOrUrl;
         if (str_starts_with($pathOrUrl, 'http')) {
-            // Extract path from URL for Supabase
+            // Extract path from URL
             $parsedUrl = parse_url($pathOrUrl);
             if (isset($parsedUrl['path'])) {
-                // Remove leading slash and 'storage/' prefix if present
-                $path = ltrim($parsedUrl['path'], '/');
-                $path = preg_replace('#^storage/#', '', $path);
+                $path = $parsedUrl['path'];
             }
         }
         
+        // Remove common prefixes
+        $path = ltrim($path, '/');
+        $path = preg_replace('#^storage/#', '', $path);
+        
         if (Storage::disk($disk)->exists($path)) {
             Storage::disk($disk)->delete($path);
+        } else {
+            \Log::info("Could not find file to delete on disk {$disk}: {$path}");
         }
     }
 }

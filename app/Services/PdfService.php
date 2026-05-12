@@ -186,23 +186,27 @@ class PdfService
 
         try {
             $imageContent = null;
-            
-            // Check if it's a local storage URL
-            if (str_contains($entreprise->logo_url, '/storage/')) {
+            $url = $entreprise->logo_url;
+
+            // 1. Try to treat it as a local storage path first
+            $path = $url;
+            if (str_contains($url, '/storage/')) {
                 // Extract path from URL (e.g., /storage/logos/2/file.png -> logos/2/file.png)
-                $path = ltrim(str_replace('/storage/', '', parse_url($entreprise->logo_url, PHP_URL_PATH)), '/');
-                
-                // Try to get from public disk
-                if (\Storage::disk('public')->exists($path)) {
-                    $imageContent = \Storage::disk('public')->get($path);
-                }
-            } elseif (str_starts_with($entreprise->logo_url, 'http')) {
-                // External URL (Supabase) - use file_get_contents with timeout
-                // For direct file fetch
+                $path = ltrim(str_replace('/storage/', '', parse_url($url, PHP_URL_PATH)), '/');
+            }
+            
+            // Check if it exists on the public disk
+            if (\Storage::disk('public')->exists($path)) {
+                $imageContent = \Storage::disk('public')->get($path);
+            } 
+            // 2. Fallback to HTTP if not found locally and it's a full URL
+            elseif (str_starts_with($url, 'http')) {
                 $context = stream_context_create([
                     'http' => [
-                        'timeout' => 2,
+                        'timeout' => 5,
                         'ignore_errors' => true,
+                        'follow_location' => true,
+                        'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\r\n"
                     ],
                     'ssl' => [
                         'verify_peer' => false,
@@ -210,16 +214,25 @@ class PdfService
                     ]
                 ]);
                 
-                $imageContent = @file_get_contents($entreprise->logo_url, false, $context);
+                $imageContent = @file_get_contents($url, false, $context);
+                
+                if (!$imageContent) {
+                    \Log::warning("Failed to fetch logo via HTTP: " . $url);
+                }
+            } else {
+                \Log::warning("Logo file not found on disk and not a valid URL: " . $url);
             }
             
             if ($imageContent && strlen($imageContent) > 0) {
                 $finfo = new \finfo(FILEINFO_MIME_TYPE);
                 $mimeType = $finfo->buffer($imageContent);
-                // Fix: some finfo versions return "text/plain" or fail for SVG
-                if ($mimeType === 'text/plain' && str_ends_with($entreprise->logo_url, '.svg')) {
+                
+                // Fix: some finfo versions return "text/plain" or "application/octet-stream" for SVG
+                if (($mimeType === 'text/plain' || $mimeType === 'application/octet-stream') && 
+                    str_ends_with(strtolower(parse_url($url, PHP_URL_PATH)), '.svg')) {
                     $mimeType = 'image/svg+xml';
                 }
+                
                 return 'data:' . $mimeType . ';base64,' . base64_encode($imageContent);
             }
         } catch (\Exception $e) {

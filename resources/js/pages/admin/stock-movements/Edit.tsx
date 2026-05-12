@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -17,8 +17,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Search } from "lucide-react";
 import { StockMovement, StockMovementForm } from "./types";
-import { fetchProducts } from "./api";
+import { fetchAllProducts } from "./api";
 import { Product } from "../products/types";
 
 interface Props {
@@ -38,6 +39,8 @@ const REASONS = {
 export default function EditStockMovement({ movement, open, onOpenChange, onUpdate, updating }: Props) {
     const [products, setProducts] = useState<Product[]>([]);
     const [loadingProducts, setLoadingProducts] = useState(false);
+    const [productSearch, setProductSearch] = useState("");
+    const searchDebounce = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const [form, setForm] = useState<StockMovementForm>({
         product_id: 0,
@@ -49,7 +52,7 @@ export default function EditStockMovement({ movement, open, onOpenChange, onUpda
 
     useEffect(() => {
         if (open) {
-            loadProducts();
+            loadProducts("");
             if (movement) {
                 setForm({
                     product_id: movement.product_id,
@@ -59,13 +62,26 @@ export default function EditStockMovement({ movement, open, onOpenChange, onUpda
                     invoice_id: movement.invoice_id,
                 });
             }
+        } else {
+            setProductSearch("");
         }
     }, [open, movement]);
 
-    async function loadProducts() {
+    useEffect(() => {
+        if (!open) return;
+        if (searchDebounce.current) clearTimeout(searchDebounce.current);
+        searchDebounce.current = setTimeout(() => {
+            loadProducts(productSearch);
+        }, 300);
+        return () => {
+            if (searchDebounce.current) clearTimeout(searchDebounce.current);
+        };
+    }, [productSearch]);
+
+    async function loadProducts(search: string) {
         setLoadingProducts(true);
         try {
-            const { items } = await fetchProducts("perPage=100");
+            const items = await fetchAllProducts(search);
             setProducts(items);
         } catch (e) {
             console.error("Failed to load products", e);
@@ -96,6 +112,16 @@ export default function EditStockMovement({ movement, open, onOpenChange, onUpda
                     <div className="grid gap-6 py-4">
                         <div className="space-y-2">
                             <Label htmlFor="product" className="text-sm font-medium text-foreground">Produit <span className="text-red-500">*</span></Label>
+                            {/* Barre de recherche produit */}
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                <Input
+                                    placeholder="Rechercher un produit..."
+                                    value={productSearch}
+                                    onChange={(e) => setProductSearch(e.target.value)}
+                                    className="h-9 pl-9 rounded-lg border-border/50 bg-background/50 focus:ring-2 focus:ring-primary/20 transition-all text-sm"
+                                />
+                            </div>
                             {loadingProducts ? (
                                 <div className="h-11 w-full rounded-lg border border-border/50 bg-background/50 flex items-center px-3 text-sm text-muted-foreground opacity-70 cursor-not-allowed">
                                     Chargement des produits...
@@ -110,11 +136,15 @@ export default function EditStockMovement({ movement, open, onOpenChange, onUpda
                                         <SelectValue placeholder="Sélectionner un produit" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {products.map((p) => (
-                                            <SelectItem key={p.id} value={String(p.id)}>
-                                                {p.name}
-                                            </SelectItem>
-                                        ))}
+                                        {products.length === 0 ? (
+                                            <div className="px-3 py-4 text-sm text-muted-foreground text-center">Aucun produit trouvé</div>
+                                        ) : (
+                                            products.map((p) => (
+                                                <SelectItem key={p.id} value={String(p.id)}>
+                                                    {p.name}
+                                                </SelectItem>
+                                            ))
+                                        )}
                                     </SelectContent>
                                 </Select>
                             )}

@@ -58,6 +58,39 @@ export async function fetchProducts(queryString: string = "") {
     return paramsToPagination(json);
 }
 
+/**
+ * Charge TOUS les produits en paginant automatiquement.
+ * Utilisé pour le sélecteur de produits dans les formulaires de mouvements de stock.
+ */
+export async function fetchAllProducts(search: string = "") {
+    let page = 1;
+    let allItems: any[] = [];
+    let hasMore = true;
+
+    while (hasMore) {
+        const qs = `perPage=200&page=${page}${search ? `&search=${encodeURIComponent(search)}` : ""}`;
+        const res = await fetch(`/admin/api/products?${qs}`, {
+            method: "GET",
+            headers: getHeaders(),
+        });
+
+        if (!res.ok) throw new Error(`Erreur ${res.status}`);
+
+        const json = await res.json();
+        const { items, meta } = paramsToPagination(json);
+        allItems = allItems.concat(items);
+
+        // Vérifier si d'autres pages existent
+        if (meta?.last_page && page < meta.last_page) {
+            page++;
+        } else {
+            hasMore = false;
+        }
+    }
+
+    return allItems;
+}
+
 function paramsToPagination(json: any) {
     if (json.data && Array.isArray(json.data)) return { items: json.data, meta: json.meta || {} };
     if (Array.isArray(json)) return { items: json, meta: {} };

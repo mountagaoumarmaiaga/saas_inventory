@@ -54,22 +54,30 @@ class EntrepriseSettingsController extends Controller
     public function uploadLogo(Request $request)
     {
         $request->validate([
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo_url' => 'nullable|string',
         ]);
 
         $entreprise = Entreprise::findOrFail($request->user()->entreprise_id);
 
-        // Delete old logo if exists
-        if ($entreprise->logo_url) {
-            $this->imageService->deleteIfExists($entreprise->logo_url);
+        if ($request->filled('logo_url')) {
+            $entreprise->update(['logo_url' => $request->logo_url]);
+            return response()->json(['data' => $entreprise]);
         }
 
-        // Upload new logo to Supabase
-        $file = $request->file('logo');
-        $path = "logos/{$entreprise->id}/" . \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
-        $url = $this->imageService->storeLogo($file, $path);
+        if ($request->hasFile('logo')) {
+            // Delete old logo if exists
+            if ($entreprise->logo_url) {
+                $this->imageService->deleteIfExists($entreprise->logo_url);
+            }
 
-        $entreprise->update(['logo_url' => $url]);
+            // Upload new logo
+            $file = $request->file('logo');
+            $path = "logos/{$entreprise->id}/" . \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $url = $this->imageService->storeLogo($file, $path);
+
+            $entreprise->update(['logo_url' => $url]);
+        }
 
         return response()->json(['data' => $entreprise]);
     }

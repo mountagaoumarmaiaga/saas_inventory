@@ -36,6 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Les routes admin/api/* sont protegees par l'auth session, pas besoin du CSRF token separement
         $middleware->validateCsrfTokens(except: [
             'admin/api/*',
+            'user/api/*',
             // 'stripe/*',
         ]);
 

@@ -40,12 +40,21 @@ class ClientController extends Controller
             'address' => 'nullable|string|max:255',
         ]);
 
-        $data['created_by'] = $request->user()->id;
-        $data['updated_by'] = null;
+        try {
+            $data['created_by'] = $request->user()->id;
+            $data['updated_by'] = null;
 
-        $client = $this->clients->create($eid, $data);
+            $client = $this->clients->create($eid, $data);
 
-        return response()->json(['data' => $client], 201);
+            return response()->json(['data' => $client], 201);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Error creating client: " . $e->getMessage(), [
+                'user_id' => $request->user()->id,
+                'entreprise_id' => $eid,
+                'data' => $data
+            ]);
+            return response()->json(['message' => 'Erreur lors de la création du client.'], 500);
+        }
     }
 
     public function update(Request $request, int $id)

@@ -16,15 +16,16 @@ class InvoicePolicy
     {
         if ($user->entreprise_id !== $invoice->entreprise_id) return false;
         if ($invoice->status === 'PAID') return false;
-        // user peut modifier seulement ses docs
-        return $user->isAdmin() || $invoice->created_by === $user->id;
+        
+        return true; // Allow all users of the same entreprise
     }
 
     public function delete(User $user, Invoice $invoice): bool
     {
         if ($user->entreprise_id !== $invoice->entreprise_id) return false;
         if ($invoice->status === 'PAID') return false;
-        return $user->isAdmin() || $invoice->created_by === $user->id;
+        
+        return true; // Allow all users of the same entreprise
     }
 
     public function submit(User $user, Invoice $invoice): bool

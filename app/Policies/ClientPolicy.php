@@ -12,5 +12,5 @@ class ClientPolicy
 
     public function create(User $user): bool { return (bool)$user->entreprise_id; } // user & admin
     public function update(User $user, Client $client): bool { return $user->entreprise_id === $client->entreprise_id; }
-    public function delete(User $user, Client $client): bool { return $user->isAdmin() && $user->entreprise_id === $client->entreprise_id; } // au choix
+    public function delete(User $user, Client $client): bool { return $user->entreprise_id === $client->entreprise_id; } 
 }

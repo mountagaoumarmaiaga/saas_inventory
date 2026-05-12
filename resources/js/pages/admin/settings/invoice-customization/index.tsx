@@ -11,6 +11,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "react-toastify";
 import { Upload, Save, FileText } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { supabase } from "@/lib/supabase";
 
 interface CustomizationSettings {
     id: number;
@@ -81,26 +82,43 @@ export default function InvoiceCustomization() {
     }
 
     async function handleUploadLogo() {
-        if (!logoFile) return;
+        if (!logoFile || !settings) return;
 
         setUploadingLogo(true);
         try {
-            const formData = new FormData();
-            formData.append('logo', logoFile);
+            // 1. Upload to Supabase
+            const fileExt = logoFile.name.split('.').pop();
+            const fileName = `logos/${settings.id}/${Date.now()}-${Math.random().toString(36).substring(2, 10)}.${fileExt}`;
+            
+            const { error: uploadError } = await supabase.storage
+                .from('image') // Use existing 'image' bucket
+                .upload(fileName, logoFile);
 
+            if (uploadError) throw uploadError;
+
+            const { data: publicData } = supabase.storage
+                .from('image')
+                .getPublicUrl(fileName);
+
+            const publicUrl = publicData.publicUrl;
+
+            // 2. Save URL to backend
             const csrfToken = document.head.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-            const res = await axios.post('/admin/api/settings/invoice/logo', formData, {
+            const res = await axios.post('/admin/api/settings/invoice/logo', {
+                logo_url: publicUrl
+            }, {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
                     'X-CSRF-TOKEN': csrfToken || '',
                 }
             });
 
             setSettings(res.data.data);
+            setLogoPreview(publicUrl);
             setLogoFile(null);
-            toast.success("Logo uploadé avec succès !");
+            toast.success("Logo uploadé avec succès sur Supabase !");
         } catch (e: any) {
+            console.error("Logo upload error:", e);
             toast.error(e?.message ?? "Erreur upload logo");
         } finally {
             setUploadingLogo(false);

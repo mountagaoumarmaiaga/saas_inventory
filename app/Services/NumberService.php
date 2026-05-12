@@ -23,13 +23,26 @@ class NumberService
             }
         }
 
-        if ($type === 'proforma') {
-            return sprintf("%05d", $nextSequence);
-        } else {
-            $prefix = 'FACT';
-            $dateStr = date('Ym'); // YYYYMM
-            return sprintf("%s-%s-%03d", $prefix, $dateStr, $nextSequence);
-        }
+        $prefix = ($type === 'proforma') ? '' : 'FACT';
+        $dateStr = ($type === 'proforma') ? '' : date('Ym') . '-';
+
+        do {
+            if ($type === 'proforma') {
+                $candidate = sprintf("%05d", $nextSequence);
+            } else {
+                $candidate = sprintf("%s-%s%03d", $prefix, $dateStr, $nextSequence);
+            }
+            
+            $exists = Invoice::where('entreprise_id', $entrepriseId)
+                ->where('number', $candidate)
+                ->exists();
+                
+            if ($exists) {
+                $nextSequence++;
+            }
+        } while ($exists);
+
+        return $candidate;
     }
 
     public function nextDeliveryNumber(int $entrepriseId): string
@@ -47,7 +60,16 @@ class NumberService
         
         $prefix = 'BL';
         $dateStr = date('Ym'); // YYYYMM
-        return sprintf("%s-%s-%03d", $prefix, $dateStr, $nextSequence);
+        
+        do {
+            $candidate = sprintf("%s-%s-%03d", $prefix, $dateStr, $nextSequence);
+            $exists = DeliveryNote::where('entreprise_id', $entrepriseId)->where('number', $candidate)->exists();
+            if ($exists) {
+                $nextSequence++;
+            }
+        } while ($exists);
+
+        return $candidate;
     }
     
     public function nextPurchaseNumber(int $entrepriseId): string
@@ -65,12 +87,20 @@ class NumberService
         
         $prefix = 'BC';
         $dateStr = date('Ym'); // YYYYMM
-        return sprintf("%s-%s-%03d", $prefix, $dateStr, $nextSequence);
+        
+        do {
+            $candidate = sprintf("%s-%s-%03d", $prefix, $dateStr, $nextSequence);
+            $exists = Purchase::where('entreprise_id', $entrepriseId)->where('number', $candidate)->exists();
+            if ($exists) {
+                $nextSequence++;
+            }
+        } while ($exists);
+
+        return $candidate;
     }
 
     public function nextQuoteNumber(int $entrepriseId): string
     {
-        // Get the max sequence currently in use for this company to avoid collisions.
         $lastRecord = Quote::where('entreprise_id', $entrepriseId)
             ->latest('id')
             ->first();
@@ -82,9 +112,9 @@ class NumberService
             }
         }
 
-        // Atomically skip forward until we find a number not already taken.
         $prefix = 'DEV';
         $dateStr = date('Ym');
+        
         do {
             $candidate = sprintf("%s-%s-%03d", $prefix, $dateStr, $nextSequence);
             $exists = Quote::where('entreprise_id', $entrepriseId)->where('number', $candidate)->exists();
